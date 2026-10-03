@@ -1,1 +1,154 @@
 @import "tailwindcss";
+
+/* Raw primitives in root to prevent utility generatio. Do Not Use*/
+:root {
+	--primitive-black: #020110;
+	--primitive-white: #FFFFFF;
+	--primitive-yellow: #FFDD00;
+
+	--primitive-purple-700: #130445;
+	--primitive-purple-600: #320776;
+	--primitive-purple-500: #300BAB;
+	--primitive-purple-400: #9F2CE5;
+
+	--primitive-border-gradient-bottom: linear-gradient(360deg, #320776 0%, #300bab 48.08%, #9f2ce5 100%);
+	--primitive-border-gradient-top: linear-gradient(180deg, #9f2ce5 0%, #300bab 51.92%, #320776 100%);
+	--primitive-border-gradient-button: linear-gradient(360deg, #ffffff 0%, #ffdd00 100%);
+}
+
+/* Theme definition generating semantic utilities only */
+@theme {
+	/* Semantic surface colors */
+	--color-surface-primary: var(--primitive-black);
+	--color-surface-secondary: var(--primitive-purple-700);
+	--color-surface-white: var(--primitive-white);
+	--color-surface-accent: var(--primitive-yellow);
+	--color-surface-brand: var(--primitive-purple-600);
+	--color-surface-brand-secondary: var(--primitive-purple-500);
+	--color-surface-brand-tertiary: var(--primitive-purple-400);
+
+	/* Semantic content colors */
+	--color-content-primary: var(--primitive-white);
+	--color-content-secondary: color-mix(in srgb, var(--primitive-white) 75%, transparent);
+	--color-content-brand: var(--primitive-purple-600);
+	--color-content-brand-secondary: color-mix(in srgb, var(--primitive-purple-600) 75%, transparent);
+	--color-content-link: var(--primitive-yellow);
+
+	/* Font families */
+	--font-display: "JustCosmic", sans-serif;
+	--font-body: "Amazon Ember Display", sans-serif;
+
+	/* Typography */
+	--text-h1: 61px;
+	--text-h1--line-height: 92px;
+
+	--text-h2: 39px;
+	--text-h2--line-height: 59px;
+
+	--text-h3: 31px;
+	--text-h3--line-height: 47px;
+
+	--text-h4: 25px;
+	--text-h4--line-height: 38px;
+
+	--text-h5: 20px;
+	--text-h5--line-height: 30px;
+
+	--text-h6: 16px;
+	--text-h6--line-height: 24px;
+
+	--text-body: 16px;
+	--text-body--line-height: 24px;
+
+	--text-caption: 13px;
+	--text-caption--line-height: 20px;
+
+	/* Background gradients */
+	--background-image-gradient-purple: linear-gradient(90deg, #320776 0%, #130445 48.08%, #020110 100%);
+	--background-image-gradient-radial: radial-gradient(circle, #320776 0%, #130445 48.08%, #020110 100%);
+	--background-image-gradient-pink-dark: linear-gradient(90deg, #9f2ce5 0%, #300bab 54.4%, #130445 100%);
+	--background-image-gradient-content: linear-gradient(90deg, #ffdd00 0%, #ffffff 100%);
+
+	/* Box shadows */
+	--shadow-brand: 0 29px 35.8px 0 rgba(159, 44, 229, 0.15), 0 18px 30.1px 0 rgba(48, 11, 171, 0.46);
+}
+
+/* Custom border utilities */
+@utility border-gradient-bottom {
+	border-bottom-width: 1px;
+	border-style: solid;
+	border-image: var(--primitive-border-gradient-bottom) 1;
+}
+
+@utility border-gradient-top {
+	border-top-width: 1px;
+	border-style: solid;
+	border-image: var(--primitive-border-gradient-top) 1;
+}
+
+@utility border-gradient-button {
+	border-width: 1px;
+	border-style: solid;
+	border-image: var(--primitive-border-gradient-button) 1;
+}
+
+/* Base HTML styles */
+@layer base {
+	h1 {
+		font-size: var(--text-h1);
+		line-height: var(--text-h1--line-height);
+		font-family: var(--font-display);
+		font-weight: 400;
+	}
+
+	h2 {
+		font-size: var(--text-h2);
+		line-height: var(--text-h2--line-height);
+		font-family: var(--font-display);
+		font-weight: 400;
+	}
+
+	h3 {
+		font-size: var(--text-h3);
+		line-height: var(--text-h3--line-height);
+		font-family: var(--font-display);
+		font-weight: 400;
+	}
+
+	h4 {
+		font-size: var(--text-h4);
+		line-height: var(--text-h4--line-height);
+		font-family: var(--font-body);
+		font-weight: 400;
+	}
+
+	h5 {
+		font-size: var(--text-h5);
+		line-height: var(--text-h5--line-height);
+		font-family: var(--font-body);
+		font-weight: 700;
+	}
+
+	h6 {
+		font-size: var(--text-h6);
+		line-height: var(--text-h6--line-height);
+		font-family: var(--font-body);
+		font-weight: 700;
+	}
+
+	p,
+	blockquote {
+		font-size: var(--text-body);
+		line-height: var(--text-body--line-height);
+		font-family: var(--font-body);
+		font-weight: 400;
+	}
+
+	.caption,
+	caption {
+		font-size: var(--text-caption);
+		line-height: var(--text-caption--line-height);
+		font-family: var(--font-body);
+		font-weight: 400;
+	}
+}
