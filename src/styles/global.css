@@ -11,9 +11,9 @@
 	--primitive-purple-500: #300BAB;
 	--primitive-purple-400: #9F2CE5;
 
-	--primitive-border-gradient-bottom: linear-gradient(360deg, #320776 0%, #300bab 48.08%, #9f2ce5 100%);
+	--primitive-border-gradient-bottom: linear-gradient(180deg, #320776 0%, #300bab 48.08%, #9f2ce5 100%);
 	--primitive-border-gradient-top: linear-gradient(180deg, #9f2ce5 0%, #300bab 51.92%, #320776 100%);
-	--primitive-border-gradient-button: linear-gradient(360deg, #ffffff 0%, #ffdd00 100%);
+	--primitive-border-gradient-button: linear-gradient(0deg, #ffffff 0%, #ffdd00 100%);
 }
 
 @font-face {
@@ -42,6 +42,8 @@
 
 /* Theme definition generating semantic utilities only */
 @theme {
+	--color-*: initial;
+
 	/* Semantic surface colors */
 	--color-surface-primary: var(--primitive-black);
 	--color-surface-secondary: var(--primitive-purple-700);
@@ -63,20 +65,20 @@
 	--font-body: "Amazon Ember Display", sans-serif;
 
 	/* Typography */
-	--text-h1: 61px;
-	--text-h1--line-height: 92px;
+	--text-h1: clamp(31px, 5vw, 61px);
+	--text-h1--line-height: clamp(47px, 7.5vw, 92px);
 
-	--text-h2: 39px;
-	--text-h2--line-height: 59px;
+	--text-h2: clamp(25px, 3.2vw, 39px);
+	--text-h2--line-height: clamp(38px, 4.8vw, 59px);
 
-	--text-h3: 31px;
-	--text-h3--line-height: 47px;
+	--text-h3: clamp(20px, 2.55vw, 31px);
+	--text-h3--line-height: clamp(30px, 3.85vw, 47px);
 
-	--text-h4: 25px;
-	--text-h4--line-height: 38px;
+	--text-h4: clamp(16px, 2.05vw, 25px);
+	--text-h4--line-height: clamp(24px, 3.1vw, 38px);
 
-	--text-h5: 20px;
-	--text-h5--line-height: 30px;
+	--text-h5: clamp(16px, 1.65vw, 20px);
+	--text-h5--line-height: clamp(24px, 2.5vw, 30px);
 
 	--text-h6: 16px;
 	--text-h6--line-height: 24px;
@@ -99,19 +101,19 @@
 
 /* Custom border utilities */
 @utility border-gradient-bottom {
-	border-bottom-width: 1px;
+	border-bottom-width: 2px;
 	border-style: solid;
 	border-image: var(--primitive-border-gradient-bottom) 1;
 }
 
 @utility border-gradient-top {
-	border-top-width: 1px;
+	border-top-width: 2px;
 	border-style: solid;
 	border-image: var(--primitive-border-gradient-top) 1;
 }
 
 @utility border-gradient-button {
-	border-width: 1px;
+	border-width: 2px;
 	border-style: solid;
 	border-image: var(--primitive-border-gradient-button) 1;
 }
