@@ -1,0 +1,146 @@
+---
+// src/pages/test/design-test.astro
+import '../../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Design System Token Test</title>
+  </head>
+  <body class="bg-surface-primary text-content-primary min-h-screen p-8 md:p-12 space-y-16">
+
+    <!-- 1. BASE LAYER TAGS (AUTOMATIC STYLES) -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">1. Base HTML Elements (@layer base)</h2>
+      <div class="space-y-4">
+        <h1>Heading 1 (JustCosmic 31-61px / 47-92px)</h1>
+        <h2>Heading 2 (JustCosmic 25-39px / 38-59px)</h2>
+        <h3>Heading 3 (JustCosmic 20-31px / 30-47px)</h3>
+        <h4>Heading 4 (Amazon Ember 16-25px / 24-38px)</h4>
+        <h5>Heading 5 (Amazon Ember Bold 16-20px / 24-30px)</h5>
+        <h6>Heading 6 (Amazon Ember Bold 16px / 24px)</h6>
+        <p>Paragraph: The quick brown fox jumps over the lazy dog (16px / 24px).</p>
+        <blockquote class="pl-4 border-l-2 border-surface-accent">
+          Blockquote: Design systems bring consistency and speed across products.
+        </blockquote>
+        <p class="caption">Caption class: Small metadata or footnote label (13px / 20px).</p>
+      </div>
+    </section>
+
+    <!-- 2. EXPLICIT TYPOGRAPHY & FONT UTILITIES -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">2. Typography Utilities</h2>
+      <div class="space-y-3">
+        <p class="text-h1 font-display">.text-h1 .font-display</p>
+        <p class="text-h2 font-display">.text-h2 .font-display</p>
+        <p class="text-h3 font-display">.text-h3 .font-display</p>
+        <p class="text-h4 font-body">.text-h4 .font-body</p>
+        <p class="text-h5 font-body">.text-h5 .font-body</p>
+        <p class="text-h6 font-body">.text-h6 .font-body</p>
+        <p class="text-body font-body">.text-body .font-body</p>
+        <p class="text-caption font-body">.text-caption .font-body</p>
+      </div>
+    </section>
+
+    <!-- 3. SURFACE COLORS -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">3. Surface Colors (bg-surface-*)</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-surface-primary border border-surface-brand-tertiary p-4 rounded text-center">
+          <code>bg-surface-primary</code>
+        </div>
+        <div class="bg-surface-secondary p-4 rounded text-center">
+          <code>bg-surface-secondary</code>
+        </div>
+        <div class="bg-surface-brand p-4 rounded text-center">
+          <code>bg-surface-brand</code>
+        </div>
+        <div class="bg-surface-brand-secondary p-4 rounded text-center">
+          <code>bg-surface-brand-secondary</code>
+        </div>
+        <div class="bg-surface-brand-tertiary p-4 rounded text-center">
+          <code>bg-surface-brand-tertiary</code>
+        </div>
+        <div class="bg-surface-accent p-4 rounded text-center text-surface-primary">
+          <code>bg-surface-accent</code>
+        </div>
+        <div class="bg-surface-white p-4 rounded text-center text-surface-primary">
+          <code>bg-surface-white</code>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. CONTENT COLORS -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">4. Content Colors (text-content-*)</h2>
+      <div class="space-y-2 p-6 bg-surface-secondary rounded">
+        <p class="text-content-primary">text-content-primary: Solid white text</p>
+        <p class="text-content-secondary">text-content-secondary: White with 75% opacity via color-mix</p>
+        <p class="text-content-brand">text-content-brand: Primary purple brand color</p>
+        <p class="text-content-brand-secondary">text-content-brand-secondary: Purple brand color at 75%</p>
+        <a href="#" class="text-content-link block underline">text-content-link: Yellow interactive link</a>
+      </div>
+    </section>
+
+    <!-- 5. BACKGROUND GRADIENTS -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">5. Gradients (bg-gradient-*)</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-gradient-purple h-28 rounded flex items-center justify-center font-bold">
+          bg-gradient-purple
+        </div>
+        <div class="bg-gradient-radial h-28 rounded flex items-center justify-center font-bold">
+          bg-gradient-radial
+        </div>
+        <div class="bg-gradient-pink-dark h-28 rounded flex items-center justify-center font-bold">
+          bg-gradient-pink-dark
+        </div>
+        <div class="bg-gradient-content h-28 rounded flex items-center justify-center font-bold text-surface-primary">
+          bg-gradient-content
+        </div>
+      </div>
+
+      <!-- Bonus: Gradient Text Test -->
+      <div class="p-6 bg-surface-secondary rounded text-center">
+        <h3 class="bg-gradient-content bg-clip-text text-transparent inline-block font-display">
+          Gradient Clip Text (bg-gradient-content)
+        </h3>
+      </div>
+    </section>
+
+    <!-- 6. CUSTOM BORDER GRADIENT UTILITIES -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">6. Border Gradient Utilities</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="border-gradient-top bg-surface-secondary p-6 text-center">
+          <code>.border-gradient-top</code>
+        </div>
+        <div class="border-gradient-bottom bg-surface-secondary p-6 text-center">
+          <code>.border-gradient-bottom</code>
+        </div>
+        <div class="flex items-center justify-center">
+          <button class="border-gradient-button bg-surface-primary px-6 py-3 cursor-pointer">
+            .border-gradient-button
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. BOX SHADOW UTILITY -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">7. Custom Shadow (shadow-brand)</h2>
+      <div class="p-8 flex justify-center">
+        <div class="shadow-brand bg-surface-secondary border border-surface-brand-secondary p-8 rounded-xl max-w-md text-center">
+          <h4 class="mb-2">Card with .shadow-brand</h4>
+          <p class="text-content-secondary">
+            Demonstrates the dual purple drop shadow with blur and opacity values defined in <code>--shadow-brand</code>.
+          </p>
+        </div>
+      </div>
+    </section>
+
+  </body>
+</html>
