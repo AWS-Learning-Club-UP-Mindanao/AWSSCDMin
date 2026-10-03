@@ -1,0 +1,98 @@
+---
+// Visual test page for decorations/star-blur-*.svg across breakpoints.
+const stars = ['star-blur-1', 'star-blur-2'];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Star Blur Test</title>
+		<style>
+			* { box-sizing: border-box; }
+			body {
+				margin: 0;
+				padding: 16px;
+				background: #070b1f;
+				color: #c9d1ff;
+				font: 14px/1.4 system-ui, sans-serif;
+			}
+			h2 { font-size: 15px; margin: 24px 0 8px; color: #fff; }
+			.bp::after { content: 'mobile (<768px)'; }
+			@media (min-width: 768px) { .bp::after { content: 'tablet (768–1023px)'; } }
+			@media (min-width: 1024px) { .bp::after { content: 'desktop (≥1024px)'; } }
+			.row { display: flex; flex-wrap: wrap; gap: 16px; }
+			.cell {
+				display: flex; flex-direction: column; align-items: center; gap: 6px;
+				padding: 12px; border: 1px dashed #2a3366; border-radius: 8px;
+			}
+			.cell small { color: #8a93c4; }
+			/* Same rendered size, to compare blur strength relative to star size */
+			.equal img, .equal svg { width: 96px; height: 96px; }
+			/* Typical responsive sizing a decoration would get */
+			.responsive .s1 { width: clamp(48px, 9vw, 120px); }
+			.responsive .s2 { width: clamp(32px, 6vw, 80px); }
+			.scene {
+				position: relative; height: 260px; border-radius: 8px; overflow: hidden;
+				background: url('/assets/backgrounds/star_background.svg') center / cover, #070b1f;
+			}
+			.scene img { position: absolute; }
+			.scene .neb { inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .8; }
+			.light { background: #8f9bd6; }
+		</style>
+	</head>
+	<body>
+		<p>Viewport: <strong class="bp"></strong> · <span id="vw"></span></p>
+
+		<h2>1. Native size (1×)</h2>
+		<div class="row">
+			{stars.map((s) => (
+				<div class="cell">
+					<img src={`/assets/decorations/${s}.svg`} alt="" />
+					<small>{s}</small>
+				</div>
+			))}
+		</div>
+
+		<h2>2. Same rendered size (96px)</h2>
+		<div class="row equal">
+			{stars.map((s) => (
+				<div class="cell">
+					<img src={`/assets/decorations/${s}.svg`} alt="" />
+					<small>{s}</small>
+				</div>
+			))}
+		</div>
+
+		<h2>3. Responsive sizing (clamp / vw)</h2>
+		<div class="row responsive">
+			<div class="cell"><img class="s1" src="/assets/decorations/star-blur-1.svg" alt="" /><small>clamp(48px, 9vw, 120px)</small></div>
+			<div class="cell"><img class="s2" src="/assets/decorations/star-blur-2.svg" alt="" /><small>clamp(32px, 6vw, 80px)</small></div>
+		</div>
+
+		<h2>4. In context over background + nebula</h2>
+		<div class="scene">
+			<img src="/assets/decorations/star-blur-1.svg" style="top:12%;left:10%;width:clamp(48px,9vw,120px)" alt="" />
+			<img src="/assets/decorations/star-blur-2.svg" style="top:55%;left:70%;width:clamp(32px,6vw,80px)" alt="" />
+			<img src="/assets/decorations/star-blur-2.svg" style="top:20%;left:45%;width:clamp(32px,6vw,80px)" alt="" />
+		</div>
+
+		<h2>5. On a mid-tone background</h2>
+		<div class="row">
+			{stars.map((s) => (
+				<div class="cell light">
+					<img src={`/assets/decorations/${s}.svg`} alt="" />
+					<small style="color:#1b2150">{s}</small>
+				</div>
+			))}
+		</div>
+
+		<script>
+			const out = document.getElementById('vw')!;
+			const update = () => (out.textContent = `${innerWidth}×${innerHeight} @ ${devicePixelRatio}x DPR`);
+			update();
+			addEventListener('resize', update);
+		</script>
+	</body>
+</html>
