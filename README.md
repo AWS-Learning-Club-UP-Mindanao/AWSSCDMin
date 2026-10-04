@@ -25,12 +25,18 @@ Node 22+, and **pnpm — not npm or yarn.** Don't run `npm install`; it ignores
 
 ## Contributing
 
-`main` is protected. Don't commit or push to it directly — everything goes
-through a pull request.
+### Branches
 
-Branch off main, one feature per branch:
+There are two long-lived branches:
 
-    git switch main && git pull
+- `dev` — integration branch. All feature PRs target this.
+- `main` — production-ready only. Only `dev` merges into it.
+
+Neither should be committed to directly.
+
+Branch off `dev`, one feature per branch:
+
+    git switch dev && git pull
     git switch -c charles/feat/speaker-grid
 
 Branch and PR names use the same shape: `<username>/<type>/<short-description>`
@@ -55,6 +61,16 @@ The PR description should cover:
 - anything unfinished or knowingly broken
 
 At least one review before merge. Squash merge, then delete the branch.
+
+### CI
+
+A GitHub Actions workflow runs on every PR to `dev` or `main`. It must pass
+before merging. It runs two checks:
+
+- `pnpm check` — TypeScript / Astro type checking
+- `pnpm build` — full production build
+
+If CI fails, fix the errors locally and push again. Don't merge a red build.
 
 Avoid reformatting files you didn't touch, and don't add dependencies without
 raising it in the PR first.
