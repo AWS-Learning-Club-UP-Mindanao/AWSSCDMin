@@ -1,0 +1,27 @@
+---
+interface Props {
+	/**
+	 * Let the content run past the shared column. Use it for edge-to-edge rows.
+	 * Section content should normally stay inside the column.
+	 */
+	wide?: boolean;
+	class?: string;
+}
+
+const { wide = false, class: className = '' } = Astro.props;
+---
+
+<!--
+	The shared content column. Measured off the exported frames rather than guessed:
+	at the 1728px desktop frame the content starts 212px in, the iPad frame sits about
+	48px from each edge, and the 393px mobile frame about 32px. A 1400px column with
+	32/48px padding lands on all three.
+
+	Prefer the `wide` prop over passing your own max-w-* class, since the two would
+	fight over the same property.
+-->
+<div
+	class:list={['mx-auto w-full px-8 md:px-12', wide ? 'max-w-none' : 'max-w-[1400px]', className]}
+>
+	<slot />
+</div>
