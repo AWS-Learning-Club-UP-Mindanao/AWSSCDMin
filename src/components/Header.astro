@@ -1,0 +1,151 @@
+---
+interface Props {
+    ticketUrl?: string;
+}
+
+const { ticketUrl = "https://example.com/tickets" } = Astro.props;
+
+const links = [
+  { label: "About", href: "/#about" },
+  { label: "Schedule", href: "/#schedule" },
+  { label: "Speakers", href: "/#speakers" },
+  { label: "Sponsors", href: "/#sponsors" },
+  { label: "FAQ", href: "/#faq" },
+];
+---
+
+<header class="event-header" data-header>
+  <div class="header-row">
+    <a
+      class="logo-link"
+      href="/#top"
+      aria-label="AWS Student Community Day Mindanao home"
+      data-home-link
+    >
+      <img
+        src="/assets/logos/scd_logo_1.svg"
+        alt=""
+        width="116"
+        height="66"
+      />
+    </a>
+
+    <nav class="desktop-nav" aria-label="Primary">
+      {
+        links.map(({ label, href }) => (
+          <a href={href}>{label}</a>
+        ))
+      }
+    </nav>
+
+    <a class="ticket-link" href={ticketUrl}>Buy Tickets</a>
+  </div>
+</header>
+
+<style>
+  .event-header {
+    position: relative;
+    z-index: 20;
+    width: 100%;
+    max-width: 1369px;
+    margin-inline: auto;
+    border-radius: 0 0 64px 64px;
+    background: rgb(50 7 118 / 75%);
+    color: white;
+    font-family: "Amazon Ember Display", sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  .event-header::after {
+    position: absolute;
+    inset: 0;
+    border: 2px solid transparent;
+    border-top: 0;
+    border-radius: inherit;
+    background:
+      linear-gradient(
+        to bottom,
+        #320776,
+        #300bab 48.08%,
+        #9f2ce5
+      ) border-box;
+    mask:
+      linear-gradient(#fff 0 0) padding-box,
+      linear-gradient(#fff 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+    content: "";
+  }
+
+  .header-row {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    min-height: 100px;
+    padding: 16px 80px;
+  }
+
+  .logo-link {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+  }
+
+  .logo-link img {
+    display: block;
+    width: 116.474px;
+    height: 66px;
+    object-fit: contain;
+  }
+
+  .desktop-nav {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 24px;
+    min-width: 0;
+  }
+
+  .event-header a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .desktop-nav a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    white-space: nowrap;
+  }
+
+  .ticket-link {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    min-width: 174px;
+    min-height: 64px;
+    padding: 12px 24px;
+    border: 2px solid #ffdd00;
+    border-radius: 31px;
+    white-space: nowrap;
+  }
+
+  .event-header a:focus-visible {
+    outline: 3px solid #ffdd00;
+    outline-offset: 5px;
+  }
+
+  .desktop-nav a:hover {
+    text-decoration: underline;
+    text-underline-offset: 6px;
+  }
+
+  .ticket-link:hover {
+    background: rgb(255 221 0 / 12%);
+  }
+</style>
