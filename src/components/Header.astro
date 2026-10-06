@@ -13,6 +13,112 @@ const links = [
   { label: "FAQ", href: "/#faq" },
 ];
 ---
+<script>
+  const header = document.querySelector<HTMLElement>("[data-header]");
+  const button =
+    header?.querySelector<HTMLButtonElement>("[data-menu-button]");
+  const drawer =
+    header?.querySelector<HTMLElement>("[data-mobile-drawer]");
+  const homeLink =
+    header?.querySelector<HTMLAnchorElement>("[data-home-link]");
+
+  if (header && button && drawer && homeLink) {
+    const mobile = window.matchMedia("(max-width: 767px)");
+
+    const setOpen = (open: boolean, restoreFocus = false) => {
+      const expanded = open && mobile.matches;
+
+      button.setAttribute("aria-expanded", String(expanded));
+      button.setAttribute(
+        "aria-label",
+        expanded ? "Close navigation menu" : "Open navigation menu",
+      );
+
+      drawer.hidden = !expanded;
+
+      if (restoreFocus) {
+        button.focus({ preventScroll: true });
+      }
+    };
+
+    setOpen(false);
+    header.dataset.enhanced = "";
+    button.hidden = false;
+
+    button.addEventListener("click", () => {
+      setOpen(button.getAttribute("aria-expanded") !== "true");
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        button.getAttribute("aria-expanded") === "true"
+      ) {
+        event.preventDefault();
+        setOpen(false, true);
+      }
+    });
+
+    drawer.addEventListener("click", (event) => {
+      if (!(event.target instanceof Element)) return;
+
+      const link = event.target.closest<HTMLAnchorElement>("a[href]");
+      if (!link) return;
+
+      setOpen(false);
+
+      const destination = new URL(link.href);
+      const samePage =
+        destination.origin === window.location.origin &&
+        destination.pathname === window.location.pathname &&
+        destination.search === window.location.search;
+
+      if (samePage && destination.hash) {
+        const target = document.getElementById(
+          decodeURIComponent(destination.hash.slice(1)),
+        );
+
+        if (target) {
+          if (!target.hasAttribute("tabindex")) {
+            target.setAttribute("tabindex", "-1");
+            target.addEventListener(
+              "blur",
+              () => target.removeAttribute("tabindex"),
+              { once: true },
+            );
+          }
+
+          target.focus({ preventScroll: true });
+          return;
+        }
+      }
+
+      button.focus({ preventScroll: true });
+    });
+
+    document.addEventListener("click", (event) => {
+      if (
+        event.target instanceof Node &&
+        !header.contains(event.target) &&
+        button.getAttribute("aria-expanded") === "true"
+      ) {
+        setOpen(false, drawer.contains(document.activeElement));
+      }
+    });
+
+    mobile.addEventListener("change", () => {
+      const focusWasInDrawer = drawer.contains(document.activeElement);
+      const focusWasOnButton = document.activeElement === button;
+
+      setOpen(false);
+
+      if (focusWasInDrawer || (focusWasOnButton && !mobile.matches)) {
+        const target = mobile.matches ? button : homeLink;
+        target.focus({ preventScroll: true });
+      }
+    });
+  }
+</script>
 
 <header class="event-header" data-header>
   <div class="header-row">
@@ -154,6 +260,7 @@ const links = [
   .ticket-link:hover {
     background: rgb(255 221 0 / 12%);
   }
+
   .menu-button,
   .mobile-drawer {
     display: none;
