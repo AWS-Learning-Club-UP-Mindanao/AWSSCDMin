@@ -60,6 +60,8 @@
 	--color-content-brand-secondary: color-mix(in srgb, var(--primitive-purple-600) 75%, transparent);
 	--color-content-link: var(--primitive-yellow);
 
+	--color-gradient-btn: var(--primitive-border-gradient-button);
+
 	/* Font families */
 	--font-display: "JustCosmic", sans-serif;
 	--font-body: "Amazon Ember Display", sans-serif;
@@ -93,10 +95,58 @@
 	--background-image-gradient-purple: linear-gradient(90deg, #320776 0%, #130445 48.08%, #020110 100%);
 	--background-image-gradient-radial: radial-gradient(circle, #320776 0%, #130445 48.08%, #020110 100%);
 	--background-image-gradient-pink-dark: linear-gradient(90deg, #9f2ce5 0%, #300bab 54.4%, #130445 100%);
-	--background-image-gradient-content: linear-gradient(90deg, #ffdd00 0%, #ffffff 100%);
+	
+	--background-image-gradient-content: linear-gradient(0deg, var(--color-surface-accent) 0%, var(--primitive-white) 75%);
 
 	/* Box shadows */
 	--shadow-brand: 0 29px 35.8px 0 rgba(159, 44, 229, 0.15), 0 18px 30.1px 0 rgba(48, 11, 171, 0.46);
+	--shadow-button-primary: 0 6px 25.3px 0 rgba(185, 127, 255, 1), 0 0 33.3px 4px rgba(255, 195, 0, 0.85) inset;
+	--shadow-button-primary-hover: 0 19px 58.7px 0 var(--color-surface-brand-secondary), 0 6.6px 19.1px 0 var(--color-surface-accent), 0 0 36.63px 4.4px rgba(255, 195, 0, 0.85) inset;
+
+	/* Text shadows */
+	--text-shadow-glow-white: 0 4px 18px rgba(255, 255, 255, 0.70);
+	--text-shadow-button-star: 0 0 10px rgba(255, 253, 239, 1);
+}
+
+/* Primary button utility */
+@utility btn-cta {
+	border-radius: 64px;
+	border: 2px solid var(--color-surface-accent);
+	background: var(--background-image-gradient-content);
+	box-shadow: var(--shadow-button-primary);
+	/* Responsive padding — tighter on mobile, full bleed on sm+ */
+	padding: 12px 32px;
+	position: relative;
+	overflow: visible;
+
+	@media (min-width: 640px) {
+		padding: 16px 64px;
+	}
+}
+
+/* Gradient text utilities */
+@utility text-gradient-content {
+	background: var(--background-image-gradient-content);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: transparent;
+}
+
+@utility text-gradient-btn {
+	background: var(--background-image-gradient-content);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: transparent;
+}
+
+@utility text-no-gradient {
+	background: none;
+	background-clip: unset;
+	-webkit-background-clip: unset;
+	-webkit-text-fill-color: unset;
+	color: unset;
 }
 
 /* Custom border utilities */
