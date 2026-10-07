@@ -1,0 +1,460 @@
+---
+// Renders as <button> by default, or <a> when href is provided.
+// Variants: primary (yellow glow), purple, outlined, and ghost.
+// Icon slots: icon-start and icon-end accept any SVG or image element.
+// Legacy variant names remain supported for existing call sites.
+
+export interface Props {
+  label: string;
+  href?: string;
+  /** Alias for href for callers that use URL terminology. */
+  url?: string;
+  variant?: 'primary' | 'purple' | 'outlined' | 'ghost' | 'cta';
+  size?: 'sm' | 'md' | 'lg';
+  fullWidth?: boolean;
+  class?: string;
+  disabled?: boolean;
+  // Ignored when href is set.
+  type?: 'button' | 'submit' | 'reset';
+  // Ignored when href is not set.
+  target?: string;
+  // noopener noreferrer is appended automatically when target="_blank".
+  rel?: string;
+}
+
+const {
+  label,
+  href,
+  url,
+  variant = 'cta',
+  size = 'md',
+  fullWidth = false,
+  class: className = '',
+  disabled = false,
+  type = 'button',
+  target,
+  rel: relProp,
+} = Astro.props;
+
+const resolvedHref = href ?? url;
+const isLink = resolvedHref !== undefined;
+
+const rel =
+  target === '_blank'
+    ? ['noopener', 'noreferrer', relProp].filter(Boolean).join(' ')
+    : relProp;
+
+const sizeClasses: Record<NonNullable<Props['size']>, string> = {
+  sm: 'px-4 py-2 text-body',
+  md: 'px-8 py-4 text-body',
+  lg: 'px-8 py-4 text-h5',
+};
+
+const contentClasses: Record<NonNullable<Props['size']>, string> = {
+  sm: 'gap-1.5',
+  md: 'gap-2',
+  lg: 'gap-2.5',
+};
+
+const variantClasses: Record<NonNullable<Props['variant']>, string> = {
+  // Hover and active states for cta are handled entirely in <style> below
+  // so the spring-bounce transition and press animation stay in one place.
+  primary: 'btn-cta text-content-brand',
+  cta: 'btn-cta text-content-brand',
+
+  purple: [
+    'bg-surface-brand rounded-full text-content-primary',
+    'hover:bg-surface-white hover:text-content-brand',
+    'focus-visible:bg-surface-white focus-visible:text-content-brand',
+    'active:bg-surface-white active:text-content-brand active:opacity-90',
+  ].join(' '),
+
+  // Default: solid yellow accent border, transparent bg.
+  // Hover: fills with the content gradient, text flips to brand purple.
+  outlined: [
+    'border-2 border-surface-accent rounded-full bg-transparent text-content-primary',
+    'hover:text-content-brand focus-visible:text-content-brand',
+    'active:text-content-brand active:opacity-90',
+  ].join(' '),
+  ghost: [
+    'bg-transparent text-content-primary',
+    'hover:text-gradient-btn hover:text-shadow-glow-white hover:underline hover:decoration-surface-accent',
+    'focus-visible:text-gradient-btn focus-visible:text-shadow-glow-white focus-visible:underline focus-visible:decoration-surface-accent focus-visible:rounded-full',
+    'active:text-gradient-btn active:text-shadow-glow-white active:opacity-90 active:underline active:decoration-surface-accent',
+  ].join(' '),
+
+};
+
+const classes = [
+  'inline-flex items-center justify-center',
+  fullWidth && 'w-full',
+  'font-body font-bold',
+  'max-w-full cursor-pointer select-none text-center break-words',
+  ['primary', 'cta'].includes(variant)
+    ? 'transition-all duration-200 ease-in-out'
+    : 'transition-colors duration-300 ease-in-out',
+  disabled && 'opacity-50 cursor-not-allowed',
+
+
+  // Links need pointer-events-none; buttons use the native disabled attribute.
+  isLink && disabled && 'pointer-events-none',
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent',
+
+  // CTA sizing is handled by btn-cta padding; other variants use the size scale.
+  !['primary', 'cta'].includes(variant) && sizeClasses[size],
+  variantClasses[variant],
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+{
+  isLink ? (
+    // href is cleared when disabled so the link stays focusable but cannot navigate.
+    <a
+      href={disabled ? undefined : resolvedHref}
+      class={classes}
+      data-variant={variant}
+      target={target}
+      rel={rel}
+      aria-disabled={disabled ? 'true' : undefined}
+      tabindex={disabled ? -1 : undefined}
+    >
+      {['primary', 'cta'].includes(variant) && (
+        <img
+          class="btn-sparkle"
+          src="/assets/decorations/btn_sparkles.svg"
+          alt=""
+          aria-hidden="true"
+          width="427"
+          height="145"
+        />
+      )}
+      <span class:list={['btn-content', contentClasses[size]]}>
+        {['primary', 'cta'].includes(variant) && (
+          <img
+            class="bright-star1"
+            src="/assets/decorations/bright_star_btn.svg"
+            alt=""
+            aria-hidden="true"
+            width="110"
+            height="110"
+          />
+          <img
+            class="bright-star2"
+            src="/assets/decorations/bright_star_btn.svg"
+            alt=""
+            aria-hidden="true"
+            width="69"
+            height="69"
+          />
+        )}
+        <slot name="icon-start" />
+        <span class="btn-label">{label}</span>
+        <slot name="icon-end" />
+      </span>
+    </a>
+  ) : (
+    <button type={type} class={classes} data-variant={variant} disabled={disabled}>
+      {['primary', 'cta'].includes(variant) && (
+        <img
+          class="btn-sparkle"
+          src="/assets/decorations/btn_sparkles.svg"
+          alt=""
+          aria-hidden="true"
+          width="427"
+          height="145"
+        />
+      )}
+      <span class:list={['btn-content', contentClasses[size]]}>
+        {['primary', 'cta'].includes(variant) && (
+          <img
+            class="bright-star1"
+            src="/assets/decorations/bright_star_btn.svg"
+            alt=""
+            aria-hidden="true"
+            width="110"
+            height="110"
+          />
+          <img
+            class="bright-star2"
+            src="/assets/decorations/bright_star_btn.svg"
+            alt=""
+            aria-hidden="true"
+            width="69"
+            height="69"
+          />
+        )}
+        <slot name="icon-start" />
+        <span class="btn-label">{label}</span>
+        <slot name="icon-end" />
+      </span>
+    </button>
+  )
+}
+
+<script>
+  document.addEventListener('touchstart', (e) => {
+    const btn = (e.target as Element).closest('[data-variant]');
+    if (!btn || btn.hasAttribute('disabled') || btn.getAttribute('aria-disabled') === 'true') return;
+
+    btn.setAttribute('data-pressing', '');
+    // AbortController lets us cleanly remove both listeners whichever fires first,
+    // avoiding the { once } wrapper mismatch with removeEventListener.
+    const ac = new AbortController();
+
+    btn.addEventListener('touchend', () => {
+      ac.abort();
+      // Brief delay keeps the pressed state visible long enough for the user to see it.
+      setTimeout(() => btn.removeAttribute('data-pressing'), 200);
+    }, { signal: ac.signal });
+
+    btn.addEventListener('touchcancel', () => {
+      ac.abort();
+      btn.removeAttribute('data-pressing');
+    }, { signal: ac.signal });
+  }, { passive: true });
+</script>
+
+<style>
+  .btn-sparkle {
+    position: absolute;
+    left: 50%;
+    top: 45%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    opacity: 0;
+    scale: 0.8;
+    /* scale uses a spring easing for the bouncy pop; opacity fades in faster */
+    transition:
+      opacity 0.25s ease-out,
+      scale 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    /* Bleeds past button edges on desktop; min() prevents overflow on narrow screens */
+    width: min(427px, 160%);
+    height: auto;
+  }
+
+  .btn-content {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  [data-variant="outlined"] {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  [data-variant="outlined"]::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--background-image-gradient-content);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 300ms ease-in-out;
+  }
+
+  [data-variant="outlined"]:hover::before,
+  [data-variant="outlined"]:focus-visible::before,
+  [data-variant="outlined"][data-pressing]::before {
+    opacity: 1;
+  }
+
+  .btn-label {
+    position: relative;
+    z-index: 1;
+  }
+
+  :is(button:disabled, a[aria-disabled="true"]) {
+    cursor: not-allowed;
+    animation: none !important;
+    transition: none !important;
+    scale: 1 !important;
+    translate: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+
+  :is(button:disabled, a[aria-disabled="true"]) .btn-sparkle,
+  :is(button:disabled, a[aria-disabled="true"]) .bright-star1,
+  :is(button:disabled, a[aria-disabled="true"]) .bright-star2 {
+    opacity: 0 !important;
+    animation: none !important;
+    transition: none !important;
+    scale: 0 !important;
+    translate: -50% -50% !important;
+    filter: none !important;
+  }
+
+  .bright-star1,
+  .bright-star2 {
+    position: absolute;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0;
+    scale: 0;
+    height: auto;
+    left: 50%;
+    top: 50%;
+    translate: -50% -50%;
+    filter: drop-shadow(0 0 0 var(--primitive-white));
+    transition:
+      opacity 0.25s ease-out,
+      scale 1.35s cubic-bezier(0.05, 0.83, 0.43, 0.96),
+      left 1.35s cubic-bezier(0.05, 0.83, 0.43, 0.96),
+      top 1.35s cubic-bezier(0.05, 0.83, 0.43, 0.96),
+      translate 1.35s cubic-bezier(0.05, 0.83, 0.43, 0.96),
+      filter 1.35s cubic-bezier(0.05, 0.83, 0.43, 0.96);
+  }
+
+  .bright-star1 {
+    width: 90px;
+    transition-delay: 0s;
+    transition-timing-function: cubic-bezier(0.05, 0.83, 0.43, 0.96);
+  }
+
+  .bright-star2 {
+    width: 69px;
+    rotate: -24deg;
+    transition-delay: 0.18s;
+    transition-timing-function: cubic-bezier(0, 0.4, 0, 1.01);
+  }
+
+  :global(a):hover .btn-sparkle,
+  :global(a):focus-visible .btn-sparkle,
+  :global(a)[data-pressing] .btn-sparkle,
+  :global(button):hover .btn-sparkle,
+  :global(button):focus-visible .btn-sparkle,
+  :global(button)[data-pressing] .btn-sparkle {
+    opacity: 1;
+    scale: 1;
+  }
+
+  :is([data-variant="primary"], [data-variant="cta"]):is(:hover, :focus-visible, [data-pressing]) .bright-star1 {
+    opacity: 1;
+    scale: 1;
+    left: calc(100% - 110px + 3.8em + 24px);
+    top: -14px;
+    translate: 0 -30%;
+    filter: drop-shadow(var(--text-shadow-button-star));
+  }
+
+  :is([data-variant="primary"], [data-variant="cta"]):is(:hover, :focus-visible, [data-pressing]) .bright-star1,
+  :is([data-variant="primary"], [data-variant="cta"]):is(:hover, :focus-visible, [data-pressing]) .bright-star2 {
+    transition-duration: 1s;
+  }
+
+  :is([data-variant="primary"], [data-variant="cta"]):is(:hover, :focus-visible, [data-pressing]) .bright-star2 {
+    opacity: 1;
+    scale: 1;
+    left: calc(-2.6em - 16px);
+    top: calc(100% + 42px - 69px + 20px);
+    translate: 0 -30%;
+    filter: drop-shadow(var(--text-shadow-button-star));
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bright-star1,
+    .bright-star2 {
+      transition:
+        opacity 0.2s ease-in-out,
+        scale 0.2s ease-in-out,
+        left 0.3s ease-in-out,
+        top 0.3s ease-in-out,
+        translate 0.3s ease-in-out,
+        filter 0.2s ease-in-out;
+    }
+  }
+
+  /*
+   * CTA hover + press
+   *
+   * Hover  — scale up with a spring cubic-bezier so the button bounces into
+   *           place (and bounces back on mouse-out). A CSS transition is used
+   *           rather than an animation so the reverse (mouse-out) is also smooth.
+   *
+   * Press  — kf_64_42_scale_0 and kf_64_42_translate_0 shrink and nudge the
+   *           button, giving a tactile press-down feel.
+   *           kf_64_42_height_0 and kf_64_42_width_0 use the absolute px values
+   *           from the original design export; they are kept defined here but
+   *           excluded from the animation shorthand because the hardcoded
+   *           dimensions (131 × 33 px) don't match the responsive button size.
+   */
+  :is([data-variant="primary"], [data-variant="cta"]) {
+    /* Override Tailwind's transition-all so scale gets its own spring easing. */
+    transition:
+      scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+      filter 0.2s ease-in-out,
+      box-shadow 0.2s ease-in-out,
+      opacity 0.2s ease-in-out;
+  }
+
+  /*
+   * Get Ticket — hover.
+   * The spring cubic-bezier on the animation itself produces the bounce;
+   * forwards holds the settled state while the cursor stays on the button.
+   * Mouse-out falls back to the base transition which bounces it back to 1.
+   */
+  :is([data-variant="primary"], [data-variant="cta"]):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible) {
+    filter: brightness(1.05);
+    box-shadow:
+      var(--shadow-button-primary-hover);
+    animation:
+      kf_64_42_translate_0 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
+      kf_64_42_scale_0     0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  :is([data-variant="primary"], [data-variant="cta"]):not([disabled]):not([aria-disabled="true"]):active {
+    scale: 0.98;
+    translate: 0 1px;
+    filter: brightness(0.98);
+  }
+
+  /* height/width keyframes kept from the design export; absolute px values
+     (131 × 33 px) mean they can’t be used on a responsive button. */
+  @keyframes kf_64_42_height_0 {
+    from { height: 33px; }
+    to   { height: 36px; }
+  }
+  @keyframes kf_64_42_width_0 {
+    from { width: 131px; }
+    to   { width: 144px; }
+  }
+  /* Floats the button up slightly on hover */
+  @keyframes kf_64_42_translate_0 {
+    from { translate: 0px 0px; }
+    to   { translate: 0px -3px; }
+  }
+  /* Grows to the settled hover size */
+  @keyframes kf_64_42_scale_0 {
+    from { scale: 1; }
+    to   { scale: 1.06; }
+  }
+
+  /* Touch press states — mirrors hover for each variant so feedback is visible on mobile */
+  [data-variant="purple"][data-pressing] {
+    background: var(--color-surface-white);
+    color: var(--color-content-brand);
+    opacity: 0.9;
+  }
+
+  [data-variant="outlined"][data-pressing] {
+    color: var(--color-content-brand);
+    border-color: transparent;
+    opacity: 0.9;
+  }
+
+  [data-variant="ghost"][data-pressing] {
+    background: var(--background-image-gradient-content);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: var(--text-shadow-glow-white);
+    opacity: 0.9;
+  }
+</style>
