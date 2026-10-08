@@ -1,15 +1,14 @@
 ---
 // Renders as <button> by default, or <a> when href is provided.
-// Variants: primary (yellow glow), purple, outlined, and ghost.
+// Variants: cta (yellow glow), purple, outlined, and ghost.
 // Icon slots: icon-start and icon-end accept any SVG or image element.
-// Legacy variant names remain supported for existing call sites.
 
 export interface Props {
   label: string;
   href?: string;
   /** Alias for href for callers that use URL terminology. */
   url?: string;
-  variant?: 'primary' | 'purple' | 'outlined' | 'ghost' | 'cta';
+  variant?: 'cta' | 'purple' | 'outlined' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
   class?: string;
@@ -59,14 +58,13 @@ const contentClasses: Record<NonNullable<Props['size']>, string> = {
 const variantClasses: Record<NonNullable<Props['variant']>, string> = {
   // Hover and active states for cta are handled entirely in <style> below
   // so the spring-bounce transition and press animation stay in one place.
-  primary: 'btn-cta text-content-brand',
-  cta: 'btn-cta text-content-brand',
+  cta:[ 'btn-cta rounded-full text-content-brand', 'active:opacity-75'].join(' '),
 
   purple: [
     'bg-surface-brand rounded-full text-content-primary',
     'hover:bg-surface-white hover:text-content-brand',
     'focus-visible:bg-surface-white focus-visible:text-content-brand',
-    'active:bg-surface-white active:text-content-brand active:opacity-90',
+    'active:bg-surface-white active:text-content-brand active:opacity-75',
   ].join(' '),
 
   // Default: solid yellow accent border, transparent bg.
@@ -74,13 +72,13 @@ const variantClasses: Record<NonNullable<Props['variant']>, string> = {
   outlined: [
     'border-2 border-surface-accent rounded-full bg-transparent text-content-primary',
     'hover:text-content-brand focus-visible:text-content-brand',
-    'active:text-content-brand active:opacity-90',
+    'active:text-content-brand active:opacity-75',
   ].join(' '),
   ghost: [
     'bg-transparent text-content-primary',
     'hover:text-gradient-btn hover:text-shadow-glow-white hover:underline hover:decoration-surface-accent',
     'focus-visible:text-gradient-btn focus-visible:text-shadow-glow-white focus-visible:underline focus-visible:decoration-surface-accent focus-visible:rounded-full',
-    'active:text-gradient-btn active:text-shadow-glow-white active:opacity-90 active:underline active:decoration-surface-accent',
+    'active:text-gradient-btn active:text-shadow-glow-white active:opacity-75 active:underline active:decoration-surface-accent',
   ].join(' '),
 
 };
@@ -90,9 +88,11 @@ const classes = [
   fullWidth && 'w-full',
   'font-body font-bold',
   'max-w-full cursor-pointer select-none text-center break-words',
-  ['primary', 'cta'].includes(variant)
+  variant === 'cta'
     ? 'transition-all duration-200 ease-in-out'
-    : 'transition-colors duration-300 ease-in-out',
+    // Press/hover also change opacity and text-shadow; transition-colors
+    // would snap those back to default and read as a flicker on release.
+    : 'transition-[color,background-color,border-color,opacity,text-shadow] duration-300 ease-in-out',
   disabled && 'opacity-50 cursor-not-allowed',
 
 
@@ -101,7 +101,7 @@ const classes = [
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent',
 
   // CTA sizing is handled by btn-cta padding; other variants use the size scale.
-  !['primary', 'cta'].includes(variant) && sizeClasses[size],
+  variant !== 'cta' && sizeClasses[size],
   variantClasses[variant],
   className,
 ]
@@ -121,7 +121,7 @@ const classes = [
       aria-disabled={disabled ? 'true' : undefined}
       tabindex={disabled ? -1 : undefined}
     >
-      {['primary', 'cta'].includes(variant) && (
+      {variant === 'cta' && (
         <img
           class="btn-sparkle"
           src="/assets/decorations/btn_sparkles.svg"
@@ -132,7 +132,7 @@ const classes = [
         />
       )}
       <span class:list={['btn-content', contentClasses[size]]}>
-        {['primary', 'cta'].includes(variant) && (
+        {variant === 'cta' && (
           <img
             class="bright-star1"
             src="/assets/decorations/bright_star_btn.svg"
@@ -157,7 +157,7 @@ const classes = [
     </a>
   ) : (
     <button type={type} class={classes} data-variant={variant} disabled={disabled}>
-      {['primary', 'cta'].includes(variant) && (
+      {variant === 'cta' && (
         <img
           class="btn-sparkle"
           src="/assets/decorations/btn_sparkles.svg"
@@ -168,7 +168,7 @@ const classes = [
         />
       )}
       <span class:list={['btn-content', contentClasses[size]]}>
-        {['primary', 'cta'].includes(variant) && (
+        {variant === 'cta' && (
           <img
             class="bright-star1"
             src="/assets/decorations/bright_star_btn.svg"
@@ -195,9 +195,35 @@ const classes = [
 }
 
 <script>
+  // One pending release timer per button: rapid taps must not fire a stale
+  // timeout that strips data-pressing while the finger is still down.
+  const pressTimers = new WeakMap<Element, ReturnType<typeof setTimeout>>();
+
+  const releaseBtn = (btn: Element) => {
+    const pending = pressTimers.get(btn);
+    if (pending !== undefined) {
+      clearTimeout(pending);
+      pressTimers.delete(btn);
+    }
+    btn.removeAttribute('data-pressing');
+    // Suppresses :hover styles after a tap so the button returns to its
+    // default state on its own instead of staying stuck on the sticky
+    // hover state mobile browsers keep after touchend.
+    btn.setAttribute('data-touch-released', '');
+  };
+
   document.addEventListener('touchstart', (e) => {
-    const btn = (e.target as Element).closest('[data-variant]');
+    const target = e.target instanceof Element ? e.target : null;
+    const btn = target?.closest('[data-variant]');
     if (!btn || btn.hasAttribute('disabled') || btn.getAttribute('aria-disabled') === 'true') return;
+
+    // A fresh touch re-enables hover styles and cancels any pending release.
+    btn.removeAttribute('data-touch-released');
+    const pending = pressTimers.get(btn);
+    if (pending !== undefined) {
+      clearTimeout(pending);
+      pressTimers.delete(btn);
+    }
 
     btn.setAttribute('data-pressing', '');
     // AbortController lets us cleanly remove both listeners whichever fires first,
@@ -207,14 +233,29 @@ const classes = [
     btn.addEventListener('touchend', () => {
       ac.abort();
       // Brief delay keeps the pressed state visible long enough for the user to see it.
-      setTimeout(() => btn.removeAttribute('data-pressing'), 200);
+      // Press and hover are released together so the return to default is one
+      // uninterrupted transition instead of a flicker.
+      const timer = setTimeout(() => {
+        pressTimers.delete(btn);
+        releaseBtn(btn);
+      }, 200);
+      pressTimers.set(btn, timer);
     }, { signal: ac.signal });
 
     btn.addEventListener('touchcancel', () => {
       ac.abort();
-      btn.removeAttribute('data-pressing');
+      releaseBtn(btn);
     }, { signal: ac.signal });
   }, { passive: true });
+
+  // Mouse/pen interaction re-enables the hover styles a touch tap suppressed.
+  const restoreHover = (e: PointerEvent) => {
+    if (e.pointerType === 'touch') return;
+    const target = e.target instanceof Element ? e.target : null;
+    target?.closest('[data-touch-released]')?.removeAttribute('data-touch-released');
+  };
+  document.addEventListener('pointermove', restoreHover, { passive: true });
+  document.addEventListener('pointerdown', restoreHover, { passive: true });
 </script>
 
 <style>
@@ -259,7 +300,7 @@ const classes = [
     transition: opacity 300ms ease-in-out;
   }
 
-  [data-variant="outlined"]:hover::before,
+  [data-variant="outlined"]:not([data-touch-released]):hover::before,
   [data-variant="outlined"]:focus-visible::before,
   [data-variant="outlined"][data-pressing]::before {
     opacity: 1;
@@ -302,7 +343,7 @@ const classes = [
     left: 50%;
     top: 50%;
     translate: -50% -50%;
-    filter: drop-shadow(0 0 0 var(--primitive-white));
+    filter: drop-shadow(0 0 0 var(--color-surface-white));
     transition:
       opacity 0.25s ease-out,
       scale 1.35s cubic-bezier(0.05, 0.83, 0.43, 0.96),
@@ -325,17 +366,17 @@ const classes = [
     transition-timing-function: cubic-bezier(0, 0.4, 0, 1.01);
   }
 
-  :global(a):hover .btn-sparkle,
+  :global(a):not([data-touch-released]):hover .btn-sparkle,
   :global(a):focus-visible .btn-sparkle,
   :global(a)[data-pressing] .btn-sparkle,
-  :global(button):hover .btn-sparkle,
+  :global(button):not([data-touch-released]):hover .btn-sparkle,
   :global(button):focus-visible .btn-sparkle,
   :global(button)[data-pressing] .btn-sparkle {
     opacity: 1;
     scale: 1;
   }
 
-  :is([data-variant="primary"], [data-variant="cta"]):is(:hover, :focus-visible, [data-pressing]) .bright-star1 {
+  [data-variant="cta"]:is(:not([data-touch-released]):hover, :focus-visible, [data-pressing]) .bright-star1 {
     opacity: 1;
     scale: 1;
     left: calc(100% - 110px + 3.8em + 24px);
@@ -344,12 +385,12 @@ const classes = [
     filter: drop-shadow(var(--text-shadow-button-star));
   }
 
-  :is([data-variant="primary"], [data-variant="cta"]):is(:hover, :focus-visible, [data-pressing]) .bright-star1,
-  :is([data-variant="primary"], [data-variant="cta"]):is(:hover, :focus-visible, [data-pressing]) .bright-star2 {
+  [data-variant="cta"]:is(:not([data-touch-released]):hover, :focus-visible, [data-pressing]) .bright-star1,
+  [data-variant="cta"]:is(:not([data-touch-released]):hover, :focus-visible, [data-pressing]) .bright-star2 {
     transition-duration: 1s;
   }
 
-  :is([data-variant="primary"], [data-variant="cta"]):is(:hover, :focus-visible, [data-pressing]) .bright-star2 {
+  [data-variant="cta"]:is(:not([data-touch-released]):hover, :focus-visible, [data-pressing]) .bright-star2 {
     opacity: 1;
     scale: 1;
     left: calc(-2.6em - 16px);
@@ -385,10 +426,13 @@ const classes = [
    *           excluded from the animation shorthand because the hardcoded
    *           dimensions (131 × 33 px) don't match the responsive button size.
    */
-  :is([data-variant="primary"], [data-variant="cta"]) {
-    /* Override Tailwind's transition-all so scale gets its own spring easing. */
+  [data-variant="cta"] {
+    /* Override Tailwind's transition-all so scale gets its own spring easing.
+       translate is included so the hover lift animates back instead of
+       snapping when the hover animation is torn down. */
     transition:
       scale 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+      translate 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
       filter 0.2s ease-in-out,
       box-shadow 0.2s ease-in-out,
       opacity 0.2s ease-in-out;
@@ -400,16 +444,16 @@ const classes = [
    * forwards holds the settled state while the cursor stays on the button.
    * Mouse-out falls back to the base transition which bounces it back to 1.
    */
-  :is([data-variant="primary"], [data-variant="cta"]):not([disabled]):not([aria-disabled="true"]):is(:hover, :focus-visible) {
+  [data-variant="cta"]:not([disabled]):not([aria-disabled="true"]):is(:not([data-touch-released]):hover, :focus-visible) {
     filter: brightness(1.05);
     box-shadow:
-      var(--shadow-button-primary-hover);
+      var(--shadow-button-cta-hover);
     animation:
       kf_64_42_translate_0 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards,
       kf_64_42_scale_0     0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
   }
 
-  :is([data-variant="primary"], [data-variant="cta"]):not([disabled]):not([aria-disabled="true"]):active {
+  [data-variant="cta"]:not([disabled]):not([aria-disabled="true"]):active {
     scale: 0.98;
     translate: 0 1px;
     filter: brightness(0.98);
@@ -450,7 +494,7 @@ const classes = [
   }
 
   [data-variant="ghost"][data-pressing] {
-    background: var(--background-image-gradient-content);
+    background: var(--background-image-gradient-button);
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
