@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+/* Hover styles are suppressed on an element carrying [data-touch-released]
+   (set by the Button touch handlers after touchend) so a tap doesn't leave
+   the sticky mobile :hover state stuck until the pointer moves away.
+   Mouse/pen interaction clears the attribute, restoring normal hover. */
+@custom-variant hover (&:hover:not([data-touch-released]));
+
 /* Raw primitives in root to prevent utility generation. Do Not Use */
 :root {
 	--primitive-black: #020110;
@@ -10,6 +16,10 @@
 	--primitive-purple-600: #320776;
 	--primitive-purple-500: #300BAB;
 	--primitive-purple-400: #9F2CE5;
+	--primitive-purple-300: #B97FFF;
+
+	--primitive-amber: #FFC300;
+	--primitive-off-white: #FFFDEF;
 
 	--primitive-border-gradient-bottom: linear-gradient(180deg, #320776 0%, #300bab 48.08%, #9f2ce5 100%);
 	--primitive-border-gradient-top: linear-gradient(180deg, #9f2ce5 0%, #300bab 51.92%, #320776 100%);
@@ -93,10 +103,42 @@
 	--background-image-gradient-purple: linear-gradient(90deg, #320776 0%, #130445 48.08%, #020110 100%);
 	--background-image-gradient-radial: radial-gradient(circle, #320776 0%, #130445 48.08%, #020110 100%);
 	--background-image-gradient-pink-dark: linear-gradient(90deg, #9f2ce5 0%, #300bab 54.4%, #130445 100%);
-	--background-image-gradient-content: linear-gradient(90deg, #ffdd00 0%, #ffffff 100%);
+	
+	--background-image-gradient-content: linear-gradient(0deg, var(--primitive-yellow) -33.33%, var(--primitive-white) 91.83%);
+	--background-image-gradient-button: linear-gradient(0deg, var(--primitive-yellow) 0%, var(--primitive-white) 75%);
 
 	/* Box shadows */
 	--shadow-brand: 0 29px 35.8px 0 rgba(159, 44, 229, 0.15), 0 18px 30.1px 0 rgba(48, 11, 171, 0.46);
+	--shadow-button-cta: 0 6px 25.3px 0 var(--primitive-purple-300), 0 0 33.3px 4px color-mix(in srgb, var(--primitive-amber) 85%, transparent) inset;
+	--shadow-button-cta-hover: 0 19px 58.7px 0 var(--color-surface-brand-secondary), 0 6.6px 19.1px 0 var(--color-surface-accent), 0 0 36.63px 4.4px color-mix(in srgb, var(--primitive-amber) 85%, transparent) inset;
+
+	/* Text shadows */
+	--text-shadow-glow-white: 0 4px 18px rgba(255, 255, 255, 0.70);
+	--text-shadow-button-star: 0 0 10px var(--primitive-off-white);
+}
+
+/* Primary button utility — pill radius comes from the rounded-full class on the component */
+@utility btn-cta {
+	border: 2px solid var(--color-surface-accent);
+	background: var(--background-image-gradient-button);
+	box-shadow: var(--shadow-button-cta);
+	/* Responsive padding — tighter on mobile, full bleed on sm+ */
+	padding: 12px 32px;
+	position: relative;
+	overflow: visible;
+
+	@media (min-width: 640px) {
+		padding: 16px 64px;
+	}
+}
+
+/* Gradient text utilities */
+@utility text-gradient-btn {
+	background: var(--background-image-gradient-button);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: transparent;
 }
 
 /* Custom border utilities */
