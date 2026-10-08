@@ -1,0 +1,246 @@
+---
+// src/pages/test/button-test.astro
+// Visual regression / design review page for Button variants.
+import '../../styles/global.css';
+import Button from '../../components/Button.astro';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Button Component – Design Test</title>
+  </head>
+  <body class="bg-surface-primary text-content-primary min-h-screen p-8 md:p-12 space-y-16">
+
+    <!-- ── Variants ─────────────────────────────────────────────────────────── -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">
+        1. Variants
+      </h2>
+      <div class="flex flex-wrap gap-4 items-center ">
+        <Button label="Get Ticket" variant="cta" />
+        <Button label="Purple" variant="purple" />
+        <Button label="Outlined" variant="outlined" />
+        <Button label="Ghost" variant="ghost" />
+      </div>
+    </section>
+
+    <!-- ── Sizes ────────────────────────────────────────────────────────────── -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">
+        2. Sizes
+      </h2>
+
+      <div class="space-y-3">
+        <p class="text-caption text-content-secondary">Purple</p>
+        <div class="flex flex-wrap gap-4 items-center">
+          <Button label="Small" variant="purple" size="sm" />
+          <Button label="Medium" variant="purple" size="md" />
+          <Button label="Large" variant="purple" size="lg" />
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <p class="text-caption text-content-secondary">Outlined</p>
+        <div class="flex flex-wrap gap-4 items-center">
+          <Button label="Small" variant="outlined" size="sm" />
+          <Button label="Medium" variant="outlined" size="md" />
+          <Button label="Large" variant="outlined" size="lg" />
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <p class="text-caption text-content-secondary">Ghost</p>
+        <div class="flex flex-wrap gap-4 items-center">
+          <Button label="Small" variant="ghost" size="sm" />
+          <Button label="Medium" variant="ghost" size="md" />
+          <Button label="Large" variant="ghost" size="lg" />
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Link vs Button element ────────────────────────────────────────────── -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">
+        3. Element — &lt;button&gt; vs &lt;a&gt;
+      </h2>
+      <div class="flex flex-wrap gap-4 items-center">
+        <Button label="Native button" variant="cta" type="button" />
+        <Button label="Link (internal)" variant="purple" href="/about" />
+        <Button
+          label="Link (external)"
+          variant="outlined"
+          href="https://example.com"
+          target="_blank"
+        />
+      </div>
+    </section>
+
+    <!-- ── Icon slots ────────────────────────────────────────────────────────── -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">
+        4. Icon slots
+      </h2>
+      <div class="flex flex-wrap gap-4 items-center">
+        <!-- Icon before label -->
+        <Button label="Icon before" variant="cta">
+          <svg
+            slot="icon-start"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+          >
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          </svg>
+        </Button>
+
+        <!-- Icon after label -->
+        <Button label="Register now" variant="purple">
+          <svg
+            slot="icon-end"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </Button>
+
+        <!-- Icon in outlined variant -->
+        <Button label="Learn more" variant="outlined">
+          <svg
+            slot="icon-end"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </Button>
+      </div>
+    </section>
+
+    <!-- ── Disabled states ───────────────────────────────────────────────────── -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">
+        5. Disabled states
+      </h2>
+      <div class="flex flex-wrap gap-4 items-center">
+        <Button label="CTA disabled" variant="cta" disabled />
+        <Button label="Purple disabled" variant="purple" disabled />
+        <Button label="Outlined disabled" variant="outlined" disabled />
+        <Button label="Ghost disabled" variant="ghost" disabled />
+      </div>
+      <div class="flex flex-wrap gap-4 items-center">
+        <p class="text-caption text-content-secondary w-full">Link elements (disabled):</p>
+        <Button label="Link disabled" variant="cta" href="/somewhere" disabled />
+        <Button label="Outlined link disabled" variant="outlined" href="/somewhere" disabled />
+      </div>
+    </section>
+
+    <!-- ── Full-width ─────────────────────────────────────────────────────────── -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">
+        6. Full-width (mobile layout)
+      </h2>
+      <div class="max-w-sm space-y-3">
+        <Button label="CTA full-width" variant="cta" fullWidth />
+        <Button label="Purple full-width" variant="purple" fullWidth />
+        <Button label="Outlined full-width" variant="outlined" fullWidth />
+        <Button label="Ghost full-width" variant="ghost" fullWidth />
+      </div>
+    </section>
+
+    <!-- ── On coloured sections ───────────────────────────────────────────────── -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">
+        7. Buttons on coloured section backgrounds
+      </h2>
+
+      <!-- On gradient-pink-dark (purple gradient) -->
+      <div class="bg-gradient-pink-dark p-8 flex flex-wrap gap-4 items-center">
+        <p class="text-caption text-content-secondary w-full">bg-gradient-pink-dark</p>
+        <Button label="CTA" variant="cta" />
+        <Button label="Outlined" variant="outlined" />
+        <Button label="Ghost" variant="ghost" />
+      </div>
+
+      <!-- On surface-secondary (dark purple) -->
+      <div class="bg-surface-secondary p-8 flex flex-wrap gap-4 items-center">
+        <p class="text-caption text-content-secondary w-full">bg-surface-secondary</p>
+        <Button label="CTA" variant="cta" />
+        <Button label="Purple" variant="purple" />
+        <Button label="Outlined" variant="outlined" />
+        <Button label="Ghost" variant="ghost" />
+      </div>
+    </section>
+
+    <!-- ── Responsive readability ─────────────────────────────────────────────── -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">
+        8. Responsive label readability (resize the window)
+      </h2>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <Button
+          label="Register for AWS SCD Min"
+          variant="cta"
+          size="lg"
+          fullWidth
+        />
+      </div>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <Button
+          label="View schedule"
+          variant="outlined"
+          size="md"
+          fullWidth
+        />
+        <Button
+          label="Meet the speakers"
+          variant="purple"
+          size="md"
+          fullWidth
+        />
+      </div>
+    </section>
+
+    <!-- ── Additional class prop ──────────────────────────────────────────────── -->
+    <section class="space-y-6">
+      <h2 class="border-b border-surface-brand pb-2 text-content-brand">
+        9. Extra classes via <code>class</code> prop
+      </h2>
+      <div class="flex flex-wrap gap-4 items-center">
+        <Button
+          label="Uppercase override"
+          variant="cta"
+          class="uppercase tracking-widest"
+        />
+        <Button
+          label="Custom width"
+          variant="outlined"
+          class="min-w-48"
+        />
+      </div>
+    </section>
+
+  </body>
+</html>
