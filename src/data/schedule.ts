@@ -76,6 +76,3 @@ export const schedule: ScheduleSlot[] = [
 		],
 	},
 ];
-
-/** The design puts a "View full timeline" link under the list. Nothing to point at yet. */
-export const fullTimelineUrl = '#';

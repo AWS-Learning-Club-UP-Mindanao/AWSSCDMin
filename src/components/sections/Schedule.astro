@@ -1,8 +1,7 @@
 ---
 import Section from '../layout/Section.astro';
 import ScheduleItem from '../ScheduleItem.astro';
-import Button from '../Button.astro';
-import { schedule, fullTimelineUrl } from '../../data/schedule';
+import { schedule } from '../../data/schedule';
 ---
 
 <!--
@@ -45,9 +44,10 @@ import { schedule, fullTimelineUrl } from '../../data/schedule';
 		}
 	</ol>
 
-	<div class="mt-12 text-center">
-		<Button label="View full timeline" href={fullTimelineUrl} variant="ghost" size="sm" />
-	</div>
+	<!--
+		The design also carries a "View full timeline" link under the list. Dropped: this
+		section already prints every slot, so there is nothing further to open.
+	-->
 
 	<!--
 		Only from xl up: below that the timeline is wide enough that these start drifting
