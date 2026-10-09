@@ -1,4 +1,6 @@
 ---
+import Button from "./Button.astro";
+
 interface Props {
   ticketUrl?: string;
 }
@@ -132,21 +134,30 @@ const links = [
     </a>
 
     <nav class="desktop-nav" aria-label="Primary">
-      {links.map(({ label, href }) => <a href={href}>{label}</a>)}
+      {
+        links.map(({ label, href }) => (
+          <Button
+            label={label}
+            href={href}
+            variant="ghost"
+            size="sm"
+            class="header-nav-link"
+          />
+        ))
+      }
     </nav>
 
-    <nav
-      id="mobile-navigation"
-      class="mobile-drawer"
-      aria-label="Mobile primary"
-      data-mobile-drawer
-    >
-      {links.map(({ label, href }) => <a href={href}>{label}</a>)}
-    </nav>
-
-    <a class="ticket-link" href={ticketUrl}>Buy Tickets</a>
-    <!-- Placeholder for Buy ticket button -->
-    <button
+    <Button
+      label="Buy Tickets"
+      href={ticketUrl}
+      variant="outlined"
+      class="ticket-link"
+    />
+    <Button
+      label="Menu"
+      iconOnly
+      variant="outlined"
+      size="sm"
       class="menu-button"
       type="button"
       aria-label="Open navigation menu"
@@ -155,8 +166,39 @@ const links = [
       data-menu-button
       hidden
     >
-    </button>
+      <svg
+        slot="icon-start"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        aria-hidden="true"
+      >
+        <path d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </Button>
   </div>
+  <nav
+    id="mobile-navigation"
+    class="mobile-drawer"
+    aria-label="Mobile primary"
+    data-mobile-drawer
+  >
+    {
+      links.map(({ label, href }) => (
+        <Button
+          label={label}
+          href={href}
+          variant="ghost"
+          size="sm"
+          class="header-nav-link"
+        />
+      ))
+    }
+  </nav>
 </header>
 
 <style>
@@ -222,75 +264,49 @@ const links = [
     min-width: 0;
   }
 
-  .event-header a {
+  .logo-link {
     color: inherit;
     text-decoration: none;
   }
 
-  .desktop-nav a {
-    display: inline-flex;
-    align-items: center;
+  .desktop-nav :global(.header-nav-link) {
+    flex-shrink: 0;
     min-height: 44px;
+    padding: 8px 12px;
+    font-size: inherit;
     white-space: nowrap;
   }
 
-  .ticket-link {
-    display: inline-flex;
+  .event-header :global(.ticket-link) {
     flex: 0 0 auto;
-    align-items: center;
-    justify-content: center;
     min-width: 174px;
     min-height: 64px;
     padding: 12px 24px;
-    border: 2px solid #ffdd00;
-    border-radius: 31px;
+    font-size: inherit;
     white-space: nowrap;
   }
 
-  .event-header a:focus-visible {
+  .logo-link:focus-visible {
     outline: 3px solid #ffdd00;
     outline-offset: 5px;
   }
 
-  .desktop-nav a:hover {
-    text-decoration: underline;
-    text-underline-offset: 6px;
-  }
-
-  .ticket-link:hover {
-    background: rgb(255 221 0 / 12%);
-  }
-
-  .menu-button,
+  .event-header :global(.menu-button),
   .mobile-drawer {
     display: none;
   }
 
-  .event-header [hidden] {
+  .event-header :global([hidden]),
+  .event-header :global(.menu-button[hidden]) {
     display: none;
   }
 
-  .menu-button {
-    align-items: center;
-    justify-content: center;
+  .event-header :global(.menu-button) {
     flex: 0 0 auto;
     width: 44px;
     height: 44px;
     padding: 10px;
-    border: 1px solid rgb(255 255 255 / 50%);
     border-radius: 8px;
-    background: transparent;
-    color: white;
-    cursor: pointer;
-  }
-
-  .menu-button:focus-visible {
-    outline: 3px solid #ffdd00;
-    outline-offset: 5px;
-  }
-
-  .menu-button:hover {
-    background: rgb(255 255 255 / 12%);
   }
 
   @media (max-width: 1100px) {
@@ -303,7 +319,7 @@ const links = [
       gap: 12px;
     }
 
-    .ticket-link {
+    .event-header :global(.ticket-link) {
       min-width: 150px;
     }
   }
@@ -323,7 +339,11 @@ const links = [
       height: auto;
     }
 
-    .ticket-link {
+    .desktop-nav :global(.header-nav-link) {
+      padding-inline: 6px;
+    }
+
+    .event-header :global(.ticket-link) {
       min-width: 140px;
       padding-inline: 16px;
     }
@@ -350,15 +370,14 @@ const links = [
       display: none;
     }
 
-    .ticket-link {
+    .event-header :global(.ticket-link) {
       min-width: 0;
       min-height: 44px;
       margin-left: auto;
       padding: 10px 16px;
-      border-radius: 24px;
     }
 
-    .menu-button {
+    .event-header :global(.menu-button) {
       display: inline-flex;
     }
 
@@ -381,16 +400,12 @@ const links = [
       box-shadow: 0 12px 24px rgb(0 0 0 / 20%);
     }
 
-    .mobile-drawer a {
-      display: flex;
-      align-items: center;
+    .mobile-drawer :global(.header-nav-link) {
+      justify-content: flex-start;
+      width: 100%;
       min-height: 44px;
       padding: 10px 12px;
-      border-radius: 8px;
-    }
-
-    .mobile-drawer a:hover {
-      background: rgb(255 255 255 / 12%);
+      font-size: inherit;
     }
   }
 
@@ -404,7 +419,7 @@ const links = [
       width: 72px;
     }
 
-    .ticket-link {
+    .event-header :global(.ticket-link) {
       padding-inline: 12px;
       font-size: 14px;
     }
