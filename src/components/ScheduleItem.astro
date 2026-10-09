@@ -15,9 +15,9 @@ const label = [session.type, session.room].filter(Boolean).join(' · ');
 ---
 
 <article class="rounded-lg border border-surface-brand-secondary p-6 md:p-8">
-	{label && <p class="text-caption text-content-secondary">{label}</p>}
+	{label && <p class="text-h5 font-body font-bold text-content-secondary">{label}</p>}
 
-	<h3 class="mt-2 text-h4 text-content-primary">{session.title}</h3>
+	<h3 class="mt-2 text-h2 font-body text-content-primary">{session.title}</h3>
 
 	{
 		session.registrationUrl && (
