@@ -70,6 +70,9 @@
 	--color-content-brand-secondary: color-mix(in srgb, var(--primitive-purple-600) 75%, transparent);
 	--color-content-link: var(--primitive-yellow);
 
+	/* 1920px. Keep it in rem, or it sorts before Tailwind's own breakpoints. */
+	--breakpoint-3xl: 120rem;
+
 	/* Font families */
 	--font-display: "JustCosmic", sans-serif;
 	--font-body: "Amazon Ember Display", sans-serif;
