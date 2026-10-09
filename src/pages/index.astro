@@ -1,20 +1,55 @@
 ---
-import '../styles/global.css';
-import Header from '../components/Header.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/layout/Section.astro';
 ---
 
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>AWS Student Community Day Mindanao</title>
-	</head>
-	<body>
-		<Header ticketUrl="https://example.com/tickets" />
-		<main></main>
-	</body>
-</html>
+<BaseLayout
+	title="AWS Student Community Day Mindanao"
+	description="AWS Student Community Day Mindanao. A one-day student conference on cloud, AI, and building in community."
+>
+	<!--
+		Section order as agreed in Ticket 03. Each one is a placeholder for now: the content,
+		styling and assets land in the section tickets. The ids are the anchors the header nav
+		and the footer CTA will link to, so keep them stable.
+	-->
+
+	<!-- Ticket 07 -->
+	<Section id="hero">
+		<p class="text-caption text-content-secondary">Hero (Ticket 07)</p>
+	</Section>
+
+	<!-- Ticket 08 -->
+	<Section id="about">
+		<p class="text-caption text-content-secondary">About (Ticket 08)</p>
+	</Section>
+
+	<!-- Ticket 09 -->
+	<Section id="schedule">
+		<p class="text-caption text-content-secondary">Schedule (Ticket 09)</p>
+	</Section>
+
+	<!-- Ticket 10 -->
+	<Section id="tickets">
+		<p class="text-caption text-content-secondary">Ticket tiers (Ticket 10)</p>
+	</Section>
+
+	<!-- Ticket 11 -->
+	<Section id="speakers">
+		<p class="text-caption text-content-secondary">Speakers (Ticket 11)</p>
+	</Section>
+
+	<!-- Ticket 12 -->
+	<Section id="location">
+		<p class="text-caption text-content-secondary">Location (Ticket 12)</p>
+	</Section>
+
+	<!-- Ticket 13 -->
+	<Section id="faq">
+		<p class="text-caption text-content-secondary">FAQ (Ticket 13)</p>
+	</Section>
+
+	<!-- Ticket 06 -->
+	<Section id="cta">
+		<p class="text-caption text-content-secondary">Closing CTA (Ticket 06)</p>
+	</Section>
+</BaseLayout>

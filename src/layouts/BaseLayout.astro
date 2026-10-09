@@ -1,0 +1,51 @@
+---
+import '../styles/global.css';
+
+interface Props {
+	/** Page title. */
+	title: string;
+	description?: string;
+}
+
+const {
+	title,
+	description = 'AWS Student Community Day Mindanao. A one-day student conference on cloud, AI, and building in community.',
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="description" content={description} />
+		<title>{title}</title>
+		<!-- Extra head tags per page (Open Graph, canonical, ...). -->
+		<slot name="head" />
+	</head>
+	<body class="bg-surface-primary font-body text-content-primary">
+		<a
+			href="#main"
+			class="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded focus:bg-surface-white focus:px-4 focus:py-2 focus:text-content-brand"
+		>
+			Skip to content
+		</a>
+
+		<!-- Ticket 04 puts the site header in here. -->
+		<header>
+			<slot name="header" />
+		</header>
+
+		<main id="main">
+			<slot />
+		</main>
+
+		<!-- Ticket 06 puts the footer in here. -->
+		<footer>
+			<slot name="footer" />
+		</footer>
+	</body>
+</html>

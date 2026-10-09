@@ -1,25 +1,222 @@
 @import "tailwindcss";
 
-@font-face {
-  font-family: "Amazon Ember Display";
-  src: url("/assets/fonts/amazon-ember-display.woff") format("woff");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
+/* Hover styles are suppressed on an element carrying [data-touch-released]
+   (set by the Button touch handlers after touchend) so a tap doesn't leave
+   the sticky mobile :hover state stuck until the pointer moves away.
+   Mouse/pen interaction clears the attribute, restoring normal hover. */
+@custom-variant hover (&:hover:not([data-touch-released]));
+
+/* Raw primitives in root to prevent utility generation. Do Not Use */
+:root {
+	--primitive-black: #020110;
+	--primitive-white: #FFFFFF;
+	--primitive-yellow: #FFDD00;
+
+	--primitive-purple-700: #130445;
+	--primitive-purple-600: #320776;
+	--primitive-purple-500: #300BAB;
+	--primitive-purple-400: #9F2CE5;
+	--primitive-purple-300: #B97FFF;
+
+	--primitive-amber: #FFC300;
+	--primitive-off-white: #FFFDEF;
+
+	--primitive-border-gradient-bottom: linear-gradient(180deg, #320776 0%, #300bab 48.08%, #9f2ce5 100%);
+	--primitive-border-gradient-top: linear-gradient(180deg, #9f2ce5 0%, #300bab 51.92%, #320776 100%);
+	--primitive-border-gradient-button: linear-gradient(0deg, #ffffff 0%, #ffdd00 100%);
 }
 
 @font-face {
-  font-family: "Amazon Ember Display";
-  src: url("/assets/fonts/amazon-ember-display-bold.woff") format("woff");
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
+	font-family: "JustCosmic";
+	src: url("/fonts/just-cosmic.otf") format("opentype");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
 }
 
 @font-face {
-  font-family: "Just Cosmic";
-  src: url("/assets/fonts/just-cosmic.otf") format("opentype");
-  font-style: normal;
-  font-weight: 400;
-  font-display: swap;
+	font-family: "Amazon Ember Display";
+	src: url("/fonts/amazon-ember-display.woff") format("woff");
+	font-weight: 400;
+	font-style: normal;
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Amazon Ember Display";
+	src: url("/fonts/amazon-ember-display-bold.woff") format("woff");
+	font-weight: 700;
+	font-style: normal;
+	font-display: swap;
+}
+
+/* Theme definition generating semantic utilities only */
+@theme {
+	--color-*: initial;
+
+	/* Semantic surface colors */
+	--color-surface-primary: var(--primitive-black);
+	--color-surface-secondary: var(--primitive-purple-700);
+	--color-surface-white: var(--primitive-white);
+	--color-surface-accent: var(--primitive-yellow);
+	--color-surface-brand: var(--primitive-purple-600);
+	--color-surface-brand-secondary: var(--primitive-purple-500);
+	--color-surface-brand-tertiary: var(--primitive-purple-400);
+
+	/* Semantic content colors */
+	--color-content-primary: var(--primitive-white);
+	--color-content-secondary: color-mix(in srgb, var(--primitive-white) 75%, transparent);
+	--color-content-brand: var(--primitive-purple-600);
+	--color-content-brand-secondary: color-mix(in srgb, var(--primitive-purple-600) 75%, transparent);
+	--color-content-link: var(--primitive-yellow);
+
+	/* Font families */
+	--font-display: "JustCosmic", sans-serif;
+	--font-body: "Amazon Ember Display", sans-serif;
+
+	/* Typography */
+	--text-h1: clamp(31px, 5vw, 61px);
+	--text-h1--line-height: clamp(47px, 7.5vw, 92px);
+
+	--text-h2: clamp(25px, 3.2vw, 39px);
+	--text-h2--line-height: clamp(38px, 4.8vw, 59px);
+
+	--text-h3: clamp(20px, 2.55vw, 31px);
+	--text-h3--line-height: clamp(30px, 3.85vw, 47px);
+
+	--text-h4: clamp(16px, 2.05vw, 25px);
+	--text-h4--line-height: clamp(24px, 3.1vw, 38px);
+
+	--text-h5: clamp(16px, 1.65vw, 20px);
+	--text-h5--line-height: clamp(24px, 2.5vw, 30px);
+
+	--text-h6: 16px;
+	--text-h6--line-height: 24px;
+
+	--text-body: 16px;
+	--text-body--line-height: 24px;
+
+	--text-caption: 13px;
+	--text-caption--line-height: 20px;
+
+	/* Background gradients */
+	--background-image-gradient-purple: linear-gradient(90deg, #320776 0%, #130445 48.08%, #020110 100%);
+	--background-image-gradient-radial: radial-gradient(circle, #320776 0%, #130445 48.08%, #020110 100%);
+	--background-image-gradient-pink-dark: linear-gradient(90deg, #9f2ce5 0%, #300bab 54.4%, #130445 100%);
+	
+	--background-image-gradient-content: linear-gradient(0deg, var(--primitive-yellow) -33.33%, var(--primitive-white) 91.83%);
+	--background-image-gradient-button: linear-gradient(0deg, var(--primitive-yellow) 0%, var(--primitive-white) 75%);
+
+	/* Box shadows */
+	--shadow-brand: 0 29px 35.8px 0 rgba(159, 44, 229, 0.15), 0 18px 30.1px 0 rgba(48, 11, 171, 0.46);
+	--shadow-button-cta: 0 6px 25.3px 0 var(--primitive-purple-300), 0 0 33.3px 4px color-mix(in srgb, var(--primitive-amber) 85%, transparent) inset;
+	--shadow-button-cta-hover: 0 19px 58.7px 0 var(--color-surface-brand-secondary), 0 6.6px 19.1px 0 var(--color-surface-accent), 0 0 36.63px 4.4px color-mix(in srgb, var(--primitive-amber) 85%, transparent) inset;
+
+	/* Text shadows */
+	--text-shadow-glow-white: 0 4px 18px rgba(255, 255, 255, 0.70);
+	--text-shadow-button-star: 0 0 10px var(--primitive-off-white);
+}
+
+/* Primary button utility — pill radius comes from the rounded-full class on the component */
+@utility btn-cta {
+	border: 2px solid var(--color-surface-accent);
+	background: var(--background-image-gradient-button);
+	box-shadow: var(--shadow-button-cta);
+	/* Responsive padding — tighter on mobile, full bleed on sm+ */
+	padding: 12px 32px;
+	position: relative;
+	overflow: visible;
+
+	@media (min-width: 640px) {
+		padding: 16px 64px;
+	}
+}
+
+/* Gradient text utilities */
+@utility text-gradient-btn {
+	background: var(--background-image-gradient-button);
+	background-clip: text;
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	color: transparent;
+}
+
+/* Custom border utilities */
+@utility border-gradient-bottom {
+	border-bottom-width: 2px;
+	border-style: solid;
+	border-image: var(--primitive-border-gradient-bottom) 1;
+}
+
+@utility border-gradient-top {
+	border-top-width: 2px;
+	border-style: solid;
+	border-image: var(--primitive-border-gradient-top) 1;
+}
+
+@utility border-gradient-button {
+	border-width: 2px;
+	border-style: solid;
+	border-image: var(--primitive-border-gradient-button) 1;
+}
+
+/* Base HTML styles */
+@layer base {
+	h1 {
+		font-size: var(--text-h1);
+		line-height: var(--text-h1--line-height);
+		font-family: var(--font-display);
+		font-weight: 400;
+	}
+
+	h2 {
+		font-size: var(--text-h2);
+		line-height: var(--text-h2--line-height);
+		font-family: var(--font-display);
+		font-weight: 400;
+	}
+
+	h3 {
+		font-size: var(--text-h3);
+		line-height: var(--text-h3--line-height);
+		font-family: var(--font-display);
+		font-weight: 400;
+	}
+
+	h4 {
+		font-size: var(--text-h4);
+		line-height: var(--text-h4--line-height);
+		font-family: var(--font-body);
+		font-weight: 400;
+	}
+
+	h5 {
+		font-size: var(--text-h5);
+		line-height: var(--text-h5--line-height);
+		font-family: var(--font-body);
+		font-weight: 700;
+	}
+
+	h6 {
+		font-size: var(--text-h6);
+		line-height: var(--text-h6--line-height);
+		font-family: var(--font-body);
+		font-weight: 700;
+	}
+
+	p,
+	blockquote {
+		font-size: var(--text-body);
+		line-height: var(--text-body--line-height);
+		font-family: var(--font-body);
+		font-weight: 400;
+	}
+
+	.caption,
+	caption {
+		font-size: var(--text-caption);
+		line-height: var(--text-caption--line-height);
+		font-family: var(--font-body);
+		font-weight: 400;
+	}
 }
