@@ -1,0 +1,34 @@
+---
+import Button from './Button.astro';
+import type { ScheduleSession } from '../data/schedule';
+
+interface Props {
+	session: ScheduleSession;
+}
+
+const { session } = Astro.props;
+
+// The design puts one small line above the title and uses it for whichever applies: the room
+// for the room-based sessions, the type for everything else. Joining keeps both when a session
+// has each, and the line disappears entirely for entries like Registration.
+const label = [session.type, session.room].filter(Boolean).join(' · ');
+---
+
+<article class="rounded-lg border border-surface-brand-secondary p-6 md:p-8">
+	{label && <p class="text-caption text-content-secondary">{label}</p>}
+
+	<h3 class="mt-2 text-h4 text-content-primary">{session.title}</h3>
+
+	{
+		session.registrationUrl && (
+			<div class="mt-2 flex justify-end">
+				<Button
+					label="Register"
+					href={session.registrationUrl}
+					variant="ghost"
+					size="sm"
+				/>
+			</div>
+		)
+	}
+</article>
