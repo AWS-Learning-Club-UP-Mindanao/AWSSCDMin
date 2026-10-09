@@ -4,34 +4,51 @@ import ScheduleItem from '../ScheduleItem.astro';
 import { schedule } from '../../data/schedule';
 ---
 
-<!--
-	The design has no visible heading over the timeline, so the heading is kept for the
-	document outline only and the timeline reads straight off the section.
-
-	The radial background is set here because the schedule frame sits on it. If that gradient
-	turns out to belong on the page rather than on one section, drop this class.
--->
 <Section
 	id="schedule"
 	spacing="none"
-	class="bg-gradient-radial py-32 md:py-48 lg:py-64"
+	class="bg-gradient-radial pt-40 pb-[50vh] md:pt-56 md:pb-[54vh] lg:pt-72 lg:pb-[58vh]"
 	backgroundImage="/assets/backgrounds/star_background.svg"
 >
 	<h2 class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">Schedule Timeline</h2>
 
 	<ol class="mx-auto w-full max-w-[820px] space-y-8 md:space-y-10">
 		{
-			schedule.map((slot) => (
-				<li class="grid grid-cols-[4.5rem_1fr] gap-x-4 md:grid-cols-[9.5rem_5rem_1fr] md:gap-x-0">
+			schedule.map((slot, i) => (
+				<li class="relative grid grid-cols-[4.5rem_1fr] gap-x-4 md:grid-cols-[9.5rem_5rem_1fr] md:gap-x-0">
 					<div class="md:text-right">
 						<p class="text-h4 font-body text-content-primary">{slot.label}</p>
 						<p class="mt-1 text-body font-body text-content-secondary md:whitespace-nowrap">{slot.time}</p>
 					</div>
 
-					<!-- The frame runs a short rule from the time across to the card. -->
-					<div class="hidden md:flex md:items-center">
-						<span class="h-px w-full bg-surface-brand-secondary"></span>
+					<div class="hidden md:mt-[18px] md:flex md:items-center md:self-start">
+						<span
+							class="relative z-[1] ml-[38px] h-3 w-3 shrink-0 rounded-full bg-surface-brand-secondary"
+						></span>
+						<span class="h-[2px] flex-1 bg-surface-brand-secondary"></span>
 					</div>
+
+					{
+						i === 0 && (
+							<span
+								aria-hidden="true"
+								class="absolute -top-[16px] left-[195px] hidden h-10 w-[1px] bg-linear-to-b from-transparent to-surface-brand md:block"
+							/>
+						)
+					}
+					{
+						i < schedule.length - 1 ? (
+							<span
+								aria-hidden="true"
+								class="absolute top-[24px] left-[195px] hidden h-[calc(100%_+_2.5rem)] w-[1px] bg-surface-brand md:block"
+							/>
+						) : (
+							<span
+								aria-hidden="true"
+								class="absolute top-[24px] left-[195px] hidden h-10 w-[1px] bg-linear-to-b from-surface-brand to-transparent md:block"
+							/>
+						)
+					}
 
 					<div class="space-y-4 text-h2">
 						{slot.rows.map((row) => (
@@ -58,51 +75,63 @@ src="assets/backgrounds/shooting_star_background.svg"
 -->
 
   <!--Star trail from hero bleeds into schedule-->
-
-		<!--
-			Positioning these against the section does not survive a resize. The decorations
-			layer spans the whole section, which is as wide as the window, so a plain
-			`left-380` (1520px) is measured from the window's edge and bears no relation to
-			the timeline - centred, 820px wide, and at a different offset at every width.
-			It looks right on one monitor and gets clipped away on a narrower one.
-
-			This band mirrors the content column: same 1400px max, same 32/48px gutters, same
-			centring. Anchors inside it keep their position relative to the timeline at any
-			width. Two habits keep it stable:
-
-			  anchor to an edge     -top-*, -right-*, bottom-*  survives the column shrinking
-			  avoid big left-*      left-[1350px] only looks right while the column is at max
-
-			Sizes still need to be responsive - an SVG with no w-* class renders at its
-			intrinsic 350px on a phone.
-		-->
-		<div class="pointer-events-none absolute inset-y-0 left-1/2 w-full max-w-[1400px] -translate-x-1/2">
-			<img
+		<img
 				src="/assets/decorations/bright_star.svg"
 				alt=""
 				decoding="async"
-				class="pointer-events-none absolute top-20 left-245 w-80 scale-120 md:w-72"
+        class="pointer-events-none absolute overflow-visible
+                top-[9vh] right-[9vw] w-[23vw] scale-120
+                sm:top-[8vh] sm:right-[9vw] sm:w-[23vw] sm:scale-90
+                md:top-[11vh] md:left-[68vw] md:w-[23vw] md:scale-120
+                lg:top-[13vh] lg:left-[68vw] lg:w-[23vw] lg:scale-120
+                xl:top-[10vh] xl:left-[66vw] xl:w-[22vw] xl:scale-120
+                2xl:top-[9vh] 2xl:left-[60vw] 2xl:w-[23vw] 2xl:scale-120
+                3xl:top-[0vh] 3xl:left-[60vw] 3xl:w-[23vw] 3xl:scale-90"
+
 			/>
 
 			<img
 				src="/assets/decorations/bright_star.svg"
 				alt=""
 				decoding="async"
-				class="pointer-events-none absolute top-70 left-250 w-48 scale-120 md:w-32"
-			/>
-		</div>
+				class="pointer-events-none absolute
+				       top-[14vh] right-[19vw] w-[15vw] scale-90
+				       sm:top-[14vh] sm:right[19vw] sm:w-[15vw] sm:scale-90
+				       md:top-[19vh] md:left-[66vw] md:w-[15vw] md:scale-90
+				       lg:top-[24vh] lg:left-[66vw] lg:w-[15vw] lg:scale-90
+				       xl:top-[23vh] xl:left-[65vw] xl:w-[15vw] xl:scale-90
+				       2xl:top-[23vh] 2xl:left-[57vw] 2xl:w-[15vw] 2xl:scale-70
+				       3xl:top-[15vh] 2xl:left-[57vw] 2xl:w-[15vw] 2xl:scale-70"
+                />
 
 		<img
 			src="/assets/decorations/constellation_1.svg"
 			alt=""
 			decoding="async"
-			class="pointer-events-none absolute top-24 right-0 hidden w-[26rem] translate-x-1/2 xl:block"
+			class="pointer-events-none absolute top-[37vw] right-[15vw] hidden w-[12rem] translate-x-1/2 xl:block"
 		/>
 		<img
 			src="/assets/decorations/constellation_2.svg"
 			alt=""
 			decoding="async"
-			class="pointer-events-none absolute bottom-24 left-0 hidden w-[24rem] -translate-x-1/2 xl:block"
+			class="pointer-events-none absolute bottom-[40vh] left-[19vw] w-[5rem] -translate-x-1/2
+			       sm:w-[6rem]
+			       md:w-[7.5rem]
+			       lg:w-[9rem]
+			       xl:w-[10rem]"
+		/>
+		<img
+			src="/assets/decorations/northstar_ticket.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute bottom-[-23vh] left-1/2 -translate-x-1/2 overflow-visible max-w-none
+			       w-[115vw]
+			       sm:w-[110vw] sm:bottom-[-7vh]
+			       md:w-[105vw] md:bottom-[-8vh]
+			       lg:w-[102vw] lg:bottom-[-11vh]
+			       xl:w-[100vw] xl:bottom-[-14vh]
+2xl:w-[100vw] 2xl:bottom-[-16vh]
+3xl:w-[100vw] 3xl:bottom-[-20vh]"
 		/>
 	</Fragment>
 </Section>

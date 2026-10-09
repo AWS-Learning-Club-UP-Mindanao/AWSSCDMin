@@ -8,13 +8,10 @@ interface Props {
 
 const { session } = Astro.props;
 
-// The design puts one small line above the title and uses it for whichever applies: the room
-// for the room-based sessions, the type for everything else. Joining keeps both when a session
-// has each, and the line disappears entirely for entries like Registration.
 const label = [session.type, session.room].filter(Boolean).join(' · ');
 ---
 
-<article class="rounded-lg border border-surface-brand-secondary p-6 md:p-8">
+<article class="rounded-lg border-2 border-surface-brand-secondary p-6 md:p-8">
 	{label && <p class="text-h5 font-body font-bold text-content-secondary">{label}</p>}
 
 	<h3 class="mt-2 text-h2 font-body text-content-primary">{session.title}</h3>
