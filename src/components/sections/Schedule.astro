@@ -1,0 +1,71 @@
+---
+import Section from '../layout/Section.astro';
+import ScheduleItem from '../ScheduleItem.astro';
+import Button from '../Button.astro';
+import { schedule, fullTimelineUrl } from '../../data/schedule';
+---
+
+<!--
+	The design has no visible heading over the timeline, so the heading is kept for the
+	document outline only and the timeline reads straight off the section.
+
+	The radial background is set here because the schedule frame sits on it. If that gradient
+	turns out to belong on the page rather than on one section, drop this class.
+-->
+<Section id="schedule" class="bg-gradient-radial">
+	<h2 class="sr-only">Schedule</h2>
+
+	<ol class="mx-auto w-full max-w-[820px] space-y-8 md:space-y-10">
+		{
+			schedule.map((slot) => (
+				<li class="grid grid-cols-[4.5rem_1fr] gap-x-4 md:grid-cols-[9.5rem_5rem_1fr] md:gap-x-0">
+					<div class="md:text-right">
+						<p class="text-h5 text-content-primary">{slot.label}</p>
+						<p class="mt-1 text-caption text-content-secondary">{slot.time}</p>
+					</div>
+
+					<!-- The frame runs a short rule from the time across to the card. -->
+					<div class="hidden md:flex md:items-center">
+						<span class="h-px w-full bg-surface-brand-secondary"></span>
+					</div>
+
+					<!--
+						A line holding two sessions means those two run in parallel, which the design
+						shows as two cards side by side. A single session takes the full width.
+					-->
+					<div class="space-y-4">
+						{slot.rows.map((row) => (
+							<div class:list={['grid gap-4', row.length > 1 && 'md:grid-cols-2']}>
+								{row.map((session) => <ScheduleItem session={session} />)}
+							</div>
+						))}
+					</div>
+				</li>
+			))
+		}
+	</ol>
+
+	<div class="mt-12 text-center">
+		<Button label="View full timeline" href={fullTimelineUrl} variant="ghost" size="sm" />
+	</div>
+
+	<!--
+		Only from xl up: below that the timeline is wide enough that these start drifting
+		over the cards. Sized and offset so they bleed off the page edge and stay clear of
+		the timeline at every width they render.
+	-->
+	<Fragment slot="decorations">
+		<img
+			src="/assets/decorations/constellation_1.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute top-24 right-0 hidden w-[26rem] translate-x-1/2 xl:block"
+		/>
+		<img
+			src="/assets/decorations/constellation_2.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute bottom-24 left-0 hidden w-[24rem] -translate-x-1/2 xl:block"
+		/>
+	</Fragment>
+</Section>
