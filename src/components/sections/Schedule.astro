@@ -13,8 +13,8 @@ import { schedule } from '../../data/schedule';
 -->
 <Section
 	id="schedule"
-	spacing="lg"
-	class="bg-gradient-radial"
+	spacing="none"
+	class="bg-gradient-radial py-32 md:py-48 lg:py-64"
 	backgroundImage="/assets/backgrounds/star_background.svg"
 >
 	<h2 class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">Schedule Timeline</h2>
@@ -33,11 +33,7 @@ import { schedule } from '../../data/schedule';
 						<span class="h-px w-full bg-surface-brand-secondary"></span>
 					</div>
 
-					<!--
-						A line holding two sessions means those two run in parallel, which the design
-						shows as two cards side by side. A single session takes the full width.
-					-->
-					<div class="space-y-4">
+					<div class="space-y-4 text-h2">
 						{slot.rows.map((row) => (
 							<div class:list={['grid gap-4', row.length > 1 && 'md:grid-cols-2']}>
 								{row.map((session) => <ScheduleItem session={session} />)}
@@ -49,27 +45,53 @@ import { schedule } from '../../data/schedule';
 		}
 	</ol>
 
-	<!--
-		The design also carries a "View full timeline" link under the list. Dropped: this
-		section already prints every slot, so there is nothing further to open.
-	-->
 
-	<!--
-		Only from xl up: below that the timeline is wide enough that these start drifting
-		over the cards. Sized and offset so they bleed off the page edge and stay clear of
-		the timeline at every width they render.
-	-->
 	<Fragment slot="decorations">
-		<!--
-			First in the slot so it paints under the constellations. A full-bleed layer over
-			the star field, which is why it carries no position beyond inset-0.
-		-->
+
+<!-- Shooting star background also bleeds from hero into schedule
 		<img
-			src="/assets/backgrounds/shooting_star_background.svg"
+src="assets/backgrounds/shooting_star_background.svg"
 			alt=""
 			decoding="async"
-			class="pointer-events-none absolute inset-0 h-full w-full object-cover"
+			class="rotate-z-180 pointer-events-none absolute inset-0 h-full w-full object-cover"
 		/>
+-->
+
+  <!--Star trail from hero bleeds into schedule-->
+
+		<!--
+			Positioning these against the section does not survive a resize. The decorations
+			layer spans the whole section, which is as wide as the window, so a plain
+			`left-380` (1520px) is measured from the window's edge and bears no relation to
+			the timeline - centred, 820px wide, and at a different offset at every width.
+			It looks right on one monitor and gets clipped away on a narrower one.
+
+			This band mirrors the content column: same 1400px max, same 32/48px gutters, same
+			centring. Anchors inside it keep their position relative to the timeline at any
+			width. Two habits keep it stable:
+
+			  anchor to an edge     -top-*, -right-*, bottom-*  survives the column shrinking
+			  avoid big left-*      left-[1350px] only looks right while the column is at max
+
+			Sizes still need to be responsive - an SVG with no w-* class renders at its
+			intrinsic 350px on a phone.
+		-->
+		<div class="pointer-events-none absolute inset-y-0 left-1/2 w-full max-w-[1400px] -translate-x-1/2">
+			<img
+				src="/assets/decorations/bright_star.svg"
+				alt=""
+				decoding="async"
+				class="pointer-events-none absolute top-20 left-245 w-80 scale-120 md:w-72"
+			/>
+
+			<img
+				src="/assets/decorations/bright_star.svg"
+				alt=""
+				decoding="async"
+				class="pointer-events-none absolute top-70 left-250 w-48 scale-120 md:w-32"
+			/>
+		</div>
+
 		<img
 			src="/assets/decorations/constellation_1.svg"
 			alt=""
