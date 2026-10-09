@@ -1,0 +1,89 @@
+---
+import Section from './layout/Section.astro';
+import Button from './Button.astro';
+import { contactEmail, socials } from '../data/site';
+---
+
+<Section
+	id="cta"
+	spacing="none"
+	class="bg-[#020110]"
+>
+	<div class="flex min-h-[66vw] flex-col items-center justify-center py-16 text-center md:py-24">
+		<img
+			src="/assets/logos/scd_logo_2.svg"
+			alt="AWS Student Community Day Mindanao 2026"
+			decoding="async"
+			class="w-[70vw] max-w-[660px] mix-blend-lighten sm:w-[58vw] md:w-[46vw] lg:w-[38vw]"
+		/>
+
+		<Button label="Get Ticket" href="#tickets" variant="cta" class="mt-10 md:mt-12" />
+
+		<p class="mt-6 text-caption font-body text-content-secondary md:text-body">
+			For inquiries, contact us at{' '}
+			<a
+				href={`mailto:${contactEmail}`}
+				class="rounded-sm font-bold underline decoration-from-font underline-offset-2 transition-colors hover:text-content-primary focus-visible:text-content-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent"
+				>{contactEmail}</a
+			>
+		</p>
+
+		<nav aria-label="Social media" class="mt-4 flex items-center gap-3">
+			{
+				socials.map(({ label, href, icon }) => (
+					<a
+						href={href}
+						aria-label={label}
+						target="_blank"
+						rel="noopener noreferrer"
+						class="rounded-full transition-transform hover:scale-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent"
+					>
+						<img src={icon} alt="" aria-hidden="true" width="36" height="36" class="size-9" />
+					</a>
+				))
+			}
+		</nav>
+	</div>
+
+	<Fragment slot="decorations">
+		<div
+			aria-hidden="true"
+			class="pointer-events-none absolute inset-0 top-[-4vh] h-full w-full bg-[radial-gradient(44.86%_44.85%_at_48.41%_47.24%,#320776_0%,#130445_50%,#020110_100%)]"
+		>
+		</div>
+
+		<img
+			src="/assets/decorations/nebulae_hero.svg"
+			alt=""
+			decoding="async"
+			class="nebulae-fade pointer-events-none absolute inset-0 top-[-4vh] h-full w-full object-cover opacity-90 mix-blend-color-dodge"
+		/>
+
+		<img
+			src="/assets/decorations/nebulae_hero.svg"
+			alt=""
+			decoding="async"
+			class="nebulae-fade pointer-events-none absolute inset-0 top-[-4vh] h-full w-full object-cover opacity-30 mix-blend-plus-lighter"
+		/>
+
+		<img
+			src="/assets/backgrounds/star_background.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute inset-0 h-full w-full object-cover"
+		/>
+
+		<img
+			src="/assets/backgrounds/shooting_star_background.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute inset-0 h-full w-full object-cover"
+		/>
+	</Fragment>
+</Section>
+
+<style>
+	.nebulae-fade {
+		mask-image: linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+	}
+</style>
