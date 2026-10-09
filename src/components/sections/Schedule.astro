@@ -59,6 +59,16 @@ import { schedule } from '../../data/schedule';
 		the timeline at every width they render.
 	-->
 	<Fragment slot="decorations">
+		<!--
+			First in the slot so it paints under the constellations. A full-bleed layer over
+			the star field, which is why it carries no position beyond inset-0.
+		-->
+		<img
+			src="/assets/backgrounds/shooting_star_background.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute inset-0 h-full w-full object-cover"
+		/>
 		<img
 			src="/assets/decorations/constellation_1.svg"
 			alt=""
