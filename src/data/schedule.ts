@@ -23,6 +23,9 @@ export interface ScheduleSlot {
   /**
    * The lines printed under this time. A line holds one session, or two when those sessions
    * run in parallel rooms — that is how the design shows Room 212 and Room 222 side by side.
+   *
+   * Each slot is one entry on the timeline with its own marker and connector, so sessions that
+   * share a time are listed as separate slots rather than stacked under one marker.
    */
   rows: ScheduleSession[][];
 }
@@ -33,12 +36,20 @@ export interface ScheduleSlot {
  */
 const REGISTER_URL = "#tickets";
 
+/** The four sessions that all open at 09:30 keep the same label and range. */
+const OPENING_LABEL = "09:30";
+const OPENING_TIME = "09:30 AM - 10:30 AM";
+
 export const schedule: ScheduleSlot[] = [
   {
-    label: "09:30",
-    time: "09:30 AM - 10:30 AM",
+    label: OPENING_LABEL,
+    time: OPENING_TIME,
+    rows: [[{ title: "Registration" }]],
+  },
+  {
+    label: OPENING_LABEL,
+    time: OPENING_TIME,
     rows: [
-      [{ title: "Registration" }],
       [
         {
           type: "Workshop",
@@ -46,7 +57,17 @@ export const schedule: ScheduleSlot[] = [
           registrationUrl: REGISTER_URL,
         },
       ],
-      [{ type: "Workshop", title: "AWS Kiro", registrationUrl: REGISTER_URL }],
+    ],
+  },
+  {
+    label: OPENING_LABEL,
+    time: OPENING_TIME,
+    rows: [[{ type: "Workshop", title: "AWS Kiro", registrationUrl: REGISTER_URL }]],
+  },
+  {
+    label: OPENING_LABEL,
+    time: OPENING_TIME,
+    rows: [
       [
         {
           room: "Room 212",

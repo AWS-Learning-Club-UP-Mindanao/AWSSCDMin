@@ -12,7 +12,11 @@ import { schedule } from '../../data/schedule';
 >
 	<h2 class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">Schedule Timeline</h2>
 
-	<ol class="mx-auto w-full max-w-[820px] space-y-8 md:space-y-10">
+	<ol
+		id="schedule-timeline"
+		class="mx-auto w-full max-w-[820px] space-y-8 md:space-y-10"
+		data-expanded="false"
+	>
 		{
 			schedule.map((slot, i) => (
 				<li class="relative grid grid-cols-[4.5rem_2.5rem_1fr] md:grid-cols-[9.5rem_5rem_1fr]">
@@ -40,7 +44,7 @@ import { schedule } from '../../data/schedule';
 						i < schedule.length - 1 ? (
 							<span
 								aria-hidden="true"
-								class="absolute top-[24px] left-[91px] h-[calc(100%_+_2rem)] w-[1px] bg-surface-brand md:left-[195px] md:h-[calc(100%_+_2.5rem)]"
+								class="row-spine absolute top-[24px] left-[91px] h-[calc(100%_+_2rem)] w-[1px] bg-surface-brand md:left-[195px] md:h-[calc(100%_+_2.5rem)]"
 							/>
 						) : (
 							<span
@@ -61,6 +65,22 @@ import { schedule } from '../../data/schedule';
 			))
 		}
 	</ol>
+
+	<!--
+		Five timeslots show on first land; the button appends the rest. The hidden rows stay in
+		the DOM so nothing reflows on expand.
+	-->
+	<div class="mt-12 flex justify-center md:mt-16">
+		<button
+			type="button"
+			data-timeline-toggle
+			aria-expanded="false"
+			aria-controls="schedule-timeline"
+			class="cursor-pointer rounded-sm font-body font-bold text-content-primary underline decoration-2 underline-offset-8 transition-colors hover:text-content-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-surface-accent"
+		>
+			View full timeline
+		</button>
+	</div>
 
 
 	<Fragment slot="decorations">
@@ -99,7 +119,7 @@ src="assets/backgrounds/shooting_star_background.svg"
 			src="/assets/decorations/star_trail_1.svg"
 			alt=""
 			decoding="async"
-			class="pointer-events-none absolute overflow-visible opacity-80
+			class="pointer-events-none absolute overflow-visible
 			       top-0 left-1/2 w-[140vw] -translate-x-1/2
 			       sm:top-0 sm:w-[135vw]
 			       md:top-0 md:w-[130vw]
@@ -179,6 +199,22 @@ xl:w-[10rem]
 			transition: none;
 		}
 	}
+
+	/*
+	 * Collapsed on first land: the first five timeslots only.
+	 */
+	[data-expanded='false'] > li:nth-child(n + 6) {
+		display: none;
+	}
+
+	/*
+	 * The fifth row would otherwise keep its full-length spine and hang a stub down into the
+	 * hidden rows, so when collapsed it fades out the way the final row's does.
+	 */
+	[data-expanded='false'] > li:nth-child(5) .row-spine {
+		background-color: transparent;
+		background-image: linear-gradient(to bottom, var(--color-surface-brand), transparent);
+	}
 </style>
 
 <script>
@@ -201,4 +237,20 @@ xl:w-[10rem]
 		},
 		{ passive: true }
 	);
+
+	/*
+	 * View full timeline / Show less. The list carries the state so the CSS owns what shows and
+	 * the button only reports it, which keeps the two from disagreeing.
+	 */
+	document.querySelectorAll('[data-timeline-toggle]').forEach((button) => {
+		button.addEventListener('click', () => {
+			const list = document.getElementById(button.getAttribute('aria-controls'));
+			if (!list) return;
+
+			const expanded = list.getAttribute('data-expanded') === 'true';
+			list.setAttribute('data-expanded', expanded ? 'false' : 'true');
+			button.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+			button.textContent = expanded ? 'View full timeline' : 'Show less';
+		});
+	});
 </script>
