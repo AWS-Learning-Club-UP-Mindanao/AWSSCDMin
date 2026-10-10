@@ -49,12 +49,20 @@ const spacingClass = {
 	<!--
 		Decorative stars and nebulae belong in the decorations slot. They are positioned
 		absolutely inside this layer, so they never push layout around or add page width.
+
+		Deliberately no z-index on this layer. A negative z-index makes it a stacking
+		context, and an element inside it then has no backdrop to blend against, so its
+		mix-blend-mode can never reach the section background. Raising the content column
+		instead keeps the same paint order without cutting decorations off from the
+		background they are meant to dodge into.
 	-->
-	<div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<slot name="decorations" />
 	</div>
 
-	<Container wide={fullWidth}>
-		<slot />
-	</Container>
+	<div class="relative z-10">
+		<Container wide={fullWidth}>
+			<slot />
+		</Container>
+	</div>
 </section>
