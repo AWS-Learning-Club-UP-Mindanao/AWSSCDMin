@@ -92,35 +92,21 @@ src="assets/backgrounds/shooting_star_background.svg"
 			class="pointer-events-none absolute inset-0 hidden h-full w-full object-cover md:block"
 		/>
 
-  <!--Star trail, bleeding in from the hero. Layered twice the way the northstar is:
-			a colour-dodge pass and a plus-lighter pass over the same artwork, so the
-			trail picks up the section's colour underneath instead of painting flat.-->
+  <!--Star trail, bleeding in from the hero. Its greys and whites are baked to purple-blue in
+			the asset itself, so the artwork paints its own colour and needs no blend pass — a
+			blend recolours the star along with the trail, which is what we kept running into.-->
 		<img
 			src="/assets/decorations/star_trail_1.svg"
 			alt=""
 			decoding="async"
-			class="pointer-events-none absolute overflow-visible mix-blend-color-dodge
-			       top-[-2vh] left-1/2 w-[140vw] -translate-x-1/2
-			       sm:top-[-2vh] sm:w-[135vw]
-			       md:top-[-3vh] md:w-[130vw]
-			       lg:top-[-4vh] lg:w-[125vw]
-			       xl:top-[-4vh] xl:w-[122vw]
-			       2xl:top-[-5vh] 2xl:w-[120vw]
-			       3xl:top-[-6vh] 3xl:w-[118vw]"
-		/>
-
-		<img
-			src="/assets/decorations/star_trail_1.svg"
-			alt=""
-			decoding="async"
-			class="pointer-events-none absolute overflow-visible mix-blend-plus-lighter
-			       top-[-2vh] left-1/2 w-[140vw] -translate-x-1/2
-			       sm:top-[-2vh] sm:w-[135vw]
-			       md:top-[-3vh] md:w-[130vw]
-			       lg:top-[-4vh] lg:w-[125vw]
-			       xl:top-[-4vh] xl:w-[122vw]
-			       2xl:top-[-5vh] 2xl:w-[120vw]
-			       3xl:top-[-6vh] 3xl:w-[118vw]"
+			class="pointer-events-none absolute overflow-visible opacity-80
+			       top-0 left-1/2 w-[140vw] -translate-x-1/2
+			       sm:top-0 sm:w-[135vw]
+			       md:top-0 md:w-[130vw]
+			       lg:top-0 lg:w-[125vw]
+			       xl:top-0 xl:w-[122vw]
+			       2xl:top-0 2xl:w-[120vw]
+			       3xl:top-0 3xl:w-[118vw]"
 		/>
 
 		<img

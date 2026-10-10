@@ -189,19 +189,19 @@
 <feGaussianBlur stdDeviation="7.35" result="effect1_foregroundBlur_186_2461"/>
 </filter>
 <radialGradient id="paint0_radial_186_2461" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1240.6 310.785) rotate(84.097) scale(43.4156 43.1077)">
-<stop stop-color="#8E6BFF"/>
+<stop stop-color="white"/>
 <stop offset="1" stop-color="#FFDD00"/>
 </radialGradient>
 <radialGradient id="paint1_radial_186_2461" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1240.6 310.785) rotate(84.097) scale(43.4156 43.1077)">
-<stop stop-color="#8E6BFF"/>
+<stop stop-color="white"/>
 <stop offset="1" stop-color="#FFDD00"/>
 </radialGradient>
 <radialGradient id="paint2_radial_186_2461" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1296.46 209.814) rotate(84.097) scale(85.5764 84.9695)">
-<stop stop-color="#8E6BFF"/>
+<stop stop-color="white"/>
 <stop offset="1" stop-color="#FFDD00"/>
 </radialGradient>
 <radialGradient id="paint3_radial_186_2461" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1296.46 209.814) rotate(84.097) scale(85.5764 84.9695)">
-<stop stop-color="#8E6BFF"/>
+<stop stop-color="white"/>
 <stop offset="1" stop-color="#FFDD00"/>
 </radialGradient>
 <linearGradient id="paint4_linear_186_2461" x1="1286.71" y1="149.722" x2="-115.743" y2="466.899" gradientUnits="userSpaceOnUse">
