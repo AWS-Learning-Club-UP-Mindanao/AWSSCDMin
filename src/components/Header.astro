@@ -20,10 +20,12 @@ const links = [
     header?.querySelector<HTMLButtonElement>("[data-menu-button]");
   const drawer =
     header?.querySelector<HTMLElement>("[data-mobile-drawer]");
+  const backdrop =
+    header?.querySelector<HTMLElement>("[data-drawer-backdrop]");
   const homeLink =
     header?.querySelector<HTMLAnchorElement>("[data-home-link]");
 
-  if (header && button && drawer && homeLink) {
+  if (header && button && drawer && backdrop && homeLink) {
     const mobile = window.matchMedia("(max-width: 767px)");
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
     let drawerAnimation: Animation | null = null;
@@ -35,7 +37,7 @@ const links = [
       const opacity = wasHidden ? "0" : currentStyle.opacity;
       const transform = reducedMotion.matches
         ? "none"
-        : wasHidden ? "translateY(-12px)" : currentStyle.transform;
+        : wasHidden ? "translateY(100%)" : currentStyle.transform;
 
       drawerAnimation?.cancel();
       drawerAnimation = null;
@@ -48,26 +50,27 @@ const links = [
 
       drawer.inert = !expanded;
       drawer.setAttribute("aria-hidden", String(!expanded));
+      backdrop.hidden = !expanded;
 
       if (!mobile.matches || (!expanded && wasHidden)) {
         drawer.hidden = !expanded;
       } else {
         drawer.hidden = false;
+        const keyframes: Keyframe[] = reducedMotion.matches
+          ? [{ opacity }, { opacity: expanded ? "1" : "0" }]
+          : [
+              { transform },
+              { transform: expanded ? "translateY(0)" : "translateY(100%)" },
+            ];
         const animation = drawer.animate(
-          [
-            { opacity, transform },
-            {
-              opacity: expanded ? "1" : "0",
-              transform: reducedMotion.matches
-                ? "none"
-                : expanded ? "translateY(0)" : "translateY(-12px)",
-            },
-          ],
+          keyframes,
           {
-            duration: reducedMotion.matches ? 120 : expanded ? 320 : 200,
+            duration: reducedMotion.matches ? 120 : expanded ? 320 : 260,
             easing: reducedMotion.matches
               ? "ease-out"
-              : "cubic-bezier(0.22, 1, 0.36, 1)",
+              : expanded
+                ? "cubic-bezier(0.16, 1, 0.3, 1)"
+                : "cubic-bezier(0.4, 0, 1, 1)",
             fill: "both",
           },
         );
@@ -92,6 +95,10 @@ const links = [
 
     button.addEventListener("click", () => {
       setOpen(button.getAttribute("aria-expanded") !== "true");
+    });
+
+    backdrop.addEventListener("click", () => {
+      setOpen(false, true);
     });
 
     document.addEventListener("keydown", (event) => {
@@ -228,6 +235,7 @@ const links = [
       </svg>
     </Button>
   </div>
+  <div class="drawer-backdrop" data-drawer-backdrop aria-hidden="true" hidden></div>
   <nav
     id="mobile-navigation"
     class="mobile-drawer"
@@ -340,6 +348,7 @@ const links = [
   }
 
   .event-header :global(.menu-button),
+  .drawer-backdrop,
   .mobile-drawer {
     display: none;
   }
@@ -464,15 +473,27 @@ const links = [
       content: "";
     }
 
-    .event-header[data-enhanced] .mobile-drawer {
+    .drawer-backdrop {
       position: fixed;
       top: var(--mobile-header-height);
       bottom: 0;
       inset-inline: 0;
+      z-index: 1;
+    }
+
+    .event-header[data-enhanced] .drawer-backdrop:not([hidden]) {
+      display: block;
+    }
+
+    .event-header[data-enhanced] .mobile-drawer {
+      position: fixed;
+      bottom: 0;
+      inset-inline: 0;
+      z-index: 2;
       border-radius: 32px 32px 0 0;
       padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
       min-height: 0;
-      max-height: none;
+      max-height: calc(100dvh - var(--mobile-header-height) - 16px);
       overflow-y: auto;
     }
 
