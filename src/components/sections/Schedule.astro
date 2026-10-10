@@ -108,9 +108,7 @@ src="assets/backgrounds/shooting_star_background.svg"
 			alt=""
 			decoding="async"
 			class="star-trail pointer-events-none absolute overflow-visible w-[100vw]
-			       right-[-10vw]
-			       sm:right-[-9vw]
-			       md:right-[-8vw]
+			       right-[5vw]
 			       lg:right-[-7vw]
 			       xl:right-[-6vw]
 			       2xl:right-[-5vw]
@@ -186,12 +184,19 @@ xl:w-[10rem]
 	}
 
 	/*
-	 * The trail's band enters at the artwork's own top-left, so any top offset slices it flat
-	 * and reads as a crop edge. Fading the top keeps it reading as a bleed.
+	 * Blends all four edges. The band enters at the artwork's own top-left, so a bare top offset
+	 * slices it flat, and the sides meet the viewport edge the same way. Two gradients intersected
+	 * fade the whole border rather than one side.
 	 */
 	.star-trail {
-		-webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
-		mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
+		-webkit-mask-image:
+			linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%),
+			linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+		-webkit-mask-composite: source-in;
+		mask-image:
+			linear-gradient(to bottom, transparent 0%, black 12%, black 88%, transparent 100%),
+			linear-gradient(to right, transparent 0%, black 8%, black 92%, transparent 100%);
+		mask-composite: intersect;
 	}
 
 	[data-expanded='false'] > li:nth-child(n + 6) {
