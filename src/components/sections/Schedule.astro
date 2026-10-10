@@ -15,15 +15,15 @@ import { schedule } from '../../data/schedule';
 	<ol class="mx-auto w-full max-w-[820px] space-y-8 md:space-y-10">
 		{
 			schedule.map((slot, i) => (
-				<li class="relative grid grid-cols-[4.5rem_1fr] gap-x-4 md:grid-cols-[9.5rem_5rem_1fr] md:gap-x-0">
+				<li class="relative grid grid-cols-[4.5rem_2.5rem_1fr] md:grid-cols-[9.5rem_5rem_1fr]">
 					<div class="md:text-right">
 						<p class="text-h4 font-body text-content-primary">{slot.label}</p>
 						<p class="mt-1 text-body font-body text-content-secondary md:whitespace-nowrap">{slot.time}</p>
 					</div>
 
-					<div class="hidden md:mt-[18px] md:flex md:items-center md:self-start">
+					<div class="mt-[18px] flex items-center self-start">
 						<span
-							class="relative z-[1] ml-[38px] h-3 w-3 shrink-0 rounded-full bg-surface-brand-secondary"
+							class="relative z-[1] ml-[14px] h-3 w-3 shrink-0 rounded-full bg-surface-brand-secondary md:ml-[38px]"
 						></span>
 						<span class="h-[2px] flex-1 bg-surface-brand-secondary"></span>
 					</div>
@@ -32,7 +32,7 @@ import { schedule } from '../../data/schedule';
 						i === 0 && (
 							<span
 								aria-hidden="true"
-								class="absolute -top-[16px] left-[195px] hidden h-10 w-[1px] bg-linear-to-b from-transparent to-surface-brand md:block"
+								class="absolute -top-[16px] left-[91px] h-10 w-[1px] bg-linear-to-b from-transparent to-surface-brand md:left-[195px]"
 							/>
 						)
 					}
@@ -40,12 +40,12 @@ import { schedule } from '../../data/schedule';
 						i < schedule.length - 1 ? (
 							<span
 								aria-hidden="true"
-								class="absolute top-[24px] left-[195px] hidden h-[calc(100%_+_2.5rem)] w-[1px] bg-surface-brand md:block"
+								class="absolute top-[24px] left-[91px] h-[calc(100%_+_2rem)] w-[1px] bg-surface-brand md:left-[195px] md:h-[calc(100%_+_2.5rem)]"
 							/>
 						) : (
 							<span
 								aria-hidden="true"
-								class="absolute top-[24px] left-[195px] hidden h-10 w-[1px] bg-linear-to-b from-surface-brand to-transparent md:block"
+								class="absolute top-[24px] left-[91px] h-10 w-[1px] bg-linear-to-b from-surface-brand to-transparent md:left-[195px]"
 							/>
 						)
 					}
@@ -74,41 +74,49 @@ src="assets/backgrounds/shooting_star_background.svg"
 		/>
 -->
 
-  <!--Star trail from hero bleeds into schedule-->
+		<!--
+			Stars. From md up the single 1727x1057 canvas covers the section. Below md it is tiled
+			at its natural size instead: cover would scale it 2.25x and crop to the middle ~10% of
+			the width, leaving the top 40% of the section with no stars at all.
+		-->
+		<div
+			aria-hidden="true"
+			class="pointer-events-none absolute inset-0 bg-repeat bg-auto bg-[url('/assets/backgrounds/star_background.svg')] md:hidden"
+		>
+		</div>
+
 		<img
-				src="/assets/decorations/bright_star.svg"
-				alt=""
-				decoding="async"
-        class="pointer-events-none absolute overflow-visible
-                top-[9vh] right-[9vw] w-[23vw] scale-120
-                sm:top-[8vh] sm:right-[9vw] sm:w-[23vw] sm:scale-90
-                md:top-[11vh] md:left-[68vw] md:w-[23vw] md:scale-120
-                lg:top-[13vh] lg:left-[68vw] lg:w-[23vw] lg:scale-120
-                xl:top-[10vh] xl:left-[66vw] xl:w-[22vw] xl:scale-120
-                2xl:top-[9vh] 2xl:left-[60vw] 2xl:w-[23vw] 2xl:scale-120
-                3xl:top-[0vh] 3xl:left-[60vw] 3xl:w-[23vw] 3xl:scale-90"
+			src="/assets/backgrounds/star_background.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute inset-0 hidden h-full w-full object-cover md:block"
+		/>
 
-			/>
-
-			<img
-				src="/assets/decorations/bright_star.svg"
-				alt=""
-				decoding="async"
-				class="pointer-events-none absolute
-				       top-[14vh] right-[19vw] w-[15vw] scale-90
-				       sm:top-[14vh] sm:right[19vw] sm:w-[15vw] sm:scale-90
-				       md:top-[19vh] md:left-[66vw] md:w-[15vw] md:scale-90
-				       lg:top-[24vh] lg:left-[66vw] lg:w-[15vw] lg:scale-90
-				       xl:top-[23vh] xl:left-[65vw] xl:w-[15vw] xl:scale-90
-				       2xl:top-[23vh] 2xl:left-[57vw] 2xl:w-[15vw] 2xl:scale-70
-				       3xl:top-[15vh] 2xl:left-[57vw] 2xl:w-[15vw] 2xl:scale-70"
-                />
+  <!--Bright star group, bleeding in from the hero. One asset carries both stars in
+			their designed relationship, so the two separate bright_star.svg placements
+			it replaces are gone.-->
+		<img
+			src="/assets/decorations/bright_star_group.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute overflow-visible
+			       top-[10vh] right-[-2vw] w-[23vw]
+			       sm:top-[7vh] sm:right-[9vw] sm:w-[23vw]
+			       md:top-[11vh] md:left-[68vw] md:w-[23vw]
+			       lg:top-[13vh] lg:left-[68vw] lg:w-[23vw]
+			       xl:top-[11vh] xl:left-[68vw] xl:w-[22vw]
+			       2xl:top-[6vh] 2xl:left-[60vw] 2xl:w-[23vw]
+			       3xl:top-[4vh] 3xl:left-[58vw] 3xl:w-[23vw]"
+		/>
 
 		<img
 			src="/assets/decorations/constellation_1.svg"
 			alt=""
 			decoding="async"
-			class="pointer-events-none absolute top-[37vw] right-[15vw] hidden w-[12rem] translate-x-1/2 xl:block"
+class="pointer-events-none absolute top-[37vw] right-[22vw] hidden w-[12rem] translate-x-1/2 
+xl:right-[11vw] xl:bottom-[10vh] xl:block
+2xl:right[11vw] 2xl:bottom-[10vh]
+3xl:right-[14vw] 3xl:bottom-[10vh]"
 		/>
 		<img
 			src="/assets/decorations/constellation_2.svg"
@@ -118,7 +126,10 @@ src="assets/backgrounds/shooting_star_background.svg"
 			       sm:w-[6rem]
 			       md:w-[7.5rem]
 			       lg:w-[9rem]
-			       xl:w-[10rem]"
+xl:w-[10rem]
+2xl:w-[11rem]
+3xl:w-[12rem]"
+
 		/>
 		<img
 			src="/assets/decorations/northstar_ticket.svg"
@@ -128,7 +139,7 @@ src="assets/backgrounds/shooting_star_background.svg"
 			       w-[115vw]
 			       sm:w-[110vw] sm:bottom-[-7vh]
 			       md:w-[105vw] md:bottom-[-8vh]
-			       lg:w-[102vw] lg:bottom-[-11vh]
+			       lg:w-[102vw] lg:bottom-[-12vh]
 			       xl:w-[100vw] xl:bottom-[-14vh]
 			       2xl:w-[100vw] 2xl:bottom-[-16vh]
 			       3xl:w-[100vw] 3xl:bottom-[-20vh]"
