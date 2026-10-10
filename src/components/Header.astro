@@ -401,13 +401,14 @@ const links = [
 
   @media (max-width: 767px) {
     .event-header {
+      --mobile-header-height: 80px;
       border-radius: 0 0 28px 28px;
       font-size: 16px;
     }
 
     .header-row {
       gap: 12px;
-      min-height: 80px;
+      min-height: var(--mobile-header-height);
       padding: 12px 20px;
     }
 
@@ -438,7 +439,7 @@ const links = [
       gap: 12px;
       min-height: 257px;
       padding: 23px 24px 22px;
-      border-radius: 32px;
+      border-radius: 0 0 32px 32px;
       background: #320776BF;
     }
 
@@ -463,11 +464,14 @@ const links = [
     }
 
     .event-header[data-enhanced] .mobile-drawer {
-      position: absolute;
-      top: 100%;
+      position: fixed;
+      top: var(--mobile-header-height);
+      bottom: 0;
       inset-inline: 0;
+      border-radius: 32px 32px 0 0;
+      padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
       min-height: 0;
-      max-height: calc(100dvh - 96px);
+      max-height: none;
       overflow-y: auto;
     }
 
