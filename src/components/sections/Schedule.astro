@@ -1,0 +1,234 @@
+---
+import Section from '../layout/Section.astro';
+import ScheduleItem from '../ScheduleItem.astro';
+import { schedule } from '../../data/schedule';
+---
+
+<Section
+	id="schedule"
+	spacing="none"
+	class="bg-[radial-gradient(circle,var(--color-surface-secondary,#130445)_0%,var(--color-surface-primary,#020110)_100%)] pt-40 pb-[50vh] md:pt-56 md:pb-[54vh] lg:pt-72 lg:pb-[58vh]"
+	backgroundImage="/assets/backgrounds/star_background.svg"
+>
+	<h2 class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">Schedule Timeline</h2>
+
+	<ol
+		id="schedule-timeline"
+		class="mx-auto w-full max-w-[820px] space-y-8 md:space-y-10"
+		data-expanded="false"
+	>
+		{
+			schedule.map((slot, i) => (
+				<li class="relative grid grid-cols-[4.5rem_2.5rem_1fr] md:grid-cols-[9.5rem_5rem_1fr]">
+					<div class="md:text-right">
+						<p class="text-h4 font-body text-content-primary">{slot.label}</p>
+						<p class="mt-1 text-body font-body text-content-secondary md:whitespace-nowrap">{slot.time}</p>
+					</div>
+
+					<div class="mt-[18px] flex items-center self-start">
+						<span
+							class="connector-dot relative z-[1] ml-[14px] h-3 w-3 shrink-0 rounded-full bg-surface-brand-secondary md:ml-[38px]"
+						></span>
+						<span class="connector-line h-[2px] flex-1 bg-surface-brand-secondary"></span>
+					</div>
+
+					{
+						i === 0 && (
+							<span
+								aria-hidden="true"
+								class="absolute -top-[16px] left-[91px] h-10 w-[1px] bg-linear-to-b from-transparent to-surface-brand md:left-[195px]"
+							/>
+						)
+					}
+					{
+						i < schedule.length - 1 ? (
+							<span
+								aria-hidden="true"
+								class="row-spine absolute top-[24px] left-[91px] h-[calc(100%_+_2rem)] w-[1px] bg-surface-brand md:left-[195px] md:h-[calc(100%_+_2.5rem)]"
+							/>
+						) : (
+							<span
+								aria-hidden="true"
+								class="absolute top-[24px] left-[91px] h-10 w-[1px] bg-linear-to-b from-surface-brand to-transparent md:left-[195px]"
+							/>
+						)
+					}
+
+					<div class="space-y-4 text-h2">
+						{slot.rows.map((row) => (
+							<div class:list={['grid gap-4', row.length > 1 && 'md:grid-cols-2']}>
+								{row.map((session) => <ScheduleItem session={session} />)}
+							</div>
+						))}
+					</div>
+				</li>
+			))
+		}
+	</ol>
+
+	<div class="mt-12 flex justify-center md:mt-16">
+		<button
+			type="button"
+			data-timeline-toggle
+			aria-expanded="false"
+			aria-controls="schedule-timeline"
+			class="cursor-pointer rounded-sm font-body font-bold text-content-primary underline decoration-2 underline-offset-8 transition-colors hover:text-content-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-surface-accent"
+		>
+			View full timeline
+		</button>
+	</div>
+
+
+	<Fragment slot="decorations">
+
+<!-- Shooting star background also bleeds from hero into schedule
+		<img
+src="assets/backgrounds/shooting_star_background.svg"
+			alt=""
+			decoding="async"
+			class="rotate-z-180 pointer-events-none absolute inset-0 h-full w-full object-cover"
+		/>
+-->
+
+		<div
+			aria-hidden="true"
+			class="pointer-events-none absolute inset-0 bg-repeat bg-auto bg-[url('/assets/backgrounds/star_background.svg')] md:hidden"
+		>
+		</div>
+
+		<img
+			src="/assets/backgrounds/star_background.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute inset-0 hidden h-full w-full object-cover md:block"
+		/>
+
+		<img
+			src="/assets/decorations/star_trail_4.svg"
+			alt=""
+			decoding="async"
+			class="star-trail pointer-events-none absolute overflow-visible w-[100vw]
+			       right-[-10vw]
+			       sm:right-[-9vw]
+			       md:right-[-8vw]
+			       lg:right-[-7vw]
+			       xl:right-[-6vw]
+			       2xl:right-[-5vw]
+			       3xl:right-[-4vw]
+			       top-[4vh]
+			       sm:top-[-20vh]
+			       md:top-[2vh]
+			       lg:top-0
+			       xl:top-[-2vh]"
+		/>
+
+		<img
+			src="/assets/decorations/constellation_1.svg"
+			alt=""
+			decoding="async"
+class="pointer-events-none absolute top-[37vw] right-[22vw] hidden w-[12rem] translate-x-1/2 
+xl:right-[11vw] xl:bottom-[10vh] xl:block
+2xl:right[11vw] 2xl:bottom-[10vh]
+3xl:right-[14vw] 3xl:bottom-[10vh]"
+		/>
+		<img
+			src="/assets/decorations/constellation_2.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute bottom-[40vh] left-[19vw] w-[5rem] -translate-x-1/2
+			       sm:w-[6rem]
+			       md:w-[7.5rem]
+			       lg:w-[9rem]
+xl:w-[10rem]
+2xl:w-[11rem]
+3xl:w-[12rem]"
+
+		/>
+		<img
+			src="/assets/decorations/northstar_ticket.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute bottom-[-23vh] left-1/2 -translate-x-1/2  overflow-visible max-w-none
+			       w-[115vw]
+			       sm:w-[110vw] sm:bottom-[-7vh]
+			       md:w-[105vw] md:bottom-[-8vh]
+			       lg:w-[102vw] lg:bottom-[-12vh]
+			       xl:w-[100vw] xl:bottom-[-14vh]
+			       2xl:w-[100vw] 2xl:bottom-[-16vh]
+			       3xl:w-[100vw] 3xl:bottom-[-20vh]"
+		/>
+
+	</Fragment>
+</Section>
+
+<style>
+	.connector-dot,
+	.connector-line {
+		transition:
+			background-color 200ms ease-in-out,
+			box-shadow 200ms ease-in-out;
+	}
+
+	li:has(:global(.schedule-item):is(:hover, :focus-within, [data-pressed])) .connector-dot {
+		background-color: var(--color-surface-white);
+		box-shadow: 0 0 20px 0 var(--color-surface-white);
+	}
+
+	li:has(:global(.schedule-item):is(:hover, :focus-within, [data-pressed])) .connector-line {
+		background-color: var(--color-surface-white);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.connector-dot,
+		.connector-line {
+			transition: none;
+		}
+	}
+
+	/*
+	 * The trail's band enters at the artwork's own top-left, so any top offset slices it flat
+	 * and reads as a crop edge. Fading the top keeps it reading as a bleed.
+	 */
+	.star-trail {
+		-webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
+		mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
+	}
+
+	[data-expanded='false'] > li:nth-child(n + 6) {
+		display: none;
+	}
+
+	[data-expanded='false'] > li:nth-child(5) .row-spine {
+		background-color: transparent;
+		background-image: linear-gradient(to bottom, var(--color-surface-brand), transparent);
+	}
+</style>
+
+<script>
+	document.addEventListener(
+		'touchstart',
+		(e) => {
+			const target = e.target instanceof Element ? e.target : null;
+			const card = target?.closest('.schedule-item');
+
+			document.querySelectorAll('.schedule-item[data-pressed]').forEach((el) => {
+				if (el !== card) el.removeAttribute('data-pressed');
+			});
+
+			card?.setAttribute('data-pressed', '');
+		},
+		{ passive: true }
+	);
+
+	document.querySelectorAll('[data-timeline-toggle]').forEach((button) => {
+		button.addEventListener('click', () => {
+			const list = document.getElementById(button.getAttribute('aria-controls'));
+			if (!list) return;
+
+			const expanded = list.getAttribute('data-expanded') === 'true';
+			list.setAttribute('data-expanded', expanded ? 'false' : 'true');
+			button.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+			button.textContent = expanded ? 'View full timeline' : 'Show less';
+		});
+	});
+</script>
