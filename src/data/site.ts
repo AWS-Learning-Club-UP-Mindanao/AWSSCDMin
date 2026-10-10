@@ -1,8 +1,20 @@
-// Placeholders: the mailbox and the profile URLs still need to come from the team.
-export const contactEmail = 'insert.SBG@gmail.com';
+// Contact details for the closing CTA.
+export const contactEmail = "awscc.upmindanao@gmail.com";
 
 export const socials = [
-	{ label: 'Facebook', href: '#', icon: '/assets/icons/facebook.svg' },
-	{ label: 'Instagram', href: '#', icon: '/assets/icons/instagram.svg' },
-	{ label: 'LinkedIn', href: '#', icon: '/assets/icons/linkedin.svg' },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/awscc.up",
+    icon: "/assets/icons/facebook.svg",
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/awscc_upmin/",
+    icon: "/assets/icons/instagram.svg",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/awscc-upmin",
+    icon: "/assets/icons/linkedin.svg",
+  },
 ];
