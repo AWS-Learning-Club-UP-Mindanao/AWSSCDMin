@@ -1,9 +1,11 @@
 ---
+import type { HTMLAttributes } from 'astro/types';
+
 // Renders as <button> by default, or <a> when href is provided.
 // Variants: cta (yellow glow), purple, outlined, and ghost.
 // Icon slots: icon-start and icon-end accept any SVG or image element.
 
-export interface Props {
+export interface Props extends Omit<HTMLAttributes<'button'>, 'class' | 'type'> {
   label: string;
   href?: string;
   /** Alias for href for callers that use URL terminology. */
@@ -11,6 +13,7 @@ export interface Props {
   variant?: 'cta' | 'purple' | 'outlined' | 'ghost';
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
+  iconOnly?: boolean;
   class?: string;
   disabled?: boolean;
   // Ignored when href is set.
@@ -28,11 +31,13 @@ const {
   variant = 'cta',
   size = 'md',
   fullWidth = false,
+  iconOnly = false,
   class: className = '',
   disabled = false,
   type = 'button',
   target,
   rel: relProp,
+  ...attributes
 } = Astro.props;
 
 const resolvedHref = href ?? url;
@@ -113,6 +118,7 @@ const classes = [
   isLink ? (
     // href is cleared when disabled so the link stays focusable but cannot navigate.
     <a
+      {...attributes}
       href={disabled ? undefined : resolvedHref}
       class={classes}
       data-variant={variant}
@@ -151,12 +157,12 @@ const classes = [
           />
         )}
         <slot name="icon-start" />
-        <span class="btn-label">{label}</span>
+        <span class={iconOnly ? 'sr-only' : 'btn-label'}>{label}</span>
         <slot name="icon-end" />
       </span>
     </a>
   ) : (
-    <button type={type} class={classes} data-variant={variant} disabled={disabled}>
+    <button {...attributes} type={type} class={classes} data-variant={variant} disabled={disabled}>
       {variant === 'cta' && (
         <img
           class="btn-sparkle"
@@ -187,7 +193,7 @@ const classes = [
           />
         )}
         <slot name="icon-start" />
-        <span class="btn-label">{label}</span>
+        <span class={iconOnly ? 'sr-only' : 'btn-label'}>{label}</span>
         <slot name="icon-end" />
       </span>
     </button>
