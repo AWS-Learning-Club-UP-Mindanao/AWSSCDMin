@@ -31,14 +31,6 @@ const label = [session.type, session.room].filter(Boolean).join(' · ');
 </article>
 
 <style>
-	/*
-	 * Hover glow. Only the card under the cursor lights up, so when two rooms share a
-	 * timeslot the other one stays quiet.
-	 *
-	 * Hover is inside @media (hover: hover) so a touch tap cannot leave a card stuck
-	 * lit on mobile: there the [data-pressed] state set by the timeline's script is
-	 * what drives it, and it clears when another card or the page is tapped.
-	 */
 	.schedule-item {
 		transition:
 			border-color 200ms ease-in-out,
