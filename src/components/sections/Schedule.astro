@@ -23,9 +23,9 @@ import { schedule } from '../../data/schedule';
 
 					<div class="mt-[18px] flex items-center self-start">
 						<span
-							class="relative z-[1] ml-[14px] h-3 w-3 shrink-0 rounded-full bg-surface-brand-secondary md:ml-[38px]"
+							class="connector-dot relative z-[1] ml-[14px] h-3 w-3 shrink-0 rounded-full bg-surface-brand-secondary md:ml-[38px]"
 						></span>
-						<span class="h-[2px] flex-1 bg-surface-brand-secondary"></span>
+						<span class="connector-line h-[2px] flex-1 bg-surface-brand-secondary"></span>
 					</div>
 
 					{
@@ -147,3 +147,58 @@ xl:w-[10rem]
 
 	</Fragment>
 </Section>
+
+<style>
+	/*
+	 * The white connector state. Hovering, focusing or tapping a card lights that row's
+	 * dot and line white, with a white halo on the dot.
+	 *
+	 * :has() keeps the rule on the row, where the connector lives, so the card component
+	 * does not have to reach sideways into its sibling. The card carries the hover state
+	 * and this reads it back.
+	 */
+	.connector-dot,
+	.connector-line {
+		transition:
+			background-color 200ms ease-in-out,
+			box-shadow 200ms ease-in-out;
+	}
+
+	li:has(:global(.schedule-item):is(:hover, :focus-within, [data-pressed])) .connector-dot {
+		background-color: var(--color-surface-white);
+		box-shadow: 0 0 20px 0 var(--color-surface-white);
+	}
+
+	li:has(:global(.schedule-item):is(:hover, :focus-within, [data-pressed])) .connector-line {
+		background-color: var(--color-surface-white);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.connector-dot,
+		.connector-line {
+			transition: none;
+		}
+	}
+</style>
+
+<script>
+	/*
+	 * Mobile tap. A touch has no hover to leave, so the lit state is set on the tapped
+	 * card and held until another card or the page itself is tapped. Only one card is
+	 * ever lit, so a two-room timeslot highlights just the room that was tapped.
+	 */
+	document.addEventListener(
+		'touchstart',
+		(e) => {
+			const target = e.target instanceof Element ? e.target : null;
+			const card = target?.closest('.schedule-item');
+
+			document.querySelectorAll('.schedule-item[data-pressed]').forEach((el) => {
+				if (el !== card) el.removeAttribute('data-pressed');
+			});
+
+			card?.setAttribute('data-pressed', '');
+		},
+		{ passive: true }
+	);
+</script>
