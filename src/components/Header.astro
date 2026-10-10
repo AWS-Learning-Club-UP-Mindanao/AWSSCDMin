@@ -26,9 +26,20 @@ const links = [
 
   if (header && button && drawer && homeLink) {
     const mobile = window.matchMedia("(max-width: 767px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let drawerAnimation: Animation | null = null;
 
     const setOpen = (open: boolean, restoreFocus = false) => {
       const expanded = open && mobile.matches;
+      const wasHidden = drawer.hidden;
+      const currentStyle = getComputedStyle(drawer);
+      const opacity = wasHidden ? "0" : currentStyle.opacity;
+      const transform = reducedMotion.matches
+        ? "none"
+        : wasHidden ? "translateY(-12px)" : currentStyle.transform;
+
+      drawerAnimation?.cancel();
+      drawerAnimation = null;
 
       button.setAttribute("aria-expanded", String(expanded));
       button.setAttribute(
@@ -36,13 +47,46 @@ const links = [
         expanded ? "Close navigation menu" : "Open navigation menu",
       );
 
-      drawer.hidden = !expanded;
+      drawer.inert = !expanded;
+      drawer.setAttribute("aria-hidden", String(!expanded));
+
+      if (!mobile.matches || (!expanded && wasHidden)) {
+        drawer.hidden = !expanded;
+      } else {
+        drawer.hidden = false;
+        const animation = drawer.animate(
+          [
+            { opacity, transform },
+            {
+              opacity: expanded ? "1" : "0",
+              transform: reducedMotion.matches
+                ? "none"
+                : expanded ? "translateY(0)" : "translateY(-12px)",
+            },
+          ],
+          {
+            duration: reducedMotion.matches ? 120 : expanded ? 320 : 200,
+            easing: reducedMotion.matches
+              ? "ease-out"
+              : "cubic-bezier(0.22, 1, 0.36, 1)",
+            fill: "both",
+          },
+        );
+        drawerAnimation = animation;
+        animation.onfinish = () => {
+          if (drawerAnimation !== animation) return;
+          drawer.hidden = !expanded;
+          animation.cancel();
+          drawerAnimation = null;
+        };
+      }
 
       if (restoreFocus) {
         button.focus({ preventScroll: true });
       }
     };
 
+    drawer.hidden = true;
     setOpen(false);
     header.dataset.enhanced = "";
     button.hidden = false;
@@ -118,6 +162,10 @@ const links = [
         const target = mobile.matches ? button : homeLink;
         target.focus({ preventScroll: true });
       }
+    });
+
+    reducedMotion.addEventListener("change", () => {
+      setOpen(button.getAttribute("aria-expanded") === "true");
     });
   }
 </script>
@@ -382,26 +430,47 @@ const links = [
     }
 
     .mobile-drawer {
+      position: relative;
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      padding: 12px 20px 24px;
-      border-radius: 0 0 28px 28px;
+      gap: 12px;
+      min-height: 257px;
+      padding: 23px 24px 22px;
+      border-radius: 32px;
+      background: #320776BF;
+    }
+
+    .mobile-drawer::before {
+      position: absolute;
+      inset: 0;
+      border: 1px solid transparent;
+      border-bottom: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+          180deg,
+          #9F2CE5 0%,
+          #300BAB 51.92%,
+          #320776 100%
+        ) border-box;
+      mask:
+        linear-gradient(#fff 0 0) padding-box,
+        linear-gradient(#fff 0 0);
+      mask-composite: exclude;
+      pointer-events: none;
+      content: "";
     }
 
     .event-header[data-enhanced] .mobile-drawer {
       position: absolute;
       top: 100%;
       inset-inline: 0;
-      max-height: calc(100dvh - 80px);
+      min-height: 0;
+      max-height: calc(100dvh - 96px);
       overflow-y: auto;
-      border: 1px solid rgb(159 44 229 / 60%);
-      background: #320776;
-      box-shadow: 0 12px 24px rgb(0 0 0 / 20%);
     }
 
     .mobile-drawer :global(.header-nav-link) {
-      justify-content: flex-start;
+      justify-content: center;
       width: 100%;
       min-height: 44px;
       padding: 10px 12px;
