@@ -1,0 +1,64 @@
+---
+import Section from '../layout/Section.astro';
+
+const text =
+	'AWS Student Community Day Davao 2025 is a student-led cloud technology event that unites students, educators, and tech enthusiasts across Davao and nearby regions to learn, collaborate, and innovate through Amazon Web Services.';
+const words = text.split(' ');
+---
+
+<Section
+	id="about"
+	spacing="none"
+	class="bg-gradient-banner shadow-brand px-8 py-16 lg:px-16 lg:py-[95px] min-[1728px]:px-[330px]"
+>
+	<h4 class="text-h5 md:text-h4 text-content-secondary" data-scroll-reveal>
+		{
+			words.map((word) => (
+				<>
+					<span class="reveal-word">{word}</span>{' '}
+				</>
+			))
+		}
+	</h4>
+</Section>
+
+<style>
+	.reveal-word[data-lit] {
+		color: var(--color-content-primary);
+	}
+</style>
+
+<script>
+	const heading = document.querySelector<HTMLElement>('[data-scroll-reveal]');
+
+	if (heading) {
+		const words = heading.querySelectorAll<HTMLElement>('.reveal-word');
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		let ticking = false;
+
+		const update = () => {
+			const vh = window.innerHeight;
+			const { top } = heading.getBoundingClientRect();
+
+			// 0 when the heading's top is at 85% of the viewport, 1 once it reaches 35%
+			const progress = reduceMotion
+				? 1
+				: Math.min(1, Math.max(0, (vh * 0.85 - top) / (vh * 0.5)));
+
+			const litCount = Math.ceil(progress * words.length);
+			words.forEach((word, i) => word.toggleAttribute('data-lit', i < litCount));
+			ticking = false;
+		};
+
+		const onScroll = () => {
+			if (!ticking) {
+				ticking = true;
+				requestAnimationFrame(update);
+			}
+		};
+
+		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', onScroll);
+		update();
+	}
+</script>
