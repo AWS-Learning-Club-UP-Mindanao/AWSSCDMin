@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+html {
+	scroll-padding-top: 116px;
+}
+
+@media (max-width: 767px) {
+	html {
+		scroll-padding-top: 96px;
+	}
+}
+
 /* Hover styles are suppressed on an element carrying [data-touch-released]
    (set by the Button touch handlers after touchend) so a tap doesn't leave
    the sticky mobile :hover state stuck until the pointer moves away.
