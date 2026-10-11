@@ -1,0 +1,227 @@
+---
+import Section from '../layout/Section.astro';
+import Button from '../Button.astro';
+---
+
+<Section
+	id="cta"
+	spacing="none"
+	class="bg-surface-primary"
+>
+	<div class="flex min-h-[66vw] flex-col items-center justify-center px-22.5 py-16 text-center md:py-24">
+		<img
+			src="/assets/logos/scd_logo_1.svg"
+			alt="AWS Student Community Day Mindanao 2026"
+			decoding="async"
+			class="aspect-[255/173] h-auto w-[min(92.6vw,364px)] mix-blend-lighten min-[393px]:w-[calc(43.9vw_+_191.5px)] lg:w-[calc(25.57vw_+_379.2px)] min-[1728px]:w-[47.5vw] min-[1728px]:max-w-[1500px]"
+		/>
+
+		<Button label="Get Ticket" href="#tickets" variant="cta" class="mt-10 md:mt-12" />
+	</div>
+
+	<section class="about-title">
+		<h1>What is</h1>
+		<h5 class="about-subtitle">AWS Student Community Day Davao 2026?</h5>
+	</section>
+
+	<Fragment slot="decorations">
+		<div
+			aria-hidden="true"
+			class="hero-bg pointer-events-none absolute inset-0 top-[-4vh] h-full w-full"
+		></div>
+
+		<!-- Colored nebulae: SVG is only the shape (mask), color comes from CSS -->
+		<div
+			aria-hidden="true"
+			class="nebulae-color pointer-events-none absolute inset-0 top-[-4vh] h-full w-full"
+		></div>
+
+		<!-- Soft glow pass -->
+		<div
+			aria-hidden="true"
+			class="nebulae-color nebulae-glow pointer-events-none absolute inset-0 top-[-4vh] h-full w-full"
+		></div>
+
+		<img
+			src="/assets/decorations/nebulae_extension.svg"
+			alt=""
+			decoding="async"
+			class="nebulae-extension"
+		/>
+
+		<img
+			src="/assets/backgrounds/star_background.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute inset-0 h-full w-full object-cover"
+		/>
+
+		<img
+			src="/assets/backgrounds/shooting_star_background.svg"
+			alt=""
+			decoding="async"
+			class="pointer-events-none absolute inset-0 h-full w-full object-cover object-[50%_100%]"
+		/>
+	</Fragment>
+</Section>
+
+<style>
+	/* ---------- Background glow ---------- */
+	.hero-bg {
+		/* Mobile: horizontal radius in vw so the glow spans the screen */
+		background: radial-gradient(48% 60.74% at 50% 45.92%, #320776 0%, #130445 65%, #020110 100%);
+	}
+
+	@media (min-width: 768px) {
+		.hero-bg {
+			background: radial-gradient(48% 44% at 50% 45%, #320776 0%, #130445 65%, #020110 100%);
+		}
+	}
+
+	@media (min-width: 1728px) {
+		.hero-bg {
+			background: radial-gradient(40.3% 50.72% at 50% 45.92%, #320776 0%, #130445 65%, #020110 100%);
+		}
+	}
+
+	/* ---------- Hero nebulae (SVG used as mask, color from CSS) ---------- */
+	.nebulae-color {
+		background:
+			radial-gradient(28% 30% at 22% 62%, #ff63e6 0%, rgba(255, 99, 230, 0) 70%),
+			radial-gradient(26% 32% at 80% 58%, #c04dff 0%, rgba(192, 77, 255, 0) 70%),
+			linear-gradient(100deg, #3a1fe0 0%, #7a3cff 35%, #7a3cff 65%, #4a22e8 100%);
+
+		-webkit-mask-image:
+			url('/assets/decorations/nebulae_hero.svg'),
+			linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+		mask-image:
+			url('/assets/decorations/nebulae_hero.svg'),
+			linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+		-webkit-mask-size: cover, 100% 100%;
+		mask-size: cover, 100% 100%;
+		-webkit-mask-position: center, center;
+		mask-position: center, center;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-composite: source-in;
+		mask-composite: intersect;
+
+		mix-blend-mode: screen;
+		opacity: 0.9;
+		will-change: transform;
+		isolation: isolate;
+	}
+
+	.nebulae-glow {
+		mix-blend-mode: plus-lighter;
+		opacity: 0.25;
+		filter: blur(6px);
+	}
+
+	/* ---------- Nebulae extension (hangs below the hero) ---------- */
+	.nebulae-extension {
+		--ext-width: 100%;
+		--ext-left: 0%;
+		--ext-overhang: 60vw;
+
+		position: absolute;
+		left: var(--ext-left);
+		bottom: calc(var(--ext-overhang) * -1);
+		width: var(--ext-width);
+		max-width: none;
+		height: auto;
+		pointer-events: none;
+	}
+
+	/* Mobile */
+	@media (max-width: 767px) {
+		.nebulae-extension {
+			--ext-width: 170%;
+			--ext-left: -35%;
+			--ext-overhang: 110vw;
+
+			rotate: -8deg;
+			transform-origin: 50% 30%;
+		}
+	}
+
+	/* Tablet */
+	@media (min-width: 768px) and (max-width: 1279px) {
+		.nebulae-extension {
+			--ext-width: 120%;
+			--ext-left: -10%;
+			--ext-overhang: 70vw;
+		}
+	}
+
+	/* Desktop */
+	@media (min-width: 1280px) {
+		.nebulae-extension {
+			--ext-width: 100%;
+			--ext-left: -2%;
+			--ext-overhang: 60vw;
+		}
+	}
+
+	.about-title {
+		--about-left: 16px;     /* 393px and below */
+		--about-bottom: -26vw;    /* distance from the bottom of the hero (calibrate) */
+
+		position: absolute;
+		left: var(--about-left);
+		bottom: var(--about-bottom);
+		z-index: 1;
+		text-align: left;
+		max-width: calc(100% - var(--about-left) * 2);
+
+		h5 {
+			background: var(--background-image-gradient-content);
+			color: var(--color-surface-brand);
+			padding: 16px 32px;
+			border-radius: 16px;
+			box-shadow: 0 0 33.3px 4px rgba(255, 195, 0, 0.85) inset;
+		}
+	}
+
+	/* 393 -> 1024: 16px to 80px */
+	@media (min-width: 393px) {
+		.about-title {
+			--about-left: calc(10.143vw - 23.86px);
+		}
+	}
+
+	/* 1024 -> 1728: 80px to 180px */
+	@media (min-width: 1024px) {
+		.about-title {
+			--about-left: calc(14.205vw - 65.45px);
+		}
+	}
+
+	/* 1728+: same proportion as the logo */
+	@media (min-width: 1728px) {
+		.about-title {
+			--about-left: 10.42vw;
+		}
+	}
+
+	/* Mobile: centered */
+	@media (max-width: 767px) {
+		.about-title {
+			--about-left: 0px;
+			--about-bottom: -42vw;
+
+			left: 0;
+			right: 0;
+			margin-inline: auto;
+			width: min(295px, calc(100vw - 32px));
+			max-width: none;
+			text-align: center;
+		}
+
+		.about-title h5 {
+			border-radius: 12px;
+			padding: 8px 32px;
+			width: 100%;
+		}
+	}
+</style>
