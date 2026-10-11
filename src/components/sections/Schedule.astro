@@ -94,13 +94,12 @@ class="text-body lg:text-[25px] underline decoration-white"
 			class="pointer-events-none absolute inset-0 hidden h-full w-full object-cover md:block"
 		/>
 
-		<img
-			src="/assets/decorations/star_trail_4.svg"
-			alt=""
-			decoding="async"
-class="pointer-events-none absolute left-[20vw] w-[120vw] sm:left-[20vw] sm:w-[120vw] md:left-[-15vw] md:w-[120rem] lg:left-0 lg:w-[140rem] xl:left-[-2vw] xl:w-[150rem] 2xl:left-[-3vw] 3xl:left-[-4vw]
-top-[-15vh] sm:top-[-18vh] md:top-[-22vh] lg:top-[-30vh] xl:top-[-50vh] 2xl:top-[-70vh] 3xl:top-[-85vh]"
-		/>
+		<div
+			aria-hidden="true"
+			class="pointer-events-none absolute left-[20vw] w-[120vw] aspect-[2205/1955] sm:left-[20vw] sm:w-[120vw] md:left-[-15vw] md:w-[120rem] lg:left-0 lg:w-[140rem] xl:left-[-2vw] xl:w-[150rem] 2xl:left-[-3vw] 3xl:left-[-4vw]
+top-[-25vh] sm:top-[-28vh] md:top-[-32vh] lg:top-[-45vh] xl:top-[-65vh] 2xl:top-[-85vh] 3xl:top-[-100vh]
+star-trail-mask"
+		></div>
 
 		<img
 			src="/assets/decorations/constellation_1.svg"
@@ -172,6 +171,29 @@ xl:w-[10rem]
 	[data-expanded='false'] > li:nth-child(5) .row-spine {
 		background-color: transparent;
 		background-image: linear-gradient(to bottom, var(--color-surface-brand), transparent);
+	}
+
+	.star-trail-mask {
+		background:
+			radial-gradient(28% 30% at 22% 62%, rgba(255, 99, 230, 0.9) 0%, rgba(255, 99, 230, 0) 70%),
+			radial-gradient(26% 32% at 80% 58%, rgba(192, 77, 255, 0.9) 0%, rgba(192, 77, 255, 0) 70%),
+			linear-gradient(100deg, #3a1fe0 0%, #7a3cff 35%, #7a3cff 65%, #4a22e8 100%);
+		-webkit-mask-image:
+			url('/assets/decorations/star_trail_4.svg'),
+			linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+		mask-image:
+			url('/assets/decorations/star_trail_4.svg'),
+			linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
+		-webkit-mask-size: cover, 100% 100%;
+		mask-size: cover, 100% 100%;
+		-webkit-mask-position: center, center;
+		mask-position: center, center;
+		-webkit-mask-repeat: no-repeat;
+		mask-repeat: no-repeat;
+		-webkit-mask-composite: source-in;
+		mask-composite: intersect;
+		mix-blend-mode: screen;
+		opacity: 0.9;
 	}
 </style>
 
