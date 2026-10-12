@@ -77,12 +77,12 @@ import Button from '../Button.astro';
 <style>
 	/* ---------- Hero extra height (shared by spacer, layers, extension) ---------- */
 	:global(:root) {
-		--hero-extra: 20vw;
+		--hero-extra: 36vw;
 	}
 
 	@media (max-width: 767px) {
 		:global(:root) {
-			--hero-extra: 45vw;
+			--hero-extra: 50vw;
 		}
 	}
 
@@ -218,7 +218,7 @@ import Button from '../Button.astro';
 	/* ---------- About title ---------- */
 	.about-title {
 		--about-left: 16px;     /* 393px and below */
-		--about-bottom: -16vw;  /* distance from the bottom of the (extended) hero */
+		--about-bottom: 2vw;  /* distance from the bottom of the (extended) hero */
 
 		position: absolute;
 		left: var(--about-left);
@@ -361,7 +361,7 @@ import Button from '../Button.astro';
 	@media (max-width: 767px) {
 		.about-title {
 			--about-left: 0px;
-			--about-bottom: -6vw;
+			--about-bottom: 4vw;
 
 			left: 0;
 			right: 0;
