@@ -8,7 +8,7 @@ import Button from '../Button.astro';
 	spacing="none"
 	class="bg-surface-primary"
 >
-	<div class="flex min-h-[66vw] flex-col items-center justify-center px-22.5 py-16 text-center md:py-24">
+	<div class="flex min-h-[66vw] flex-col items-center justify-center px-4 py-16 text-center md:px-22.5 md:py-24">
 		<img
 			src="/assets/logos/scd_logo_1.svg"
 			alt="AWS Student Community Day Mindanao 2026"
@@ -16,31 +16,40 @@ import Button from '../Button.astro';
 			class="aspect-[255/173] h-auto w-[min(92.6vw,364px)] mix-blend-lighten min-[393px]:w-[calc(43.9vw_+_191.5px)] lg:w-[calc(25.57vw_+_379.2px)] min-[1728px]:w-[47.5vw] min-[1728px]:max-w-[1500px]"
 		/>
 
-		<Button label="Get Ticket" href="#tickets" variant="cta" class="mt-10 md:mt-12" />
+		<Button
+			label="Get Ticket"
+			href="#tickets"
+			variant="cta"
+			class="mt-10 w-fit shrink-0 whitespace-nowrap md:mt-12"
+		/>
 	</div>
 
+	<!-- Reserves extra hero height for the absolutely positioned title -->
+	<div class="hero-spacer" aria-hidden="true"></div>
+
+	<!-- The glow shadow behind this is its ::before (see styles) -->
 	<section class="about-title">
-		<h1>What is</h1>
+		<div class="about-heading">
+			<h1>What is</h1>
+			<img
+				src="/assets/decorations/bright_star.svg"
+				alt=""
+				aria-hidden="true"
+				decoding="async"
+				class="about-star"
+			/>
+		</div>
 		<h5 class="about-subtitle">AWS Student Community Day Davao 2026?</h5>
 	</section>
 
 	<Fragment slot="decorations">
-		<div
-			aria-hidden="true"
-			class="hero-bg pointer-events-none absolute inset-0 top-[-4vh] h-full w-full"
-		></div>
+		<div aria-hidden="true" class="hero-layer hero-bg"></div>
 
 		<!-- Colored nebulae: SVG is only the shape (mask), color comes from CSS -->
-		<div
-			aria-hidden="true"
-			class="nebulae-color pointer-events-none absolute inset-0 top-[-4vh] h-full w-full"
-		></div>
+		<div aria-hidden="true" class="hero-layer nebulae-color"></div>
 
 		<!-- Soft glow pass -->
-		<div
-			aria-hidden="true"
-			class="nebulae-color nebulae-glow pointer-events-none absolute inset-0 top-[-4vh] h-full w-full"
-		></div>
+		<div aria-hidden="true" class="hero-layer nebulae-color nebulae-glow"></div>
 
 		<img
 			src="/assets/decorations/nebulae_extension.svg"
@@ -60,15 +69,39 @@ import Button from '../Button.astro';
 			src="/assets/backgrounds/shooting_star_background.svg"
 			alt=""
 			decoding="async"
-			class="pointer-events-none absolute inset-0 h-full w-full object-cover object-[50%_100%]"
+			class="shooting-stars pointer-events-none absolute inset-0 h-full w-full object-cover object-[60%_100%]"
 		/>
 	</Fragment>
 </Section>
 
 <style>
+	/* ---------- Hero extra height (shared by spacer, layers, extension) ---------- */
+	:global(:root) {
+		--hero-extra: 20vw;
+	}
+
+	@media (max-width: 767px) {
+		:global(:root) {
+			--hero-extra: 45vw;
+		}
+	}
+
+	.hero-spacer {
+		height: var(--hero-extra);
+	}
+
+	/* Layers sized to the ORIGINAL hero height (section minus the extra) */
+	.hero-layer {
+		position: absolute;
+		left: 0;
+		top: -4vh;
+		width: 100%;
+		height: calc(100% - var(--hero-extra));
+		pointer-events: none;
+	}
+
 	/* ---------- Background glow ---------- */
 	.hero-bg {
-		/* Mobile: horizontal radius in vw so the glow spans the screen */
 		background: radial-gradient(48% 60.74% at 50% 45.92%, #320776 0%, #130445 65%, #020110 100%);
 	}
 
@@ -118,15 +151,16 @@ import Button from '../Button.astro';
 		filter: blur(6px);
 	}
 
-	/* ---------- Nebulae extension (hangs below the hero) ---------- */
+	/* ---------- Nebulae extension (hangs below the original hero edge) ---------- */
 	.nebulae-extension {
 		--ext-width: 100%;
 		--ext-left: 0%;
-		--ext-overhang: 60vw;
+		--ext-overhang: 70vw;
 
 		position: absolute;
 		left: var(--ext-left);
-		bottom: calc(var(--ext-overhang) * -1);
+		/* offset by the extra height so it stays where it was */
+		bottom: calc(var(--hero-extra) - var(--ext-overhang));
 		width: var(--ext-width);
 		max-width: none;
 		height: auto;
@@ -136,9 +170,9 @@ import Button from '../Button.astro';
 	/* Mobile */
 	@media (max-width: 767px) {
 		.nebulae-extension {
-			--ext-width: 170%;
-			--ext-left: -35%;
-			--ext-overhang: 110vw;
+			--ext-width: 120%;
+			--ext-left: -18%;
+			--ext-overhang: 116vw;
 
 			rotate: -8deg;
 			transform-origin: 50% 30%;
@@ -148,9 +182,9 @@ import Button from '../Button.astro';
 	/* Tablet */
 	@media (min-width: 768px) and (max-width: 1279px) {
 		.nebulae-extension {
-			--ext-width: 120%;
-			--ext-left: -10%;
-			--ext-overhang: 70vw;
+			--ext-width: 100%;
+			--ext-left: 0%;
+			--ext-overhang: 87vw;
 		}
 	}
 
@@ -159,13 +193,32 @@ import Button from '../Button.astro';
 		.nebulae-extension {
 			--ext-width: 100%;
 			--ext-left: -2%;
-			--ext-overhang: 60vw;
+			--ext-overhang: 88vw;
 		}
 	}
 
+	/* ---------- Shooting stars offset ---------- */
+	.shooting-stars {
+		--stars-y: 2vw;              /* desktop: positive moves the stars down */
+		translate: 0 var(--stars-y);
+	}
+
+	@media (min-width: 768px) and (max-width: 1279px) {
+		.shooting-stars {
+			--stars-y: 5vw;
+		}
+	}
+
+	@media (max-width: 767px) {
+		.shooting-stars {
+			--stars-y: 9vw;
+		}
+	}
+
+	/* ---------- About title ---------- */
 	.about-title {
 		--about-left: 16px;     /* 393px and below */
-		--about-bottom: -26vw;    /* distance from the bottom of the hero (calibrate) */
+		--about-bottom: -16vw;  /* distance from the bottom of the (extended) hero */
 
 		position: absolute;
 		left: var(--about-left);
@@ -173,42 +226,142 @@ import Button from '../Button.astro';
 		z-index: 1;
 		text-align: left;
 		max-width: calc(100% - var(--about-left) * 2);
-
-		h5 {
-			background: var(--background-image-gradient-content);
-			color: var(--color-surface-brand);
-			padding: 16px 32px;
-			border-radius: 16px;
-			box-shadow: 0 0 33.3px 4px rgba(255, 195, 0, 0.85) inset;
-		}
 	}
 
-	/* 393 -> 1024: 16px to 80px */
+	/* Glow shadow behind the title (base values = your 1440px look) */
+	.about-title::before {
+		--shadow-w: 896px;
+		--shadow-h: 248px;
+		--shadow-blur: 113.45px;
+		--shadow-x: 0px;   /* nudge left/right from the title's center */
+		--shadow-y: 0px;   /* nudge up/down from the title's center */
+
+		content: '';
+		position: absolute;
+		z-index: 0;
+		left: 50%;
+		top: 50%;
+		width: var(--shadow-w);
+		height: var(--shadow-h);
+		transform: translate(calc(-50% + var(--shadow-x)), calc(-50% + var(--shadow-y)));
+
+		border-radius: 896px;
+		background: var(--surface-secondary, #130445);
+		filter: blur(var(--shadow-blur));
+		pointer-events: none;
+	}
+
+	/* Heading row: "What is" + bright star (above the pill so the star tip overlaps it) */
+	.about-heading {
+		position: relative;
+		z-index: 2;
+	}
+
+	.about-title h5 {
+		position: relative;
+		z-index: 2;
+		background: var(--background-image-gradient-content);
+		color: var(--color-surface-brand);
+		padding: 16px 32px;
+		border-radius: 16px;
+		box-shadow: 0 0 33.3px 4px rgba(255, 195, 0, 0.85) inset;
+	}
+
+	/* Bright star (base values = your 1440px look) */
+	.about-star {
+		--star-w: 70%;      /* star width relative to the title/pill width */
+		--star-left: 26%;   /* distance from the title's left edge */
+		--star-y: -120%;    /* negative moves the star down into the pill */
+
+		position: absolute;
+		left: var(--star-left);
+		bottom: var(--star-y);
+		width: var(--star-w);
+		max-width: none;
+		height: auto;
+		pointer-events: none;
+	}
+
+	/* ---------- Title left margin ---------- */
+	/* 393px -> 1024px: 16px to 80px */
 	@media (min-width: 393px) {
 		.about-title {
 			--about-left: calc(10.143vw - 23.86px);
 		}
 	}
 
-	/* 1024 -> 1728: 80px to 180px */
+	/* 1024px -> 1728px: 80px to 180px */
 	@media (min-width: 1024px) {
 		.about-title {
 			--about-left: calc(14.205vw - 65.45px);
 		}
 	}
 
-	/* 1728+: same proportion as the logo */
+	/* 1728px and up: same proportion as the logo */
 	@media (min-width: 1728px) {
 		.about-title {
 			--about-left: 10.42vw;
 		}
 	}
 
-	/* Mobile: centered */
+	/* ---------- Star + shadow per breakpoint ---------- */
+
+	/* 1728px and up */
+	@media (min-width: 1728px) {
+		.about-title::before {
+			--shadow-w: 896px;
+			--shadow-h: 274px;
+			--shadow-blur: 113.45px;
+			--shadow-x: 0px;
+			--shadow-y: 0px;
+		}
+
+		.about-star {
+			--star-w: 70%;
+			--star-left: 26%;
+			--star-y: -120%;
+		}
+	}
+
+	/* 768px to 1279px (tuned for 1024px) */
+	@media (min-width: 768px) and (max-width: 1279px) {
+		.about-title::before {
+			--shadow-w: 640px;
+			--shadow-h: 210px;
+			--shadow-blur: 80px;
+			--shadow-x: 0px;
+			--shadow-y: 0px;
+		}
+
+		.about-star {
+			--star-w: 60%;
+			--star-left: 26%;
+			--star-y: -110%;
+		}
+	}
+
+	/* 768px to 1023px: star ramps from the 768 values to the 1024 values */
+	@media (min-width: 768px) and (max-width: 1023px) {
+		.about-title::before {
+			--shadow-w: 600px;
+			--shadow-h: 180px;
+			--shadow-blur: 80px;
+			--shadow-x: 0px;
+			--shadow-y: 0px;
+		}
+
+		.about-star {
+			--star-w: calc(40% + 1.953vw);
+			--star-left: calc(-24% + 24vw);
+			--star-y: calc(-70% - 2vw);
+		}
+	}
+
+	/* Mobile (tuned for 393px): centered title */
 	@media (max-width: 767px) {
 		.about-title {
 			--about-left: 0px;
-			--about-bottom: -42vw;
+			--about-bottom: -6vw;
 
 			left: 0;
 			right: 0;
@@ -218,10 +371,28 @@ import Button from '../Button.astro';
 			text-align: center;
 		}
 
+		.about-title::before {
+			--shadow-w: 100vw;
+			--shadow-h: 30vw;
+			--shadow-blur: 70px;
+			--shadow-x: 0px;
+			--shadow-y: 0px;
+		}
+
+		.about-title h1 {
+			padding-right: 30px;
+		}
+
 		.about-title h5 {
 			border-radius: 12px;
 			padding: 8px 32px;
 			width: 100%;
+		}
+
+		.about-star {
+			--star-w: 55%;
+			--star-left: 50%;
+			--star-y: -105%;
 		}
 	}
 </style>
