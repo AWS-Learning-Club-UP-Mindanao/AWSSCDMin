@@ -11,3 +11,62 @@ import { faqs } from '../../data/faqs';
 		{faqs.map((faq) => <FAQItem question={faq.question} answer={faq.answer} />)}
 	</div>
 </Section>
+
+<script>
+  const nativeBounce =
+    CSS.supports("interpolate-size", "allow-keywords") &&
+    CSS.supports("selector(::details-content)");
+
+  /* Firefox and Safari can't interpolate a disclosure to its intrinsic height, so they
+     get the same two moves by hand. Chromium takes the CSS path in FAQItem instead. */
+  if (!nativeBounce) {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    document.querySelectorAll<HTMLDetailsElement>(".faq-item").forEach((item) => {
+      const summary = item.querySelector("summary");
+      const panel = item.querySelector<HTMLElement>(".faq-answer");
+
+      if (!summary || !panel) return;
+
+      let running: Animation | null = null;
+
+      summary.addEventListener("click", (event) => {
+        event.preventDefault();
+        running?.cancel();
+        running = null;
+
+        const opening = !item.open;
+
+        if (reducedMotion.matches) {
+          item.open = opening;
+          return;
+        }
+
+        if (opening) {
+          /* pin it shut before the browser paints, so the box never flashes open */
+          panel.style.height = "0px";
+          item.open = true;
+          const height = panel.scrollHeight;
+          panel.style.height = "";
+          running = panel.animate(
+            { height: ["0px", `${height}px`] },
+            { duration: 420, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)" },
+          );
+          return;
+        }
+
+        const height = panel.getBoundingClientRect().height;
+        running = panel.animate(
+          { height: [`${height}px`, "0px"] },
+          { duration: 360, easing: "cubic-bezier(0.36, -0.55, 0.6, 1)" },
+        );
+        running.finished.then(
+          () => {
+            item.open = false;
+          },
+          () => {},
+        );
+      });
+    });
+  }
+</script>

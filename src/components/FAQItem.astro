@@ -28,25 +28,43 @@ const { question, answer } = Astro.props;
 				stroke-linejoin="round"></path>
 		</svg>
 	</summary>
-	<p class="faq-answer px-8 pb-5 text-body text-content-secondary text-pretty">{answer}</p>
+
+	<div class="faq-answer">
+		<p class="px-8 pb-5 text-body text-content-secondary text-pretty">{answer}</p>
+	</div>
 </details>
 
 <style>
-	/* Springs the box open. Browsers without ::details-content just open instantly. */
 	.faq-item {
-		interpolate-size: allow-keywords;
+		--faq-open: 420ms cubic-bezier(0.34, 1.56, 0.64, 1);
+		--faq-close: 360ms cubic-bezier(0.36, -0.55, 0.6, 1);
 	}
 
-	.faq-item::details-content {
-		block-size: 0;
+	.faq-answer {
 		overflow: hidden;
-		transition:
-			block-size 340ms cubic-bezier(0.34, 1.56, 0.64, 1),
-			content-visibility 340ms allow-discrete;
 	}
 
-	.faq-item[open]::details-content {
-		block-size: auto;
+	/* Chromium opens and closes the box itself. No other engine can interpolate to an
+	   intrinsic height yet, so there the script in FAQ.astro does the same two moves. */
+	@supports (interpolate-size: allow-keywords) and selector(::details-content) {
+		.faq-item {
+			interpolate-size: allow-keywords;
+		}
+
+		.faq-item::details-content {
+			block-size: 0;
+			overflow: hidden;
+			transition:
+				block-size var(--faq-close),
+				content-visibility var(--faq-close) allow-discrete;
+		}
+
+		.faq-item[open]::details-content {
+			block-size: auto;
+			transition:
+				block-size var(--faq-open),
+				content-visibility var(--faq-open) allow-discrete;
+		}
 	}
 
 	.faq-item summary::-webkit-details-marker {
@@ -54,26 +72,24 @@ const { question, answer } = Astro.props;
 	}
 
 	.faq-chevron {
-		transition: transform 340ms cubic-bezier(0.34, 1.56, 0.64, 1);
+		transition: transform var(--faq-open);
 	}
 
 	.faq-item[open] .faq-chevron {
 		transform: rotate(180deg);
 	}
 
-	.faq-item[open] .faq-answer {
-		animation: faq-answer-in 340ms cubic-bezier(0.34, 1.56, 0.64, 1);
+	.faq-item[open] .faq-answer p {
+		animation: faq-answer-in var(--faq-open);
 	}
 
 	@keyframes faq-answer-in {
 		from {
 			opacity: 0;
-			transform: translateY(-8px);
 		}
 
 		to {
 			opacity: 1;
-			transform: none;
 		}
 	}
 
@@ -83,7 +99,7 @@ const { question, answer } = Astro.props;
 			transition: none;
 		}
 
-		.faq-item[open] .faq-answer {
+		.faq-item[open] .faq-answer p {
 			animation: none;
 		}
 	}
