@@ -1,0 +1,52 @@
+---
+interface Props {
+	question: string;
+	answer: string;
+}
+
+const { question, answer } = Astro.props;
+---
+
+<details class="faq-item overflow-hidden rounded-lg bg-surface-brand">
+	<summary
+		class="flex cursor-pointer list-none items-center justify-between gap-6 py-3.5 pl-8 pr-4 text-body text-content-primary hover:bg-surface-brand-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent [&::-webkit-details-marker]:hidden"
+	>
+		<span class="text-pretty">{question}</span>
+		<svg
+			class="faq-chevron shrink-0"
+			width="12"
+			height="7"
+			viewBox="0 0 12 7"
+			fill="none"
+			aria-hidden="true"
+		>
+			<path
+				d="M1 1l5 5 5-5"
+				stroke="currentColor"
+				stroke-width="1.5"
+				stroke-linecap="round"
+				stroke-linejoin="round"></path>
+		</svg>
+	</summary>
+	<p class="px-8 pb-5 text-body text-content-secondary text-pretty">{answer}</p>
+</details>
+
+<style>
+	.faq-item summary::-webkit-details-marker {
+		display: none;
+	}
+
+	.faq-chevron {
+		transition: transform 200ms ease-in-out;
+	}
+
+	.faq-item[open] .faq-chevron {
+		transform: rotate(180deg);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.faq-chevron {
+			transition: none;
+		}
+	}
+</style>

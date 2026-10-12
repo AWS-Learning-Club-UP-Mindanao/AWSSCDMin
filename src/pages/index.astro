@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/layout/Section.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import FAQ from '../components/sections/FAQ.astro';
 ---
 
 <BaseLayout
@@ -47,9 +48,7 @@ import Footer from '../components/Footer.astro';
 	</Section>
 
 	<!-- Ticket 13 -->
-	<Section id="faq">
-		<p class="text-caption text-content-secondary">FAQ (Ticket 13)</p>
-	</Section>
+	<FAQ />
 
 	<!-- Ticket 06: the closing CTA and footer. Lives in the layout's footer slot. -->
 	<Footer slot="footer" />

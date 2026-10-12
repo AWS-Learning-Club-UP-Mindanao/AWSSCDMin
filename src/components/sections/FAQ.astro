@@ -1,0 +1,13 @@
+---
+import Section from '../layout/Section.astro';
+import FAQItem from '../FAQItem.astro';
+import { faqs } from '../../data/faqs';
+---
+
+<Section id="faq">
+	<h2 class="text-h1 text-content-primary">Frequently Asked questions</h2>
+
+	<div class="mt-10 grid items-start gap-x-8 gap-y-4 xl:grid-cols-2">
+		{faqs.map((faq) => <FAQItem question={faq.question} answer={faq.answer} />)}
+	</div>
+</Section>
