@@ -9,7 +9,7 @@ const { question, answer } = Astro.props;
 
 <details class="faq-item overflow-hidden rounded-lg bg-surface-brand">
 	<summary
-		class="flex cursor-pointer list-none items-center justify-between gap-6 py-3.5 pl-8 pr-4 text-body text-content-primary hover:bg-surface-brand-secondary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent [&::-webkit-details-marker]:hidden"
+		class="flex cursor-pointer list-none items-center justify-between gap-6 py-3.5 pl-8 pr-4 text-body text-content-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent [&::-webkit-details-marker]:hidden"
 	>
 		<span class="text-pretty">{question}</span>
 		<svg
@@ -28,25 +28,63 @@ const { question, answer } = Astro.props;
 				stroke-linejoin="round"></path>
 		</svg>
 	</summary>
-	<p class="px-8 pb-5 text-body text-content-secondary text-pretty">{answer}</p>
+	<p class="faq-answer px-8 pb-5 text-body text-content-secondary text-pretty">{answer}</p>
 </details>
 
 <style>
+	/* Springs the box open. Browsers without ::details-content just open instantly. */
+	.faq-item {
+		interpolate-size: allow-keywords;
+	}
+
+	.faq-item::details-content {
+		block-size: 0;
+		overflow: hidden;
+		transition:
+			block-size 340ms cubic-bezier(0.34, 1.56, 0.64, 1),
+			content-visibility 340ms allow-discrete;
+	}
+
+	.faq-item[open]::details-content {
+		block-size: auto;
+	}
+
 	.faq-item summary::-webkit-details-marker {
 		display: none;
 	}
 
 	.faq-chevron {
-		transition: transform 200ms ease-in-out;
+		transition: transform 340ms cubic-bezier(0.34, 1.56, 0.64, 1);
 	}
 
 	.faq-item[open] .faq-chevron {
 		transform: rotate(180deg);
 	}
 
+	.faq-item[open] .faq-answer {
+		animation: faq-answer-in 340ms cubic-bezier(0.34, 1.56, 0.64, 1);
+	}
+
+	@keyframes faq-answer-in {
+		from {
+			opacity: 0;
+			transform: translateY(-8px);
+		}
+
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+
 	@media (prefers-reduced-motion: reduce) {
+		.faq-item::details-content,
 		.faq-chevron {
 			transition: none;
+		}
+
+		.faq-item[open] .faq-answer {
+			animation: none;
 		}
 	}
 </style>
