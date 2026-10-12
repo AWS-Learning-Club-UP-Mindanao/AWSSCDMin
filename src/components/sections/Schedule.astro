@@ -1,247 +1,294 @@
 ---
-import Section from '../layout/Section.astro';
-import Button from '../Button.astro';
-import ScheduleItem from '../ScheduleItem.astro';
-import { schedule } from '../../data/schedule';
+import Section from "../layout/Section.astro";
+import Button from "../Button.astro";
+import ScheduleItem from "../ScheduleItem.astro";
+import { schedule } from "../../data/schedule";
 ---
 
 <Section
-	id="schedule"
-	spacing="none"
-	class="bg-[radial-gradient(circle,var(--color-surface-secondary,#130445)_0%,var(--color-surface-primary,#020110)_100%)] pt-80 pb-[50vh] md:pt-90 md:pb-[54vh] lg:pt-108 lg:pb-[58vh]"
-	backgroundImage="/assets/backgrounds/star_background.svg"
+  id="schedule"
+  spacing="none"
+  class="bg-[radial-gradient(circle,var(--color-surface-secondary,#130445)_0%,var(--color-surface-primary,#020110)_100%)] pt-80 pb-[50vh] md:pt-90 md:pb-[54vh] lg:pt-108 lg:pb-[58vh]"
+  backgroundImage="/assets/backgrounds/star_background.svg"
 >
-	<h2 class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">Schedule Timeline</h2>
+  <h2 class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">
+    Schedule Timeline
+  </h2>
 
-	<ol
-		id="schedule-timeline"
-		class="mx-auto w-full max-w-[820px] space-y-8 md:space-y-10"
-		data-expanded="false"
-	>
-		{
-			schedule.map((slot, i) => (
-				<li class="relative grid grid-cols-[4.5rem_2.5rem_1fr] md:grid-cols-[9.5rem_5rem_1fr]">
-					<div class="md:text-right">
-						<p class="text-h4 font-body text-content-primary">{slot.label}</p>
-						<p class="mt-1 text-body font-body text-content-secondary md:whitespace-nowrap">{slot.time}</p>
-					</div>
+  <ol
+    id="schedule-timeline"
+    class="mx-auto w-full max-w-[820px] space-y-8 md:space-y-10"
+    data-expanded="false"
+  >
+    {schedule.map((slot, i) => (
+      <li class="relative grid grid-cols-[4.5rem_2.5rem_1fr] md:grid-cols-[9.5rem_5rem_1fr]">
+        <div class="md:text-right">
+          <p class="text-h4 font-body text-content-primary">{slot.label}</p>
+          <p class="mt-1 text-body font-body text-content-secondary md:whitespace-nowrap">
+            {slot.time}
+          </p>
+        </div>
 
-					<div class="mt-[18px] flex items-center self-start">
-						<span
-							class="connector-dot relative z-[1] ml-[14px] h-3 w-3 shrink-0 rounded-full bg-surface-brand-secondary md:ml-[38px]"
-						></span>
-						<span class="connector-line h-[2px] flex-1 bg-surface-brand-secondary"></span>
-					</div>
+        <div class="mt-[18px] flex items-center self-start">
+          <span class="connector-dot relative z-[1] ml-[14px] h-3 w-3 shrink-0 rounded-full bg-surface-brand-secondary md:ml-[38px]"></span>
+          <span class="connector-line h-[2px] flex-1 bg-surface-brand-secondary"></span>
+        </div>
 
-					{
-						i === 0 && (
-							<span
-								aria-hidden="true"
-								class="absolute -top-[16px] left-[91px] h-10 w-[1px] bg-linear-to-b from-transparent to-surface-brand md:left-[195px]"
-							/>
-						)
-					}
-					{
-						i < schedule.length - 1 ? (
-							<span
-								aria-hidden="true"
-								class="row-spine absolute top-[24px] left-[91px] h-[calc(100%_+_2rem)] w-[1px] bg-surface-brand md:left-[195px] md:h-[calc(100%_+_2.5rem)]"
-							/>
-						) : (
-							<span
-								aria-hidden="true"
-								class="absolute top-[24px] left-[91px] h-10 w-[1px] bg-linear-to-b from-surface-brand to-transparent md:left-[195px]"
-							/>
-						)
-					}
+        {i === 0 && (
+          <span
+            aria-hidden="true"
+            class="absolute -top-[16px] left-[91px] h-10 w-[1px] bg-linear-to-b from-transparent to-surface-brand md:left-[195px]"
+          />
+        )}
+        {i < schedule.length - 1 ? (
+          <span
+            aria-hidden="true"
+            class="row-spine absolute top-[24px] left-[91px] h-[calc(100%_+_2rem)] w-[1px] bg-surface-brand md:left-[195px] md:h-[calc(100%_+_2.5rem)]"
+          />
+        ) : (
+          <span
+            aria-hidden="true"
+            class="absolute top-[24px] left-[91px] h-10 w-[1px] bg-linear-to-b from-surface-brand to-transparent md:left-[195px]"
+          />
+        )}
 
-					<div class="space-y-4 text-h2">
-						{slot.rows.map((row) => (
-							<div class:list={['grid gap-4', row.length > 1 && 'md:grid-cols-2']}>
-								{row.map((session) => <ScheduleItem session={session} />)}
-							</div>
-						))}
-					</div>
-				</li>
-			))
-		}
-	</ol>
+        <div class="space-y-4 text-h2">
+          {slot.rows.map((row) => (
+            <div
+              class:list={["grid gap-4", row.length > 1 && "md:grid-cols-2"]}
+            >
+              {row.map((session) => (
+                <ScheduleItem session={session} />
+              ))}
+            </div>
+          ))}
+        </div>
+      </li>
+    ))}
+  </ol>
 
-	<div class="mt-12 flex justify-center md:mt-16">
-		<Button
-			label="View full timeline"
-			variant="ghost"
-			data-timeline-toggle
-			aria-expanded="false"
-			aria-controls="schedule-timeline"
-class="text-body lg:text-[25px] underline decoration-white"
-		/>
-	</div>
+  <div class="mt-12 flex justify-center md:mt-16">
+    <Button
+      label="View full timeline"
+      variant="ghost"
+      data-timeline-toggle
+      aria-expanded="false"
+      aria-controls="schedule-timeline"
+      class="text-body lg:text-[25px] underline decoration-white"
+    />
+  </div>
 
+  <Fragment slot="decorations">
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 bg-repeat bg-auto bg-[url('/assets/backgrounds/star_background.svg')] md:hidden"
+    ></div>
 
-	<Fragment slot="decorations">
+    <img
+      src="/assets/backgrounds/star_background.svg"
+      alt=""
+      decoding="async"
+      class="pointer-events-none absolute inset-0 hidden h-full w-full object-cover md:block"
+    />
 
-		<div
-			aria-hidden="true"
-			class="pointer-events-none absolute inset-0 bg-repeat bg-auto bg-[url('/assets/backgrounds/star_background.svg')] md:hidden"
-		>
-		</div>
+    <img
+      src="/assets/decorations/star_trail_4.svg"
+      alt=""
+      decoding="async"
+      class="pointer-events-none absolute left-[13.5vw] w-full sm:left-[13.5vw] sm:w-full
+      top-[calc(338px_-_70vw)]
+      md:left-[1.9vw] md:top-[calc(378px_-_70vw)] md:w-[120rem] lg:left-[16.5vw] lg:top-[calc(450px_-_70vw)] lg:w-[140rem] xl:left-[1.9vw] xl:w-[150rem] 2xl:left-[13.5vw] 3xl:left-[13.5vw]
+      star-trail-mask"
+    />
 
-		<img
-			src="/assets/backgrounds/star_background.svg"
-			alt=""
-			decoding="async"
-			class="pointer-events-none absolute inset-0 hidden h-full w-full object-cover md:block"
-		/>
-
-		<img
-			src="/assets/decorations/star_trail_4.svg"
-			alt=""
-			decoding="async"
-			class="pointer-events-none absolute left-0 w-full sm:left-0 sm:w-full md:left-[-10vw] md:w-[120rem] lg:left-[-5vw] lg:w-[140rem] xl:left-[-7vw] xl:w-[150rem] 2xl:left-[-8vw] 3xl:left-[-9vw]
-top-[-10vh] sm:top-[-12vh] md:top-[-16vh] lg:top-[-28vh] xl:top-[-55vh] 2xl:top-[-75vh] 3xl:top-[-90vh]
-star-trail-mask"
-		/>
-
-		<img
-			src="/assets/decorations/constellation_1.svg"
-			alt=""
-			decoding="async"
-class="pointer-events-none absolute top-[37vw] right-[22vw] hidden w-[12rem] translate-x-1/2 
-xl:right-[11vw] xl:bottom-[10vh] xl:block
-2xl:right[11vw] 2xl:bottom-[10vh]
-3xl:right-[14vw] 3xl:bottom-[10vh]"
-		/>
-		<img
-			src="/assets/decorations/constellation_2.svg"
-			alt=""
-			decoding="async"
-			class="pointer-events-none absolute bottom-[40vh] left-[19vw] w-[5rem] -translate-x-1/2
+    <img
+      src="/assets/decorations/constellation_1.svg"
+      alt=""
+      decoding="async"
+      class="pointer-events-none absolute top-[37vw] right-[22vw] hidden w-[12rem] translate-x-1/2
+            xl:right-[11vw] xl:bottom-[10vh] xl:block
+            2xl:right[11vw] 2xl:bottom-[10vh]
+            3xl:right-[14vw] 3xl:bottom-[10vh]"
+    />
+    <img
+      src="/assets/decorations/constellation_2.svg"
+      alt=""
+      decoding="async"
+      class="pointer-events-none absolute bottom-[40vh] left-[19vw] w-[5rem] -translate-x-1/2
 			       sm:w-[6rem]
 			       md:w-[7.5rem]
 			       lg:w-[9rem]
-xl:w-[10rem]
-2xl:w-[11rem]
-3xl:w-[12rem]"
-
-		/>
-		<img
-			src="/assets/decorations/northstar_ticket.svg"
-			alt=""
-			decoding="async"
-			class="pointer-events-none absolute bottom-[-23vh] left-1/2 -translate-x-1/2 overflow-visible max-w-none
-			       w-[115vw]
-			       sm:w-[110vw] sm:bottom-[-7vh]
-			       md:w-[105vw] md:bottom-[-8vh]
-			       lg:w-[102vw] lg:bottom-[-12vh]
-			       xl:w-[100vw] xl:bottom-[-14vh]
-			       2xl:w-[100vw] 2xl:bottom-[-16vh]
-			       3xl:w-[100vw] 3xl:bottom-[-20vh]
-			       northstar-mask"
-		/>
-
-	</Fragment>
+            xl:w-[10rem]
+            2xl:w-[11rem]
+            3xl:w-[12rem]"
+    />
+    <img
+      src="/assets/decorations/northstar_ticket.svg"
+      alt=""
+      decoding="async"
+      class="pointer-events-none absolute bottom-[-8vh] left-1/2 -translate-x-1/2 overflow-visible max-w-none
+		       w-[115vw]
+		       sm:w-[110vw] sm:bottom-[8vh]
+		       md:w-[105vw] md:bottom-[2vh]
+		       lg:w-[102vw] lg:bottom-[-7vh]
+		       xl:w-[100vw] xl:bottom-[-9vh]
+		       2xl:w-[100vw] 2xl:bottom-[-11vh]
+		       3xl:w-[100vw] 3xl:bottom-[-15vh]
+		       northstar-mask"
+    />
+  </Fragment>
 </Section>
 
 <style>
-	.connector-dot,
-	.connector-line {
-		transition:
-			background-color 200ms ease-in-out,
-			box-shadow 200ms ease-in-out;
-	}
+  .connector-dot,
+  .connector-line {
+    transition:
+      background-color 200ms ease-in-out,
+      box-shadow 200ms ease-in-out;
+  }
 
-	li:has(:global(.schedule-item):is(:hover, :focus-within, [data-pressed])) .connector-dot {
-		background-color: var(--color-surface-white);
-		box-shadow: 0 0 20px 0 var(--color-surface-white);
-	}
+  li:has(:global(.schedule-item):is(:hover, :focus-within, [data-pressed]))
+    .connector-dot {
+    background-color: var(--color-surface-white);
+    box-shadow: 0 0 20px 0 var(--color-surface-white);
+  }
 
-	li:has(:global(.schedule-item):is(:hover, :focus-within, [data-pressed])) .connector-line {
-		background-color: var(--color-surface-white);
-	}
+  li:has(:global(.schedule-item):is(:hover, :focus-within, [data-pressed]))
+    .connector-line {
+    background-color: var(--color-surface-white);
+  }
 
-	@media (prefers-reduced-motion: reduce) {
-		.connector-dot,
-		.connector-line {
-			transition: none;
-		}
-	}
+  @media (prefers-reduced-motion: reduce) {
+    .connector-dot,
+    .connector-line {
+      transition: none;
+    }
+  }
 
-		[data-expanded='false'] > li:nth-child(n + 6) {
-		display: none;
-	}
+  [data-expanded="false"] > li:nth-child(n + 6) {
+    display: none;
+  }
 
-	[data-expanded='false'] > li:nth-child(5) .row-spine {
-		background-color: transparent;
-		background-image: linear-gradient(to bottom, var(--color-surface-brand), transparent);
-	}
+  [data-expanded="false"] > li:nth-child(5) .row-spine {
+    background-color: transparent;
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-surface-brand),
+      transparent
+    );
+  }
 
-	.star-trail-mask,
-	.northstar-mask {
-		background:
-			radial-gradient(28% 30% at 22% 62%, rgba(255, 99, 230, 0.9) 0%, rgba(255, 99, 230, 0) 70%),
-			radial-gradient(26% 32% at 80% 58%, rgba(192, 77, 255, 0.9) 0%, rgba(192, 77, 255, 0) 70%),
-			linear-gradient(100deg, #3a1fe0 0%, #7a3cff 35%, #7a3cff 65%, #4a22e8 100%);
-		-webkit-mask-size: cover, 100% 100%;
-		mask-size: cover, 100% 100%;
-		-webkit-mask-position: center, center;
-		mask-position: center, center;
-		-webkit-mask-repeat: no-repeat;
-		mask-repeat: no-repeat;
-		-webkit-mask-composite: source-in;
-		mask-composite: intersect;
-	}
+  .star-trail-mask {
+    background:
+      radial-gradient(
+        28% 30% at 22% 62%,
+        rgba(255, 99, 230, 0.9) 0%,
+        rgba(255, 99, 230, 0) 70%
+      ),
+      radial-gradient(
+        26% 32% at 80% 58%,
+        rgba(192, 77, 255, 0.9) 0%,
+        rgba(192, 77, 255, 0) 70%
+      ),
+      linear-gradient(
+        100deg,
+        #3a1fe0 0%,
+        #7a3cff 35%,
+        #7a3cff 65%,
+        #4a22e8 100%
+      );
+    -webkit-mask-image:
+      url("/assets/decorations/star_trail_4.svg"),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 15%,
+        black 95%,
+        transparent 100%
+      );
+    mask-image:
+      url("/assets/decorations/star_trail_4.svg"),
+      linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 15%,
+        black 95%,
+        transparent 100%
+      );
+    -webkit-mask-size:
+      cover,
+      100% 100%;
+    mask-size:
+      cover,
+      100% 100%;
+    -webkit-mask-position: center, center;
+    mask-position: center, center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
 
-	.star-trail-mask {
-		-webkit-mask-image:
-			url('/assets/decorations/star_trail_4.svg'),
-			linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
-		mask-image:
-			url('/assets/decorations/star_trail_4.svg'),
-			linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
-	}
+  .northstar-mask {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      black 10%,
+      black 90%,
+      transparent 100%
+    );
+    -webkit-mask-size: cover;
+    mask-size: cover;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
 
-	.northstar-mask {
-		-webkit-mask-image:
-			url('/assets/decorations/northstar_ticket.svg'),
-			linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
-		mask-image:
-			url('/assets/decorations/northstar_ticket.svg'),
-			linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
-		mix-blend-mode: screen;
-		opacity: 0.9;
-	}
+  /* The star trail is positioned entirely from the markup with
+     left-[1.9vw] and top-[calc((section padding-top + 18px) - 70vw)] per tier,
+     so the bright star keeps the same offset from the "Schedule Timeline"
+     heading at every viewport. */
 </style>
 
 <script>
-	document.addEventListener(
-		'touchstart',
-		(e) => {
-			const target =e.target instanceof Element ? e.target : null;
-			const card = target?.closest('.schedule-item');
+  document.addEventListener(
+    "touchstart",
+    (e) => {
+      const target = e.target instanceof Element ? e.target : null;
+      const card = target?.closest(".schedule-item");
 
-			document.querySelectorAll('.schedule-item[data-pressed]').forEach((el) => {
-				if (el !== card) el.removeAttribute('data-pressed');
-			});
+      document
+        .querySelectorAll(".schedule-item[data-pressed]")
+        .forEach((el) => {
+          if (el !== card) el.removeAttribute("data-pressed");
+        });
 
-			card?.setAttribute('data-pressed', '');
-		},
-		{ passive: true }
-	);
+      card?.setAttribute("data-pressed", "");
+    },
+    { passive: true },
+  );
 
-	document.querySelectorAll('[data-timeline-toggle]').forEach((button) => {
-		button.addEventListener('click', () => {
-			const controls = button.getAttribute('aria-controls');
-			if (!controls) return;
+  document.querySelectorAll("[data-timeline-toggle]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const controls = button.getAttribute("aria-controls");
+      if (!controls) return;
 
-			const list = document.getElementById(controls);
-			if (!list) return;
+      const list = document.getElementById(controls);
+      if (!list) return;
 
-			const expanded = list.getAttribute('data-expanded') === 'true';
-			list.setAttribute('data-expanded', expanded ? 'false' : 'true');
-			button.setAttribute('aria-expanded', expanded ? 'false' : 'true');
-			const label = button.querySelector('.btn-label') ?? button;
-			label.textContent = expanded ? 'View full timeline' : 'Show less';
-		});
-	});
+      const expanded = list.getAttribute("data-expanded") === "true";
+      list.setAttribute("data-expanded", expanded ? "false" : "true");
+      button.setAttribute("aria-expanded", expanded ? "false" : "true");
+      const label = button.querySelector(".btn-label") ?? button;
+      label.textContent = expanded ? "View full timeline" : "Show less";
+    });
+  });
 </script>
