@@ -13,7 +13,7 @@ import Button from '../Button.astro';
 			src="/assets/logos/scd_logo_2.svg"
 			alt="AWS Student Community Day Mindanao 2026"
 			decoding="async"
-			class="aspect-[255/173] h-auto w-[min(92.6vw,364px)] mix-blend-lighten min-[393px]:w-[calc(43.9vw_+_191.5px)] lg:w-[calc(25.57vw_+_379.2px)] min-[1728px]:w-[47.5vw] min-[1728px]:max-w-[1500px]"
+			class="aspect-[255/173] h-auto w-[min(92.6vw,364px)] mix-blend-lighten min-[393px]:w-[calc(43.9vw_+_191.5px)] lg:w-[calc(25.57vw_+_200px)] min-[1728px]:w-[47.5vw] min-[1728px]:max-w-[1500px]"
 		/>
 
 		<Button
@@ -45,11 +45,13 @@ import Button from '../Button.astro';
 	<Fragment slot="decorations">
 		<div aria-hidden="true" class="hero-layer hero-bg"></div>
 
-		<!-- Colored nebulae: SVG is only the shape (mask), color comes from CSS -->
-		<div aria-hidden="true" class="hero-layer nebulae-color"></div>
-
-		<!-- Soft glow pass -->
-		<div aria-hidden="true" class="hero-layer nebulae-color nebulae-glow"></div>
+		<img
+			src="/assets/decorations/nebulae_hero.svg"
+			alt=""
+			aria-hidden="true"
+			decoding="async"
+			class="hero-layer nebulae-hero"
+		/>
 
 		<img
 			src="/assets/decorations/nebulae_extension.svg"
@@ -113,48 +115,23 @@ import Button from '../Button.astro';
 
 	@media (min-width: 1728px) {
 		.hero-bg {
-			background: radial-gradient(40.3% 50.72% at 50% 45.92%, #320776 0%, #130445 65%, #020110 100%);
+			background: radial-gradient(48% 40% at 50% 45.92%, #320776 0%, #130445 65%, #020110 100%);
 		}
 	}
 
-	/* ---------- Hero nebulae (SVG used as mask, color from CSS) ---------- */
-	.nebulae-color {
-		background:
-			radial-gradient(28% 30% at 22% 62%, #ff63e6 0%, rgba(255, 99, 230, 0) 70%),
-			radial-gradient(26% 32% at 80% 58%, #c04dff 0%, rgba(192, 77, 255, 0) 70%),
-			linear-gradient(100deg, #3a1fe0 0%, #7a3cff 35%, #7a3cff 65%, #4a22e8 100%);
-
-		-webkit-mask-image:
-			url('/assets/decorations/nebulae_hero.svg'),
-			linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
-		mask-image:
-			url('/assets/decorations/nebulae_hero.svg'),
-			linear-gradient(to bottom, transparent 0%, black 30%, black 70%, transparent 100%);
-		-webkit-mask-size: cover, 100% 100%;
-		mask-size: cover, 100% 100%;
-		-webkit-mask-position: center, center;
-		mask-position: center, center;
-		-webkit-mask-repeat: no-repeat;
-		mask-repeat: no-repeat;
-		-webkit-mask-composite: source-in;
-		mask-composite: intersect;
-
-		mix-blend-mode: screen;
-		opacity: 0.9;
-		will-change: transform;
-		isolation: isolate;
-	}
-
-	.nebulae-glow {
-		mix-blend-mode: plus-lighter;
-		opacity: 0.25;
-		filter: blur(6px);
+	/* ---------- Hero nebulae (plain image, no effects) ---------- */
+	.nebulae-hero {
+		width: 116%;
+		max-width: none; /* Tailwind preflight caps img at 100% */
+		left: -8%;       /* -(width - 100%) / 2 keeps it centered */
+		object-fit: cover;
+		object-position: center;
 	}
 
 	/* ---------- Nebulae extension (hangs below the original hero edge) ---------- */
 	.nebulae-extension {
-		--ext-width: 100%;
-		--ext-left: 0%;
+		--ext-width: 120%;
+		--ext-left: -2%;
 		--ext-overhang: 70vw;
 
 		position: absolute;
@@ -191,7 +168,7 @@ import Button from '../Button.astro';
 	/* Desktop */
 	@media (min-width: 1280px) {
 		.nebulae-extension {
-			--ext-width: 100%;
+			--ext-width: 104%;
 			--ext-left: -2%;
 			--ext-overhang: 88vw;
 		}
