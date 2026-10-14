@@ -1,15 +1,33 @@
 ---
-import Section from '../layout/Section.astro';
-import FAQItem from '../FAQItem.astro';
-import { faqs } from '../../data/faqs';
+import Section from "../layout/Section.astro";
+import FAQItem from "../FAQItem.astro";
+import { faqs } from "../../data/faqs";
 ---
 
-<Section id="faq">
-	<h2 class="text-h1 text-content-primary">Frequently Asked questions</h2>
+<Section
+  id="faq"
+  class="z-10"
+  backgroundImage="/assets/backgrounds/star_background.svg"
+>
+  <h2 class="text-h1 text-content-primary">Frequently Asked Questions</h2>
 
-	<div class="mt-10 grid items-start gap-x-8 gap-y-4 xl:grid-cols-2">
-		{faqs.map((faq) => <FAQItem question={faq.question} answer={faq.answer} />)}
-	</div>
+  <div class="mt-10 grid items-start gap-x-8 gap-y-4 xl:grid-cols-2">
+    {faqs.map((faq) => (
+      <FAQItem question={faq.question} answer={faq.answer} />
+    ))}
+  </div>
+
+  <Fragment slot="decorations">
+    <img
+      src="/assets/decorations/star-trail.svg"
+      alt=""
+      decoding="async"
+      class="pointer-events-none absolute overflow-visible bottom-0 right-[-25rem] translate-y-[11%] max-w-none w-[64rem]
+        sm:translate-y-[11%] sm:right-[-25rem]
+        md:w-[80rem]
+        lg:translate-y-[15%] lg:w-[100rem]"
+    />
+  </Fragment>
 </Section>
 
 <script>
@@ -22,51 +40,53 @@ import { faqs } from '../../data/faqs';
   if (!nativeBounce) {
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
-    document.querySelectorAll<HTMLDetailsElement>(".faq-item").forEach((item) => {
-      const summary = item.querySelector("summary");
-      const panel = item.querySelector<HTMLElement>(".faq-answer");
+    document
+      .querySelectorAll<HTMLDetailsElement>(".faq-item")
+      .forEach((item) => {
+        const summary = item.querySelector("summary");
+        const panel = item.querySelector<HTMLElement>(".faq-answer");
 
-      if (!summary || !panel) return;
+        if (!summary || !panel) return;
 
-      let running: Animation | null = null;
+        let running: Animation | null = null;
 
-      summary.addEventListener("click", (event) => {
-        event.preventDefault();
-        running?.cancel();
-        running = null;
+        summary.addEventListener("click", (event) => {
+          event.preventDefault();
+          running?.cancel();
+          running = null;
 
-        const opening = !item.open;
+          const opening = !item.open;
 
-        if (reducedMotion.matches) {
-          item.open = opening;
-          return;
-        }
+          if (reducedMotion.matches) {
+            item.open = opening;
+            return;
+          }
 
-        if (opening) {
-          /* pin it shut before the browser paints, so the box never flashes open */
-          panel.style.height = "0px";
-          item.open = true;
-          const height = panel.scrollHeight;
-          panel.style.height = "";
+          if (opening) {
+            /* pin it shut before the browser paints, so the box never flashes open */
+            panel.style.height = "0px";
+            item.open = true;
+            const height = panel.scrollHeight;
+            panel.style.height = "";
+            running = panel.animate(
+              { height: ["0px", `${height}px`] },
+              { duration: 420, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)" },
+            );
+            return;
+          }
+
+          const height = panel.getBoundingClientRect().height;
           running = panel.animate(
-            { height: ["0px", `${height}px`] },
-            { duration: 420, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)" },
+            { height: [`${height}px`, "0px"] },
+            { duration: 360, easing: "cubic-bezier(0.36, -0.55, 0.6, 1)" },
           );
-          return;
-        }
-
-        const height = panel.getBoundingClientRect().height;
-        running = panel.animate(
-          { height: [`${height}px`, "0px"] },
-          { duration: 360, easing: "cubic-bezier(0.36, -0.55, 0.6, 1)" },
-        );
-        running.finished.then(
-          () => {
-            item.open = false;
-          },
-          () => {},
-        );
+          running.finished.then(
+            () => {
+              item.open = false;
+            },
+            () => {},
+          );
+        });
       });
-    });
   }
 </script>
