@@ -109,13 +109,27 @@ import Button from '../Button.astro';
 		width: 116%;
 		max-width: none; /* Tailwind preflight caps img at 100% */
 		left: -8%;       /* -(width - 100%) / 2 keeps it centered */
-		object-fit: cover;
-		object-position: center;
+		/* natural height, centered on the layer, so nothing is cropped (cover cut the trail's top) */
+		height: auto;
+		/* center of the original hero area: the section also contains --hero-extra below it */
+		top: calc(50% - var(--hero-extra) / 2);
+		translate: 0 -50%;
+	}
+
+	/* Mobile: bigger and higher, so the swirl shows around the logo instead of behind it */
+	@media (max-width: 767px) {
+		.nebulae-hero {
+			width: 180%;
+			left: -40%;   /* -(width - 100%) / 2 keeps it centered */
+			top: calc(50% - var(--hero-extra) / 2 - 18px);   /* more px = higher */
+
+			rotate: -8deg;
+		}
 	}
 
 	/* ---------- Nebulae extension (hangs below the original hero edge) ---------- */
 	.nebulae-extension {
-		--ext-width: 120%;
+		--ext-width: 100%;
 		--ext-left: -2%;
 		--ext-overhang: 70vw;
 
@@ -134,7 +148,7 @@ import Button from '../Button.astro';
 		.nebulae-extension {
 			--ext-width: 120%;
 			--ext-left: -18%;
-			--ext-overhang: 116vw;
+			--ext-overhang: 60vw;
 
 			rotate: -8deg;
 			transform-origin: 50% 30%;
@@ -146,15 +160,16 @@ import Button from '../Button.astro';
 		.nebulae-extension {
 			--ext-width: 100%;
 			--ext-left: 0%;
-			--ext-overhang: 87vw;
+			--ext-overhang: 54vw;
+			
 		}
 	}
 
 	/* Desktop */
 	@media (min-width: 1280px) {
 		.nebulae-extension {
-			--ext-width: 104%;
-			--ext-left: -2%;
+			--ext-width: 100%;
+			--ext-left: 0%;
 			--ext-overhang: 88vw;
 		}
 	}
