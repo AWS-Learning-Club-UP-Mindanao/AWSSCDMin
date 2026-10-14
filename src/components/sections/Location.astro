@@ -21,12 +21,14 @@ if (key) {
 }
 ---
 
-<Section id="location">
+<Section id="location" backgroundImage="/assets/backgrounds/star_background.svg">
   <Container>
     <div class="grid items-center gap-10 xl:grid-cols-[514fr_790fr] xl:gap-16">
       <div class="flex flex-col gap-4">
         <h2 class="text-h1 text-content-primary">Location</h2>
-        <h3 class="text-h4 text-content-primary">{venue.name}</h3>
+        <h3
+        class="-mt-4 text-[20px]/[30px] font-body font-bold md:text-[25px]/[38px]"
+        style="background: var(--background-image-gradient-content); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent;">{venue.name}</h3>
         {venue.address && (
           <p class="text-body text-content-secondary text-pretty">
             {venue.address}
@@ -48,12 +50,12 @@ if (key) {
           <gmp-map
             center={`${venue.mapCenter.lat},${venue.mapCenter.lng}`}
             zoom={String(venue.mapZoom)}
-            map-id="DEMO_MAP_ID"
+            map-id={venue.mapId}
             class="absolute inset-0 h-full w-full"
           >
             <gmp-advanced-marker
               position={`${venue.mapCenter.lat},${venue.mapCenter.lng}`}
-              title={venue.name}
+              title="ADDU"
             />
           </gmp-map>
         </div>
@@ -95,7 +97,7 @@ if (key) {
     <script
       is:inline
       async
-      src={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=console.debug&libraries=maps,marker&v=beta`}
+      src={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=console.debug&libraries=maps,marker&v=beta&loading=async`}
     ></script>
   </>
 )}

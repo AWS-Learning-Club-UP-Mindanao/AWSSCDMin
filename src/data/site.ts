@@ -31,8 +31,9 @@ export const venue = {
   mapQuery: "Ateneo de Davao University, Davao City",
   // Emilio Jacinto St. campus. Wikipedia gives 7°4′20″N 125°36′47″E and a coordinate lookup
   // 7.0731, 125.6128, hence the shared values below.
-  mapCenter: { lat: 7.0722, lng: 125.6131 },
+  mapCenter: { lat: 7.0711276, lng: 125.61342 },
   mapZoom: 16,
+		mapId: "DEMO_MAP_ID", // swap for a JavaScript Vector map ID from your project
   mapFallbackSrc: "/assets/maps/venue-map.png",
   mapUrl: "",
   mapLabel: "Open the venue location in Google Maps (opens in a new tab)",
