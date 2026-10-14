@@ -21,14 +21,20 @@ if (key) {
 }
 ---
 
-<Section id="location" backgroundImage="/assets/backgrounds/star_background.svg">
+<Section
+  id="location"
+  backgroundImage="/assets/backgrounds/star_background.svg"
+>
   <Container>
     <div class="grid items-center gap-10 xl:grid-cols-[514fr_790fr] xl:gap-16">
       <div class="flex flex-col gap-4">
         <h2 class="text-h1 text-content-primary">Location</h2>
         <h3
-        class="-mt-4 text-[20px]/[30px] font-body font-bold md:text-[25px]/[38px]"
-        style="background: var(--background-image-gradient-content); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent;">{venue.name}</h3>
+          class="-mt-4 text-[20px]/[30px] font-body font-bold md:text-[25px]/[38px]"
+          style="background: var(--background-image-gradient-content); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent;"
+        >
+          {venue.name}
+        </h3>
         {venue.address && (
           <p class="text-body text-content-secondary text-pretty">
             {venue.address}
@@ -55,7 +61,7 @@ if (key) {
           >
             <gmp-advanced-marker
               position={`${venue.mapCenter.lat},${venue.mapCenter.lng}`}
-              title="ADDU"
+              title="Ateneo de Davao University"
             />
           </gmp-map>
         </div>
