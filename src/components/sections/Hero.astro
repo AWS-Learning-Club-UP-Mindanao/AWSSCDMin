@@ -5,10 +5,10 @@ import Button from '../Button.astro';
 
 <Section
 	id="hero"
-	spacing="none"
-	class="bg-surface-primary"
+	spacing="hero"
+	class="max-md:[--hero-pad:32px] bg-surface-primary"
 >
-	<div class="flex min-h-[66vw] flex-col items-center justify-center px-4 py-16 text-center md:px-22.5 md:py-24">
+	<div class="flex min-h-[calc(100svh-2*var(--hero-pad))] flex-col items-center justify-center text-center">
 		<img
 			src="/assets/logos/scd_logo_2.svg"
 			alt="AWS Student Community Day Mindanao 2026"
@@ -64,7 +64,7 @@ import Button from '../Button.astro';
 <style>
 	/* ---------- Hero extra height (shared by spacer, layers, extension) ---------- */
 	:global(:root) {
-		--hero-extra: 36vw;
+		--hero-extra: 0vw;
 	}
 
 	@media (max-width: 767px) {
