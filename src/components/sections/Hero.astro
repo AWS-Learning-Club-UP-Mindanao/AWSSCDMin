@@ -45,12 +45,7 @@ import Button from '../Button.astro';
 			class="nebulae-extension"
 		/>
 
-		<img
-			src="/assets/backgrounds/star_background.svg"
-			alt=""
-			decoding="async"
-			class="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
-		/>
+		<div aria-hidden="true" class="star-bg pointer-events-none absolute inset-x-0 top-0 -z-20 w-full"></div>
 
 		<img
 			src="/assets/backgrounds/shooting_star_background.svg"
@@ -171,6 +166,22 @@ import Button from '../Button.astro';
 			--ext-width: 100%;
 			--ext-left: 0%;
 			--ext-overhang: 88vw;
+		}
+	}
+
+	/* ---------- Star background offset ---------- */
+	.star-bg {
+		--star-bg-y:10vw;            /* how far the stars are lifted */
+		height: calc(100% + var(--star-bg-y)); /* extra height covers the gap left at the bottom */
+		translate: 0 calc(-1 * var(--star-bg-y));
+		background: url('/assets/backgrounds/star_background.svg') center top / cover;
+	}
+
+	/* Mobile: the hero is tall and narrow, so cover would crop to a sparse sliver. Tile it smaller instead */
+	@media (max-width: 767px) {
+		.star-bg {
+			background-size: auto 50%;
+			background-repeat: repeat-y;
 		}
 	}
 
