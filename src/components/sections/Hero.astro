@@ -28,7 +28,7 @@ import Button from '../Button.astro';
 	<div class="hero-spacer" aria-hidden="true"></div>
 
 	<Fragment slot="decorations">
-		<div aria-hidden="true" class="hero-layer hero-bg"></div>
+		<div aria-hidden="true" class="hero-layer hero-bg -z-30"></div>
 
 		<img
 			src="/assets/decorations/nebulae_hero.svg"
@@ -49,14 +49,14 @@ import Button from '../Button.astro';
 			src="/assets/backgrounds/star_background.svg"
 			alt=""
 			decoding="async"
-			class="pointer-events-none absolute inset-0 h-full w-full object-cover"
+			class="pointer-events-none absolute inset-0 -z-20 h-full w-full object-cover"
 		/>
 
 		<img
 			src="/assets/backgrounds/shooting_star_background.svg"
 			alt=""
 			decoding="async"
-			class="shooting-stars pointer-events-none absolute inset-0 h-full w-full object-cover object-[60%_100%]"
+			class="shooting-stars pointer-events-none absolute -z-20 inset-0 h-full w-full object-cover object-[60%_100%]"
 		/>
 	</Fragment>
 </Section>
@@ -176,19 +176,19 @@ import Button from '../Button.astro';
 
 	/* ---------- Shooting stars offset ---------- */
 	.shooting-stars {
-		--stars-y: 2vw;              /* desktop: positive moves the stars down */
+		--stars-y: -3vw;             /* desktop: positive moves the stars down */
 		translate: 0 var(--stars-y);
 	}
 
 	@media (min-width: 768px) and (max-width: 1279px) {
 		.shooting-stars {
-			--stars-y: 5vw;
+			--stars-y: 0vw;
 		}
 	}
 
 	@media (max-width: 767px) {
 		.shooting-stars {
-			--stars-y: 9vw;
+			--stars-y: 3vw;
 		}
 	}
 </style>
