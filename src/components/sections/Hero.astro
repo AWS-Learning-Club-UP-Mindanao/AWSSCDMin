@@ -84,7 +84,7 @@ import Button from '../Button.astro';
 
 	/* ---------- Background glow ---------- */
 	.hero-bg {
-		background: radial-gradient(48% 18% at 50% 50%, #320776 0%, #130445 65%, #020110 100%);
+		background: radial-gradient(60% 20% at 50% 50%, #320776 0%, #130445 65%, #020110 100%);
 	}
 
 	@media (min-width: 768px) {
@@ -124,9 +124,10 @@ import Button from '../Button.astro';
 
 	/* ---------- Nebulae extension (hangs below the original hero edge) ---------- */
 	.nebulae-extension {
-		--ext-width: 100%;
+		--ext-width: 102%;
 		--ext-left: -2%;
-		--ext-overhang: 70vw;
+		/* Fluid between the 1024 (54vw) and 1728 (88vw) designs: linear in px, held proportional outside */
+		--ext-overhang: clamp(54vw, 137.45vw - 854.7px, 88vw);
 
 		position: absolute;
 		left: var(--ext-left);
@@ -138,34 +139,15 @@ import Button from '../Button.astro';
 		pointer-events: none;
 	}
 
-	/* Mobile */
+	/* Mobile (393 design; vw units scale it up to 767) */
 	@media (max-width: 767px) {
 		.nebulae-extension {
-			--ext-width: 120%;
+			--ext-width: 122%;
 			--ext-left: -18%;
 			--ext-overhang: 60vw;
 
 			rotate: -8deg;
 			transform-origin: 50% 30%;
-		}
-	}
-
-	/* Tablet */
-	@media (min-width: 768px) and (max-width: 1279px) {
-		.nebulae-extension {
-			--ext-width: 100%;
-			--ext-left: 0%;
-			--ext-overhang: 54vw;
-			
-		}
-	}
-
-	/* Desktop */
-	@media (min-width: 1280px) {
-		.nebulae-extension {
-			--ext-width: 100%;
-			--ext-left: 0%;
-			--ext-overhang: 88vw;
 		}
 	}
 
