@@ -1,0 +1,101 @@
+---
+import Section from "../layout/Section.astro";
+import Container from "../layout/Container.astro";
+import { venue } from "../../data/site";
+
+const key = import.meta.env.GOOGLE_MAPS_API_KEY;
+
+/* The interactive map uses the Maps JavaScript API, which is the only Maps API this key is allowed
+   to call. The bootstrap is probed at build time: a rejected key and a keyless build both fall back
+   to the exported frame image, which is what CI does. */
+let interactive = false;
+if (key) {
+  try {
+    const res = await fetch(
+      `https://maps.googleapis.com/maps/api/js?key=${key}&loading=async&v=weekly`,
+    );
+    interactive = res.ok && (await res.text()).includes("google.maps");
+  } catch {
+    /* offline build: keep the static image */
+  }
+}
+---
+
+<Section id="location">
+  <Container>
+    <div class="grid items-center gap-10 xl:grid-cols-[514fr_790fr] xl:gap-16">
+      <div class="flex flex-col gap-4">
+        <h2 class="text-h1 text-content-primary">Location</h2>
+        <h3 class="text-h4 text-content-primary">{venue.name}</h3>
+        {venue.address && (
+          <p class="text-body text-content-secondary text-pretty">
+            {venue.address}
+          </p>
+        )}
+        {venue.description && (
+          <p class="text-body text-content-secondary text-pretty">
+            {venue.description}
+          </p>
+        )}
+      </div>
+
+      {interactive ? (
+        <div
+          role="region"
+          aria-label={`Map of ${venue.name}`}
+          class="relative aspect-[357/369] w-full overflow-hidden rounded-2xl bg-[url('/assets/maps/venue-map.png')] bg-cover bg-center md:aspect-[859/331] xl:aspect-[790/496]"
+        >
+          <gmp-map
+            center={`${venue.mapCenter.lat},${venue.mapCenter.lng}`}
+            zoom={String(venue.mapZoom)}
+            map-id="DEMO_MAP_ID"
+            class="absolute inset-0 h-full w-full"
+          >
+            <gmp-advanced-marker
+              position={`${venue.mapCenter.lat},${venue.mapCenter.lng}`}
+              title={venue.name}
+            />
+          </gmp-map>
+        </div>
+      ) : (
+        <img
+          src={venue.mapFallbackSrc}
+          alt=""
+          decoding="async"
+          loading="lazy"
+          class="aspect-[357/369] w-full rounded-2xl object-cover md:aspect-[859/331] xl:aspect-[790/496]"
+        />
+      )}
+    </div>
+  </Container>
+
+  <Fragment slot="decorations">
+    <div class="pointer-events-none absolute inset-0 mx-auto w-full max-w-[1400px]">
+      <img
+        src="/assets/decorations/north-star-location.svg"
+        alt=""
+        decoding="async"
+        class="absolute left-[10rem] top-[-2rem] w-[11rem] md:left-[14rem] md:top-[0rem] md:w-[13rem] lg:left-[18rem] lg:top-[3rem] lg:w-[16rem] xl:top-[4rem] -translate-y-[5%]"
+      />
+    </div>
+  </Fragment>
+</Section>
+
+{interactive && (
+  <>
+    <script is:inline>
+      /* Google calls this when the key is refused, for example when the request's referrer is
+				   not on the key's allow list. Hiding the map lets the frame image behind it show. */
+      window.gm_authFailure = function () {
+        console.error(
+          "[location] Google Maps refused this key. If the console says ApiTargetBlockedMapError, allow Maps JavaScript API in the key restrictions.",
+        );
+      };
+    </script>
+    <script
+      is:inline
+      async
+      src={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=console.debug&libraries=maps,marker&v=beta`}
+    ></script>
+  </>
+)}

@@ -18,3 +18,22 @@ export const socials = [
     icon: "/assets/icons/linkedin.svg",
   },
 ];
+
+// Venue details for the location section. The name and the description are the design frame's
+// copy. The map is the Google Maps Static API when GOOGLE_MAPS_API_KEY is set at build time, and
+// falls back to the exported image so a keyless build still renders. mapUrl overrides the default
+// Google Maps link for the venue.
+export const venue = {
+  name: "Ateneo De Davao University",
+  address: "",
+  description:
+    "Lorem ipsum dolor sit amet consectetur. Ut auctor velit elit commodo ac fames. Consectetur vel nunc quisque tincidunt odio malesuada aliquam sagittis dignissim. Nec gravida suspendisse maecenas nibh hendrerit. Tellus est tincidunt aliquam fermentum etiam vitae eget tristique orci. Egestas enim mauris felis blandit mollis molestie. Tristique feugiat tortor pellentesque egestas semper neque hendrerit",
+  mapQuery: "Ateneo de Davao University, Davao City",
+  // Emilio Jacinto St. campus. Wikipedia gives 7°4′20″N 125°36′47″E and a coordinate lookup
+  // 7.0731, 125.6128, hence the shared values below.
+  mapCenter: { lat: 7.0722, lng: 125.6131 },
+  mapZoom: 16,
+  mapFallbackSrc: "/assets/maps/venue-map.png",
+  mapUrl: "",
+  mapLabel: "Open the venue location in Google Maps (opens in a new tab)",
+};
