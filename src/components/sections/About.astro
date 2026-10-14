@@ -6,23 +6,99 @@ const text =
 const words = text.split(' ');
 ---
 
-<Section
-	id="about"
-	spacing="none"
-	class="bg-gradient-banner shadow-brand px-[clamp(32px,calc(28.5vw_-_80px),330px)] py-[clamp(64px,calc(4.9vw_+_45px),95px)]"
->
-	<p class="text-h5 md:text-h4 text-content-secondary text-pretty" data-scroll-reveal>
-		{
-			words.map((word) => (
-				<>
-					<span class="reveal-word">{word}</span>{' '}
-				</>
-			))
-		}
-	</p>
+<Section id="about" spacing="md" class="mt-[-76.3vw] md:mt-[-19.5vw] lg:mt-[-15.6vw] xl:mt-[min(17.5vw,16rem)]">
+	<!-- On desktop the photo spans the pill and card rows, so its top lines up with the pill and its bottom with the card -->
+	<div class="grid max-md:grid-cols-[minmax(0,1fr)] gap-x-8 lg:gap-x-16 md:grid-cols-[423fr_453fr] xl:grid-cols-[509px_1fr]">
+		<div class="about-title relative max-md:w-[min(295px,100%)] max-md:-translate-x-[9%] max-md:justify-self-center max-md:text-center">
+			<h1 class="max-md:pr-[30px]">What is</h1>
+			<img
+				src="/assets/decorations/bright_star.svg"
+				alt=""
+				aria-hidden="true"
+				decoding="async"
+				class="pointer-events-none absolute bottom-[-120%] left-[26%] w-[70%] max-w-none max-md:bottom-[-105%] max-md:left-1/2 max-md:w-[55%]"
+			/>
+		</div>
+
+		<h5 class="about-pill relative mt-4 mb-10 w-fit max-md:w-[min(331px,100%)] max-md:justify-self-center max-md:text-center max-md:!rounded-xl max-md:!px-8 max-md:!py-2 md:max-xl:col-span-2 md:max-xl:mb-16 md:max-xl:whitespace-nowrap md:max-xl:text-h4 md:col-start-1 md:row-start-2">
+			AWS Student Community Day Mindanao 2026?
+		</h5>
+
+		<div class="about-card order-2 -mx-8 -mb-16 px-8 py-16 text-center max-md:!rounded-none md:mx-0 md:mb-0 md:col-start-1 md:row-start-3 md:max-xl:px-8 md:max-xl:py-16 md:text-left xl:p-16">
+			<h4 class="text-h5 md:text-h4 text-content-secondary text-pretty md:max-xl:text-h5 md:max-xl:font-bold" data-scroll-reveal>
+				{
+					words.map((word) => (
+						<>
+							<span class="reveal-word">{word}</span>{' '}
+						</>
+					))
+				}
+			</h4>
+		</div>
+
+		<!-- ponytail: drop the past-year photo at public/assets/images/about_past_year.jpg; until then the gradient shows -->
+		<div
+			class="about-photo order-1 mb-10 aspect-[351/239] w-[min(351px,calc(100vw-42px))] justify-self-center md:w-full md:justify-self-auto md:mb-0 rounded-[32px] border-4 border-surface-brand-tertiary p-2.5 md:col-start-2 md:row-start-3 md:aspect-auto xl:row-span-2 xl:row-start-2 xl:mt-4"
+		>
+		</div>
+	</div>
 </Section>
 
 <style>
+	/* Glow behind the title (same blurred pill as before) */
+	.about-title::before {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		left: 50%;
+		top: calc(50% + 40px);
+		width: 896px;
+		max-width: 100vw;
+		height: 248px;
+		transform: translate(-50%, -50%);
+		border-radius: 896px;
+		background: var(--surface-secondary, #130445);
+		filter: blur(113.45px);
+		pointer-events: none;
+	}
+
+	.about-card {
+		border-radius: 32px;
+		background: var(--background-image-gradient-banner);
+		box-shadow: var(--shadow-brand);
+	}
+
+	.about-pill {
+		background: var(--background-image-gradient-content);
+		color: var(--color-surface-brand);
+		padding: 16px 32px;
+		border-radius: 16px;
+		box-shadow: 0 0 33.3px 4px rgba(255, 195, 0, 0.85) inset;
+	}
+
+	/* Photo offsets and sizes come from the design frames: mobile, then 1024, then desktop */
+	.about-photo {
+		--photo-pos: 0.007px -58.331px;
+		--photo-size: 100% 134.065%;
+		background:
+			url('/assets/images/about_past_year.jpg') lightgray var(--photo-pos) / var(--photo-size) no-repeat,
+			radial-gradient(76.84% 76.84% at 50% 57.67%, #320776 0%, #130445 48.08%, #020110 100%);
+	}
+
+	@media (min-width: 768px) {
+		.about-photo {
+			--photo-pos: -192.418px 0.29px;
+			--photo-size: 152.518% 100%;
+		}
+	}
+
+	@media (min-width: 1280px) {
+		.about-photo {
+			--photo-pos: 0.015px -132.039px;
+			--photo-size: 100% 134.065%;
+		}
+	}
+
 	.reveal-word[data-lit] {
 		color: var(--color-content-primary);
 	}
