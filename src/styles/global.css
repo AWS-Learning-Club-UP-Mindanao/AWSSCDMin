@@ -130,6 +130,9 @@ html {
 	/* Event date and city on the ticket, applied as text fill with bg-clip-text. */
 	--background-image-gradient-ticket-date: linear-gradient(0deg, var(--primitive-yellow) 41.944%, var(--primitive-white) 91.83%);
 
+	/* Speakers section's bottom bar (Figma "divider"): dark purple at the edges, brand-secondary across the middle. */
+	--background-image-gradient-divider: linear-gradient(90deg, var(--primitive-purple-700) 0%, var(--primitive-purple-500) 15.865%, var(--primitive-purple-500) 85.096%, var(--primitive-purple-600) 100%);
+
 	/* Box shadows */
 	--shadow-brand: 0 29px 35.8px 0 rgba(159, 44, 229, 0.15), 0 18px 30.1px 0 rgba(48, 11, 171, 0.46);
 	--shadow-button-cta: 0 6px 25.3px 0 var(--primitive-purple-300), 0 0 33.3px 4px color-mix(in srgb, var(--primitive-amber) 85%, transparent) inset;
