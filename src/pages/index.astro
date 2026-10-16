@@ -5,6 +5,7 @@ import Schedule from "../components/sections/Schedule.astro";
 import Header from "../components/Header.astro";
 import Location from "../components/sections/Location.astro";
 import TicketTiers from "../components/sections/TicketTiers.astro";
+import Speakers from "../components/sections/Speakers.astro";
 import Footer from "../components/Footer.astro";
 ---
 
@@ -21,17 +22,15 @@ import Footer from "../components/Footer.astro";
   <Section id="about">
     <p class="text-caption text-content-secondary">About (Ticket 08)</p>
   </Section>
+
   <TicketTiers />
 	<Schedule />
-
-  <Section id="speakers">
-    <p class="text-caption text-content-secondary">Speakers (Ticket 11)</p>
-  </Section>
-
+  <Speakers />
   <Location />
 
   <Section id="faq">
     <p class="text-caption text-content-secondary">FAQ (Ticket 13)</p>
   </Section>
+  
   <Footer slot="footer" />
 </BaseLayout>
