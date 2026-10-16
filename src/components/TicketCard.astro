@@ -1,5 +1,6 @@
 ---
 import Button from './Button.astro';
+import Logo from '/public/assets/logos/scd_logo_ticket_2.svg';
 import { getTicketFormUrl, type TicketTier } from '../data/ticket-tiers';
 
 interface Props {
@@ -24,144 +25,129 @@ const formatPrice = (amount: number) =>
 	}).format(amount);
 ---
 
-<article class="flex h-full w-[328px] flex-col" aria-labelledby={nameId}>
-	<header class="relative flex flex-col">
-		<p class="flex h-7 items-center justify-center bg-surface-white px-2" aria-hidden="true">
-			<span class="pass-name font-display text-[20px] leading-6 whitespace-nowrap">{tier.name}</span>
-		</p>
-
-		<div class="flex h-[95.257px] items-center justify-center" aria-hidden="true">
-			<img
-				src="/assets/decorations/ticket_top.svg"
-				alt=""
-				width="95.2568"
-				height="328"
-				class="flex-none rotate-90"
-			/>
-		</div>
-
-		<div class="absolute top-[52px] left-1/2 w-[230px] -translate-x-1/2 text-center text-h6 font-bold">
-			<p class="event-text">
-				<time datetime={eventDate.iso}>{eventDate.label}</time>
-				<br />
-				{eventCity}
+<article class="flex h-full w-[328px] flex-col items-center gap-8" aria-labelledby={nameId}>
+	<div class="flex w-full flex-1 flex-col">
+		<header class="relative flex flex-col">
+			<p class="flex h-7 items-center justify-center bg-surface-white px-2" aria-hidden="true">
+				<span class="bg-gradient-ticket-name bg-clip-text font-display text-transparent text-[20px] leading-6 whitespace-nowrap">{tier.name}</span>
 			</p>
-			<p class="event-text absolute inset-0 opacity-40 mix-blend-plus-lighter" aria-hidden="true">
-				{eventDate.label}
-				<br />
-				{eventCity}
-			</p>
-		</div>
-	</header>
 
-	<div class="relative h-[259px]" aria-hidden="true">
-		<img src="/assets/decorations/ticket_body.svg" alt="" width="328" height="358.683" />
-		<div class="absolute top-[47.37px] left-1/2 flex h-[164px] w-[253.746px] -translate-x-1/2 items-center justify-center">
-			<img
-				src="/assets/logos/scd_logo_ticket_2.svg"
-				alt=""
-				width="164"
-				height="254"
-				loading="lazy"
-				decoding="async"
-				class="h-[253.746px] w-[164px] max-w-none flex-none rotate-90 object-cover"
-			/>
-		</div>
-	</div>
+			<div class="flex h-[95.257px] items-center justify-center" aria-hidden="true">
+				<img
+					src="/assets/decorations/ticket_top.svg"
+					alt=""
+					width="95.2568"
+					height="328"
+					class="flex-none rotate-90"
+				/>
+			</div>
 
-	<div
-		class="perforated relative flex flex-1 flex-col gap-8 overflow-clip rounded-lg bg-gradient-ticket px-8 pt-6 pb-8"
-	>
-		<div class="relative z-10 flex flex-col gap-4">
-			<div>
-				<h3 id={nameId} class="font-display text-[25px] leading-[38px] text-content-brand">{tier.name}</h3>
-				<p class="flex items-start gap-2 font-bold whitespace-nowrap text-content-brand">
-					<span class="text-[61px] leading-[59px]">
-						{isDiscounted && <span class="sr-only">Discounted price: </span>}
-						{formatPrice(tier.discountPrice ?? tier.price)}
-					</span>
-					{
-						isDiscounted && (
-							<del class="text-[25px] leading-[38px] text-content-brand-secondary">
-								<span class="sr-only">Original price: </span>
-								{formatPrice(tier.price)}
-							</del>
-						)
-					}
+			<div class="absolute top-[52px] left-1/2 w-[230px] -translate-x-1/2 text-center">
+				<p class="bg-gradient-ticket-date bg-clip-text text-h6 font-bold text-transparent">
+					<time datetime={eventDate.iso}>{eventDate.label}</time>
+					<br />
+					{eventCity}
+				</p>
+				<p
+					class="absolute inset-0 bg-gradient-ticket-date bg-clip-text text-h6 font-bold text-transparent opacity-40 mix-blend-plus-lighter"
+					aria-hidden="true"
+				>
+					{eventDate.label}
+					<br />
+					{eventCity}
 				</p>
 			</div>
+		</header>
 
-			<p class="text-content-brand-secondary">{tier.description}</p>
-
-			<ul class="flex flex-col gap-2 px-4">
-				{
-					tier.benefits.map(({ label, included }) => (
-						<li
-							class:list={[
-								'flex items-center gap-2',
-								included ? 'text-content-brand-secondary' : 'text-content-brand/65 line-through',
-							]}
-						>
-							<img
-								src={included ? '/assets/icons/circle_check.svg' : '/assets/icons/circle_check_muted.svg'}
-								alt=""
-								width="16"
-								height="16"
-								class="flex-none"
-							/>
-							<span>
-								{!included && <span class="sr-only">Not included: </span>}
-								{label}
-							</span>
-						</li>
-					))
-				}
-			</ul>
-		</div>
-
-		<div class="sparkle sparkle-lg" aria-hidden="true">
-			<div class="sparkle-inner">
-				<img src="/assets/decorations/ticket_sparkle_lg.svg" alt="" width="270.375" height="270.788" />
-			</div>
-		</div>
-		<div class="sparkle sparkle-sm" aria-hidden="true">
-			<div class="sparkle-inner">
-				<img src="/assets/decorations/ticket_sparkle_sm.svg" alt="" width="233.076" height="233.224" />
+		<div class="relative -mt-px h-[259px]" aria-hidden="true">
+			<img src="/assets/decorations/ticket_body.svg" alt="" width="328" height="358.683" />
+			<div class="absolute top-[47.37px] left-1/2 flex h-[164px] w-[253.746px] -translate-x-1/2 items-center justify-center">
+				<img
+					src="/assets/logos/scd_logo_2.svg"
+					alt=""
+					width="821"
+					height="557"
+					loading="lazy"
+					decoding="async"
+					class="h-[164px] w-[253.746px] max-w-none flex-none object-contain mix-blend-lighten"
+				/>
 			</div>
 		</div>
 
-		<div class="relative z-10 mt-auto">
-			<Button
-				label="Get Ticket"
-				href={formUrl}
-				variant="purple"
-				fullWidth
-				target={isExternal ? '_blank' : undefined}
-				aria-label={`Get Ticket: ${tier.name}${isExternal ? ' (opens in a new tab)' : ''}`}
-				class="focus-visible:outline-surface-brand!"
-			/>
+		<div
+			class="perforated relative flex flex-1 flex-col gap-8 overflow-clip rounded-lg bg-gradient-ticket px-8 pt-6 pb-8"
+		>
+			<div class="relative z-10 flex flex-col gap-4">
+				<div>
+					<h3 id={nameId} class="font-display text-[25px] leading-[38px] text-content-brand">{tier.name}</h3>
+					<p class="flex items-start gap-2 font-bold whitespace-nowrap text-content-brand">
+						<span class="text-[61px] leading-[59px]">
+							{isDiscounted && <span class="sr-only">Discounted price: </span>}
+							{formatPrice(tier.discountPrice ?? tier.price)}
+						</span>
+						{
+							isDiscounted && (
+								<del class="text-[25px] leading-[38px] font-normal text-content-brand-secondary">
+									<span class="sr-only">Original price: </span>
+									{formatPrice(tier.price)}
+								</del>
+							)
+						}
+					</p>
+				</div>
+
+				<p class="text-content-brand-secondary">{tier.description}</p>
+
+				<ul class="flex flex-col gap-2 px-4">
+					{
+						tier.benefits.map(({ label, included }) => (
+							<li
+								class:list={[
+									'flex items-center gap-2',
+									included ? 'text-content-brand-secondary' : 'text-content-brand/65 line-through',
+								]}
+							>
+								<img
+									src={included ? '/assets/icons/circle_check.svg' : '/assets/icons/circle_check_muted.svg'}
+									alt=""
+									width="16"
+									height="16"
+									class="flex-none"
+								/>
+								<span>
+									{!included && <span class="sr-only">Not included: </span>}
+									{label}
+								</span>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<div class="sparkle sparkle-lg" aria-hidden="true">
+				<div class="sparkle-inner">
+					<img src="/assets/decorations/ticket_sparkle_lg.svg" alt="" width="270.375" height="270.788" />
+				</div>
+			</div>
+			<div class="sparkle sparkle-sm" aria-hidden="true">
+				<div class="sparkle-inner">
+					<img src="/assets/decorations/ticket_sparkle_sm.svg" alt="" width="233.076" height="233.224" />
+				</div>
+			</div>
 		</div>
 	</div>
+
+	<Button
+		label="Get Ticket Here"
+		href={formUrl}
+		variant="cta"
+		target={isExternal ? '_blank' : undefined}
+		aria-label={`Get Ticket Here: ${tier.name}${isExternal ? ' (opens in a new tab)' : ''}`}
+		class="text-h4"
+	/>
 </article>
 
 <style>
-	.pass-name {
-		background-image: linear-gradient(
-			174.3deg,
-			var(--color-surface-brand-secondary) 15.288%,
-			var(--color-surface-secondary) 102.31%
-		);
-		background-clip: text;
-		-webkit-background-clip: text;
-		color: transparent;
-	}
-
-	.event-text {
-		background-image: linear-gradient(to top, var(--color-surface-accent) 41.944%, var(--color-surface-white) 91.83%);
-		background-clip: text;
-		-webkit-background-clip: text;
-		color: transparent;
-	}
 
 	.perforated {
 		--perf-depth: 8px;

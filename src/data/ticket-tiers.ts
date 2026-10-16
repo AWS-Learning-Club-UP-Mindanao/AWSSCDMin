@@ -19,7 +19,7 @@ export const ticketTiers: TicketTier[] = [
   {
     id: 'regular',
     name: 'Regular Pass',
-    description: '[Description pending approval]',
+    description: 'This ticket tier is non-refundable, and all sales are final. For tier inclusions and full policy details, see the link.',
     benefits: [
       { label: 'Item 1', included: true },
       { label: 'Item 2', included: false },
@@ -29,7 +29,7 @@ export const ticketTiers: TicketTier[] = [
   {
     id: 'pro',
     name: 'Pro Pass',
-    description: '[Description pending approval]',
+    description: 'This ticket tier is non-refundable, and all sales are final. For tier inclusions and full policy details, see the link.',
     benefits: [
       { label: 'Item 1', included: true },
       { label: 'Item 2', included: false },
@@ -40,7 +40,7 @@ export const ticketTiers: TicketTier[] = [
   {
     id: 'vip',
     name: 'VIP Pass',
-    description: '[Description pending approval]',
+    description: 'This ticket tier is non-refundable, and all sales are final. For tier inclusions and full policy details, see the link.',
     benefits: [
       { label: 'Item 1', included: true },
       { label: 'Item 2', included: true },
