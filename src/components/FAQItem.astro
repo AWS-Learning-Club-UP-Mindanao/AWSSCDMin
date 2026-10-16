@@ -9,7 +9,7 @@ const { question, answer } = Astro.props;
 
 <details class="faq-item overflow-hidden rounded-lg bg-surface-brand">
 	<summary
-		class="flex cursor-pointer list-none items-center justify-between gap-6 py-3.5 pl-8 pr-4 text-body text-content-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent [&::-webkit-details-marker]:hidden"
+		class="flex cursor-pointer list-none items-center justify-between gap-6 py-3.5 pl-8 pr-4 text-body font-bold text-content-primary focus-visible:outline-none [&::-webkit-details-marker]:hidden"
 	>
 		<span class="text-pretty">{question}</span>
 		<svg
@@ -103,4 +103,9 @@ const { question, answer } = Astro.props;
 			animation: none;
 		}
 	}
+
+.faq-item:has(summary:focus-visible) {
+	outline: 2px solid var(--color-surface-accent);
+	outline-offset: 2px;
+}
 </style>
