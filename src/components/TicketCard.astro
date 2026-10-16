@@ -1,6 +1,5 @@
 ---
 import Button from './Button.astro';
-import Logo from '/public/assets/logos/scd_logo_ticket_2.svg';
 import { getTicketFormUrl, type TicketTier } from '../data/ticket-tiers';
 
 interface Props {
@@ -16,13 +15,27 @@ const formUrl = getTicketFormUrl(tier);
 const isExternal = formUrl.startsWith('http');
 const nameId = `ticket-${tier.id}-name`;
 
-const formatPrice = (amount: number) =>
-	new Intl.NumberFormat('en-PH', {
-		style: 'currency',
-		currency: 'PHP',
-		maximumFractionDigits: 0,
-		useGrouping: false,
-	}).format(amount);
+const priceFormat = new Intl.NumberFormat('en-PH', {
+	style: 'currency',
+	currency: 'PHP',
+	maximumFractionDigits: 0,
+	useGrouping: false,
+});
+
+const formatPrice = (amount: number) => priceFormat.format(amount);
+
+const priceParts = (amount: number) => {
+	const parts = priceFormat.formatToParts(amount);
+	return {
+		symbol: parts.find((part) => part.type === 'currency')?.value ?? '',
+		value: parts
+			.filter((part) => part.type !== 'currency' && part.type !== 'literal')
+			.map((part) => part.value)
+			.join(''),
+	};
+};
+
+const currentPrice = priceParts(tier.discountPrice ?? tier.price);
 ---
 
 <article class="flex h-full w-[328px] flex-col items-center gap-8" aria-labelledby={nameId}>
@@ -83,7 +96,7 @@ const formatPrice = (amount: number) =>
 					<p class="flex items-start gap-2 font-bold whitespace-nowrap text-content-brand">
 						<span class="text-[61px] leading-[59px]">
 							{isDiscounted && <span class="sr-only">Discounted price: </span>}
-							{formatPrice(tier.discountPrice ?? tier.price)}
+							<span class="text-[39px]">{currentPrice.symbol}</span>{currentPrice.value}
 						</span>
 						{
 							isDiscounted && (
@@ -159,7 +172,6 @@ const formatPrice = (amount: number) =>
 				calc(var(--perf-tab) + var(--perf-gap)) var(--perf-depth) repeat-x;
 	}
 
-	/* Sparkle boxes, rotation, and offsets are the Figma values for the exported SVGs. */
 	.sparkle {
 		position: absolute;
 		display: flex;
