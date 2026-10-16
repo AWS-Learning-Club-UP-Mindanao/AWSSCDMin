@@ -1,4 +1,4 @@
-export type SocialPlatform = 'linkedin' | 'github' | 'facebook';
+export type SocialPlatform = 'linkedin' | 'facebook';
 
 export interface SpeakerSocial {
   platform: SocialPlatform;
@@ -27,7 +27,6 @@ export const speakers: Speaker[] = [
     organization: 'AWS SBG CatAlunan Grande',
     socials: [
       { platform: 'linkedin', url: 'https://www.linkedin.com/' },
-      { platform: 'github', url: 'https://github.com/' },
       { platform: 'facebook', url: 'https://www.facebook.com/' },
     ],
   },
@@ -48,7 +47,6 @@ export const speakers: Speaker[] = [
     organization: 'AWS SBG CatAlunan Pequeno',
     socials: [
       { platform: 'linkedin', url: 'https://www.linkedin.com/' },
-      { platform: 'github', url: 'https://github.com/' },
       { platform: 'facebook', url: 'https://www.facebook.com/' },
     ],
   },
@@ -59,7 +57,6 @@ export const speakers: Speaker[] = [
     organization: 'AWS SBG CatAlunan Pequeno',
     socials: [
       { platform: 'linkedin', url: 'https://www.linkedin.com/' },
-      { platform: 'github', url: 'https://github.com/' },
       { platform: 'facebook', url: 'https://www.facebook.com/' },
     ],
   },
@@ -80,7 +77,6 @@ export const speakers: Speaker[] = [
     organization: 'AWS SBG CatAlunan Grande',
     socials: [
       { platform: 'linkedin', url: 'https://www.linkedin.com/' },
-      { platform: 'github', url: 'https://github.com/' },
       { platform: 'facebook', url: 'https://www.facebook.com/' },
     ],
   },
