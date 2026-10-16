@@ -1,0 +1,10 @@
+<svg width="2106" height="2506" viewBox="0 0 2106 2506" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#glow_speakers_blur)">
+<ellipse cx="1053" cy="1253" rx="653" ry="853" fill="#130445"/>
+</g>
+<defs>
+<filter id="glow_speakers_blur" x="0" y="0" width="2106" height="2506" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feGaussianBlur stdDeviation="200"/>
+</filter>
+</defs>
+</svg>
