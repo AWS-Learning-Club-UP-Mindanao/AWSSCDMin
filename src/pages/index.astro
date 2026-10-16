@@ -5,6 +5,7 @@ import Schedule from "../components/sections/Schedule.astro";
 import Header from "../components/Header.astro";
 import Location from "../components/sections/Location.astro";
 import Footer from "../components/Footer.astro";
+import FAQ from "../components/sections/FAQ.astro";
 ---
 
 <BaseLayout
@@ -29,26 +30,28 @@ import Footer from "../components/Footer.astro";
   </Section>
 
 	<!-- Ticket 09 -->
-	<Schedule />
+	<Section id="schedule">
+		<p class="text-caption text-content-secondary">Schedule (Ticket 09)</p>
+	</Section>
 
-  <!-- Ticket 10 -->
-  <Section id="tickets">
-    <p class="text-caption text-content-secondary">Ticket tiers (Ticket 10)</p>
-  </Section>
+	<!-- Ticket 10 -->
+	<Section id="tickets">
+		<p class="text-caption text-content-secondary">Ticket tiers (Ticket 10)</p>
+	</Section>
 
-  <!-- Ticket 11 -->
-  <Section id="speakers">
-    <p class="text-caption text-content-secondary">Speakers (Ticket 11)</p>
-  </Section>
+	<!-- Ticket 11 -->
+	<Section id="speakers">
+		<p class="text-caption text-content-secondary">Speakers (Ticket 11)</p>
+	</Section>
 
-  <!-- Ticket 12 -->
-  <Location />
+	<!-- Ticket 12 -->
+	<Section id="location">
+		<p class="text-caption text-content-secondary">Location (Ticket 12)</p>
+	</Section>
 
-  <!-- Ticket 13 -->
-  <Section id="faq">
-    <p class="text-caption text-content-secondary">FAQ (Ticket 13)</p>
-  </Section>
+	<!-- Ticket 13 -->
+	<FAQ />
 
-  <!-- Ticket 06: the closing CTA and footer. Lives in the layout's footer slot. -->
-  <Footer slot="footer" />
+	<!-- Ticket 06: the closing CTA and footer. Lives in the layout's footer slot. -->
+	<Footer slot="footer" />
 </BaseLayout>
