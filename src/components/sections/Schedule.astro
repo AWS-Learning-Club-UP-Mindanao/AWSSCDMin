@@ -21,11 +21,16 @@ import { schedule } from "../../data/schedule";
     data-expanded="false"
   >
     {schedule.map((slot, i) => (
-      <li class="relative grid grid-cols-[4.5rem_2.5rem_1fr] md:grid-cols-[9.5rem_5rem_1fr]">
+      <li class="relative grid grid-cols-[4.5rem_2.5rem_1fr] md:grid-cols-[10rem_5rem_1fr]">
         <div class="md:text-right">
           <p class="text-h4 font-body text-content-primary">{slot.label}</p>
-          <p class="mt-1 text-body font-body text-content-secondary md:whitespace-nowrap">
-            {slot.time}
+          <p class="mt-1 text-caption font-body text-content-secondary md:text-body md:whitespace-nowrap">
+            {slot.time.split(/\s*-\s*/).map((part, idx) => (
+              <>
+                {idx > 0 && " "}
+                <span class="whitespace-nowrap">{idx === 0 ? part : `- ${part}`}</span>
+              </>
+            ))}
           </p>
         </div>
 
@@ -37,18 +42,18 @@ import { schedule } from "../../data/schedule";
         {i === 0 && (
           <span
             aria-hidden="true"
-            class="absolute -top-[16px] left-[91px] h-10 w-[1px] bg-linear-to-b from-transparent to-surface-brand md:left-[195px]"
+            class="absolute -top-[16px] left-[91px] h-10 w-[1px] bg-linear-to-b from-transparent to-surface-brand md:left-[203px]"
           />
         )}
         {i < schedule.length - 1 ? (
           <span
             aria-hidden="true"
-            class="row-spine absolute top-[24px] left-[91px] h-[calc(100%_+_2rem)] w-[1px] bg-surface-brand md:left-[195px] md:h-[calc(100%_+_2.5rem)]"
+            class="row-spine absolute top-[24px] left-[91px] h-[calc(100%_+_2rem)] w-[1px] bg-surface-brand md:left-[203px] md:h-[calc(100%_+_2.5rem)]"
           />
         ) : (
           <span
             aria-hidden="true"
-            class="absolute top-[24px] left-[91px] h-10 w-[1px] bg-linear-to-b from-surface-brand to-transparent md:left-[195px]"
+            class="absolute top-[24px] left-[91px] h-10 w-[1px] bg-linear-to-b from-surface-brand to-transparent md:left-[203px]"
           />
         )}
 
@@ -252,10 +257,6 @@ import { schedule } from "../../data/schedule";
     mask-repeat: no-repeat;
   }
 
-  /* The star trail is positioned entirely from the markup with
-     left-[1.9vw] and top-[calc((section padding-top + 18px) - 70vw)] per tier,
-     so the bright star keeps the same offset from the "Schedule Timeline"
-     heading at every viewport. */
 </style>
 
 <script>
@@ -292,23 +293,15 @@ import { schedule } from "../../data/schedule";
     });
   });
 
-  // Place the star trail from the heading's measured box, so the bright star
-  // keeps the same relationship to "Schedule Timeline" at every screen size
-  // instead of relying on per-breakpoint offsets.
   const trail = document.querySelector<HTMLElement>(".star-trail-mask");
   const heading = [
     ...document.querySelectorAll("#schedule h1, #schedule h2, #schedule h3"),
   ].find((el) => el.textContent.trim().toUpperCase().startsWith("SCHEDULE"));
 
   if (trail && heading) {
-    // Centroid of the bright star inside star_trail_4.svg, as a fraction of the
-    // artwork's box, plus the artwork's height/width ratio.
     const STAR_X = 0.7505;
     const STAR_Y = 0.7896;
     const IMG_RATIO = 1955 / 2205;
-    // Gap between the end of the heading text and the star, as a fraction of
-    // the text's width, how far below the heading's top the star sits, and the
-    // furthest right the star may sit (so narrow screens keep it in frame).
     const GAP = 0.25;
     const DROP = 15;
     const MAX_X = 0.85;
