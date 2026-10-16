@@ -30,5 +30,3 @@ pnpm-debug.log*
 
 # Private fonts
 public/fonts/
-# Local agent notes, plans and reviews — never part of the repo
-.hermes/
