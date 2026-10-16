@@ -12,12 +12,6 @@ import { ticketTiers } from '../../data/ticket-tiers';
 		</p>
 	</header>
 
-	<!--
-		Below xl the tickets scroll sideways with snapping. The row bleeds past the Container
-		gutter to the screen edge and adds it back as padding and scroll-padding, so each ticket
-		snaps in line with the heading; Section's overflow-x-clip keeps that off the page width.
-		From xl the three 328px tickets fit side by side with the design's 64px gap.
-	-->
 	<ul
 		class="-mx-8 mt-8 flex snap-x snap-mandatory scroll-px-8 gap-6 overflow-x-auto px-8 py-4 md:-mx-12 md:scroll-px-12 md:px-12 xl:mx-0 xl:justify-center xl:gap-16 xl:overflow-visible xl:px-0"
 	>

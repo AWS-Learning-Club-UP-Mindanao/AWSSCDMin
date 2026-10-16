@@ -88,7 +88,7 @@ const currentPrice = priceParts(tier.discountPrice ?? tier.price);
 		</div>
 
 		<div
-			class="perforated relative flex flex-1 flex-col gap-8 overflow-clip rounded-lg bg-gradient-ticket px-8 pt-6 pb-8"
+			class="perforated relative -mt-[3px] flex flex-1 flex-col gap-8 overflow-clip rounded-lg bg-gradient-ticket px-8 pt-5 pb-8"
 		>
 			<div class="relative z-10 flex flex-col gap-4">
 				<div>
@@ -163,13 +163,12 @@ const currentPrice = priceParts(tier.discountPrice ?? tier.price);
 <style>
 
 	.perforated {
-		--perf-depth: 8px;
-		--perf-tab: 23.5px;
-		--perf-gap: 8px;
+		--perf-depth: 4px;
+		--perf-period: 31.5px;
 		mask:
 			linear-gradient(#000 0 0) 0 var(--perf-depth) / 100% calc(100% - var(--perf-depth)) no-repeat,
-			linear-gradient(90deg, #000 0 var(--perf-tab), #0000 0 calc(var(--perf-tab) + var(--perf-gap))) -6px 0 /
-				calc(var(--perf-tab) + var(--perf-gap)) var(--perf-depth) repeat-x;
+			url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31.5' height='4' viewBox='0 0 31.5 4'%3E%3Cpath d='M0 4A4 4 0 0 1 4 0H18.5A4 4 0 0 1 22.5 4Z'/%3E%3C/svg%3E")
+				-3.5px 0 / var(--perf-period) var(--perf-depth) repeat-x;
 	}
 
 	.sparkle {
@@ -193,7 +192,7 @@ const currentPrice = priceParts(tier.discountPrice ?? tier.price);
 
 	.sparkle-lg {
 		left: 189px;
-		top: -30.26px;
+		top: -26.26px;
 		width: 136.05px;
 		height: 136.456px;
 	}
@@ -208,7 +207,7 @@ const currentPrice = priceParts(tier.discountPrice ?? tier.price);
 
 	.sparkle-sm {
 		left: 255px;
-		top: 37.74px;
+		top: 41.74px;
 		width: 82.945px;
 		height: 83.192px;
 	}
