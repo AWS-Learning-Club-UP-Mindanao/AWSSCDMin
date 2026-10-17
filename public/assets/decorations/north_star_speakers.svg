@@ -1,5 +1,5 @@
-<svg width="1728" height="1647" viewBox="0 0 1728 1647" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="north-star-speakers" clip-path="url(#clip0_0_4)">
+<svg width="3120" height="2250" viewBox="-450 -300 3120 2250" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="north-star-speakers">
 <g id="backdrop_glow" filter="url(#filter0_f_0_4)">
 <path id="Vector" d="M1112 1047C1472.64 1047 1765 946.936 1765 823.5C1765 700.064 1472.64 600 1112 600C751.358 600 459 700.064 459 823.5C459 946.936 751.358 1047 1112 1047Z" fill="#130445"/>
 </g>
@@ -90,7 +90,7 @@
 </g>
 </g>
 <defs>
-<filter id="filter0_f_0_4" x="-141" y="0" width="2506" height="1647" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<filter id="filter0_f_0_4" x="-450" y="-300" width="3120" height="2250" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
 <feFlood flood-opacity="0" result="BackgroundImageFix"/>
 <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
 <feGaussianBlur stdDeviation="300" result="effect1_foregroundBlur_0_4"/>
@@ -335,8 +335,5 @@
 <stop offset="0.6667" stop-color="#8752FE" stop-opacity="0.083"/>
 <stop offset="1" stop-color="#381598" stop-opacity="0.14"/>
 </linearGradient>
-<clipPath id="clip0_0_4">
-<rect width="1728" height="1647" fill="white"/>
-</clipPath>
 </defs>
 </svg>
