@@ -1,6 +1,5 @@
 ---
 import Section from "../layout/Section.astro";
-import Container from "../layout/Container.astro";
 import { venue } from "../../data/site";
 
 const key = import.meta.env.GOOGLE_MAPS_API_KEY;
@@ -25,7 +24,6 @@ if (key) {
   id="location"
   backgroundImage="/assets/backgrounds/star_background.svg"
 >
-  <Container>
     <div class="grid items-center gap-10 xl:grid-cols-[514fr_790fr] xl:gap-16">
       <div class="flex flex-col gap-4">
         <h2 class="text-h1 text-content-primary">Location</h2>
@@ -75,7 +73,6 @@ if (key) {
         />
       )}
     </div>
-  </Container>
 
   <Fragment slot="decorations">
     <div class="pointer-events-none absolute inset-0 mx-auto w-full max-w-[1400px]">
