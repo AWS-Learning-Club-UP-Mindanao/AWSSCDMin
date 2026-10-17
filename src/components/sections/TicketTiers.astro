@@ -12,7 +12,7 @@ import { ticketTiers } from '../../data/ticket-tiers';
 		</p>
 	</header>
 
-	<div class="mt-4 md:mt-12 xl:mt-4" data-ticket-carousel>
+	<div class="relative mt-4 md:mt-12 xl:mt-4" data-ticket-carousel>
 		<ul
 			class="ticket-track relative -mx-8 flex snap-x snap-mandatory gap-6 overflow-x-auto pt-4 pb-10 md:-mx-12 md:gap-16 xl:mx-0 xl:justify-center xl:overflow-visible"
 			data-ticket-track
@@ -26,12 +26,12 @@ import { ticketTiers } from '../../data/ticket-tiers';
 			}
 		</ul>
 
-		<div class="relative -mt-[22px] flex justify-center xl:hidden">
+		<div class="ticket-pills pointer-events-none absolute inset-x-0 flex justify-center xl:hidden" data-ticket-pills>
 			{
 				ticketTiers.map((tier) => (
 					<button
 						type="button"
-						class="ticket-pill flex h-11 cursor-pointer items-center px-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent"
+						class="ticket-pill pointer-events-auto flex h-11 cursor-pointer items-center px-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent"
 						aria-label={`Show ${tier.name}`}
 						aria-current="false"
 						data-ticket-pill
@@ -45,9 +45,19 @@ import { ticketTiers } from '../../data/ticket-tiers';
 </Section>
 
 <style>
+	/*
+		Side padding lets the first and last tickets reach the centre snap point. Below xl the
+		ticket-to-button gap widens to 80px (32 + 16px pill + 32) to hold the pills.
+	*/
 	.ticket-track {
 		--gutter: 2rem;
+		--ticket-button-gap: 5rem;
 		padding-inline: max(0px, calc(50% + var(--gutter) - 164px));
+		scrollbar-width: none;
+	}
+
+	.ticket-track::-webkit-scrollbar {
+		display: none;
 	}
 
 	@media (min-width: 768px) {
@@ -58,8 +68,14 @@ import { ticketTiers } from '../../data/ticket-tiers';
 
 	@media (min-width: 1280px) {
 		.ticket-track {
+			--ticket-button-gap: 2rem;
 			padding-inline: 0;
 		}
+	}
+
+	/* The pills only work with the script, so they stay hidden until it positions them. */
+	.ticket-pills:not([data-ready]) {
+		display: none;
 	}
 
 	.ticket-pill[aria-current='true'] .ticket-pill-dot {
@@ -84,7 +100,24 @@ import { ticketTiers } from '../../data/ticket-tiers';
 		if (!track) continue;
 
 		const slides = Array.from(track.children) as HTMLElement[];
+		const pillRow = carousel.querySelector<HTMLElement>('[data-ticket-pills]');
 		const pills = Array.from(carousel.querySelectorAll<HTMLButtonElement>('[data-ticket-pill]'));
+		const firstTicket = slides[0]?.querySelector<HTMLElement>('[data-ticket-body]');
+
+		// Centre the pill row in the 80px gap under the tickets. Ticket height depends on the
+		// content and the fonts, so this re-runs whenever the track resizes.
+		const placePills = () => {
+			if (!pillRow || !firstTicket) return;
+			const ticketBottom =
+				firstTicket.getBoundingClientRect().bottom - carousel.getBoundingClientRect().top;
+			pillRow.style.top = `${ticketBottom + 40 - pillRow.offsetHeight / 2}px`;
+		};
+
+		if (pillRow) {
+			pillRow.dataset.ready = '';
+			placePills();
+			new ResizeObserver(placePills).observe(track);
+		}
 
 		const scrollTargetFor = (slide: HTMLElement) =>
 			slide.offsetLeft + slide.offsetWidth / 2 - track.clientWidth / 2;

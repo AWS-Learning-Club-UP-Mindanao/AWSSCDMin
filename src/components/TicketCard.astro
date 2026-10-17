@@ -38,8 +38,11 @@ const priceParts = (amount: number) => {
 const currentPrice = priceParts(tier.discountPrice ?? tier.price);
 ---
 
-<article class="flex h-full w-[328px] flex-col items-center gap-8" aria-labelledby={nameId}>
-	<div class="flex w-full flex-1 flex-col">
+<article
+	class="flex h-full w-[328px] flex-col items-center gap-[var(--ticket-button-gap,2rem)]"
+	aria-labelledby={nameId}
+>
+	<div class="flex w-full flex-1 flex-col" data-ticket-body>
 		<header class="relative flex flex-col">
 			<p class="flex h-7 items-center justify-center bg-surface-white px-2" aria-hidden="true">
 				<span class="bg-gradient-ticket-name bg-clip-text font-display text-transparent text-[20px] leading-6 whitespace-nowrap">{tier.name}</span>
