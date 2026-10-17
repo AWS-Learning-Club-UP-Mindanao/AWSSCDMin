@@ -1,0 +1,10 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="95.2568" height="328" viewBox="0 0 95.2568 328" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path id="Subtract" d="M72.8291 0C72.2896 1.9074 72 3.91986 72 6C72 18.1503 81.8497 28 94 28C94.4219 28 94.8408 27.9863 95.2568 27.9629V302.036C94.8409 302.013 94.4218 302 94 302C81.8497 302 72 311.85 72 324C72 325.366 72.126 326.703 72.3643 328H0V0H72.8291Z" fill="url(#paint0_radial_0_91)"/>
+<defs>
+<radialGradient id="paint0_radial_0_91" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(47.6284 234.269) rotate(90) scale(273.902 74.0986)">
+<stop stop-color="#320776"/>
+<stop offset="0.480769" stop-color="#130445"/>
+<stop offset="1" stop-color="#020110"/>
+</radialGradient>
+</defs>
+</svg>
