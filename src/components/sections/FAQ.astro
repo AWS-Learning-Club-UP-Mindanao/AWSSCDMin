@@ -1,0 +1,94 @@
+---
+import Section from "../layout/Section.astro";
+import FAQItem from "../FAQItem.astro";
+import { faqs } from "../../data/faqs";
+---
+
+<Section
+  id="faq"
+  spacing="lg"
+  class="z-10 min-h-[55rem] sm:min-h-[42rem] md:min-h-[46rem] lg:min-h-[50rem] xl:min-h-[44rem]"
+  backgroundImage="/assets/backgrounds/star_background.svg"
+>
+  <h2 class="text-h1 text-content-primary">Frequently Asked Questions</h2>
+
+  <div class="relative mt-10 grid items-start gap-x-8 gap-y-4 xl:grid-cols-2">
+    <!-- Sized by the grid, so the glow grows with the list. Blur is lower than the frames' since it now wraps the content instead of the section. -->
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute -inset-x-6 -inset-y-10 -z-10 rounded-full bg-surface-secondary blur-[54.8px] lg:blur-[100px]"
+    >
+    </div>
+    <div class="flex flex-col gap-y-4">
+      {faqs.slice(0, Math.ceil(faqs.length / 2)).map((faq) => (
+        <FAQItem question={faq.question} answer={faq.answer} />
+      ))}
+    </div>
+    <div class="flex flex-col gap-y-4">
+      {faqs.slice(Math.ceil(faqs.length / 2)).map((faq) => (
+        <FAQItem question={faq.question} answer={faq.answer} />
+      ))}
+    </div>
+  </div>
+</Section>
+
+<script>
+  const nativeBounce =
+    CSS.supports("interpolate-size", "allow-keywords") &&
+    CSS.supports("selector(::details-content)");
+
+  /* Firefox and Safari can't interpolate a disclosure to its intrinsic height, so they
+     get the same two moves by hand. Chromium takes the CSS path in FAQItem instead. */
+  if (!nativeBounce) {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    document
+      .querySelectorAll<HTMLDetailsElement>(".faq-item")
+      .forEach((item) => {
+        const summary = item.querySelector("summary");
+        const panel = item.querySelector<HTMLElement>(".faq-answer");
+
+        if (!summary || !panel) return;
+
+        let running: Animation | null = null;
+
+        summary.addEventListener("click", (event) => {
+          event.preventDefault();
+          running?.cancel();
+          running = null;
+
+          const opening = !item.open;
+
+          if (reducedMotion.matches) {
+            item.open = opening;
+            return;
+          }
+
+          if (opening) {
+            /* pin it shut before the browser paints, so the box never flashes open */
+            panel.style.height = "0px";
+            item.open = true;
+            const height = panel.scrollHeight;
+            panel.style.height = "";
+            running = panel.animate(
+              { height: ["0px", `${height}px`] },
+              { duration: 420, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)" },
+            );
+            return;
+          }
+
+          const height = panel.getBoundingClientRect().height;
+          running = panel.animate(
+            { height: [`${height}px`, "0px"] },
+            { duration: 360, easing: "cubic-bezier(0.36, -0.55, 0.6, 1)" },
+          );
+          running.finished.then(
+            () => {
+              item.open = false;
+            },
+            () => {},
+          );
+        });
+      });
+  }
+</script>
