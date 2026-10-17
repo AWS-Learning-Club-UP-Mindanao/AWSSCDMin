@@ -1,0 +1,222 @@
+---
+import Button from './Button.astro';
+import { getTicketFormUrl, type TicketTier } from '../data/ticket-tiers';
+
+interface Props {
+	tier: TicketTier;
+}
+
+const { tier } = Astro.props;
+const eventDate = { label: 'November 28, 2026', iso: '2026-11-28' };
+const eventCity = 'Davao City';
+
+const isDiscounted = tier.discountPrice !== undefined;
+const formUrl = getTicketFormUrl(tier);
+const isExternal = formUrl.startsWith('http');
+const nameId = `ticket-${tier.id}-name`;
+
+const priceFormat = new Intl.NumberFormat('en-PH', {
+	style: 'currency',
+	currency: 'PHP',
+	maximumFractionDigits: 0,
+	useGrouping: false,
+});
+
+const formatPrice = (amount: number) => priceFormat.format(amount);
+
+const priceParts = (amount: number) => {
+	const parts = priceFormat.formatToParts(amount);
+	return {
+		symbol: parts.find((part) => part.type === 'currency')?.value ?? '',
+		value: parts
+			.filter((part) => part.type !== 'currency' && part.type !== 'literal')
+			.map((part) => part.value)
+			.join(''),
+	};
+};
+
+const currentPrice = priceParts(tier.discountPrice ?? tier.price);
+---
+
+<article class="flex h-full w-[328px] flex-col items-center gap-8" aria-labelledby={nameId}>
+	<div class="flex w-full flex-1 flex-col">
+		<header class="relative flex flex-col">
+			<p class="flex h-7 items-center justify-center bg-surface-white px-2" aria-hidden="true">
+				<span class="bg-gradient-ticket-name bg-clip-text font-display text-transparent text-[20px] leading-6 whitespace-nowrap">{tier.name}</span>
+			</p>
+
+			<div class="flex h-[95.257px] items-center justify-center" aria-hidden="true">
+				<img
+					src="/assets/decorations/ticket_top.svg"
+					alt=""
+					width="95.2568"
+					height="328"
+					class="flex-none rotate-90"
+				/>
+			</div>
+
+			<div class="absolute top-[52px] left-1/2 w-[230px] -translate-x-1/2 text-center">
+				<p class="bg-gradient-ticket-date bg-clip-text text-h6 font-bold text-transparent">
+					<time datetime={eventDate.iso}>{eventDate.label}</time>
+					<br />
+					{eventCity}
+				</p>
+				<p
+					class="absolute inset-0 bg-gradient-ticket-date bg-clip-text text-h6 font-bold text-transparent opacity-40 mix-blend-plus-lighter"
+					aria-hidden="true"
+				>
+					{eventDate.label}
+					<br />
+					{eventCity}
+				</p>
+			</div>
+		</header>
+
+		<div class="relative -mt-px h-[259px]" aria-hidden="true">
+			<img src="/assets/decorations/ticket_body.svg" alt="" width="328" height="358.683" />
+			<div class="absolute top-[47.37px] left-1/2 flex h-[164px] w-[253.746px] -translate-x-1/2 items-center justify-center">
+				<img
+					src="/assets/logos/scd_logo_2.svg"
+					alt=""
+					width="821"
+					height="557"
+					loading="lazy"
+					decoding="async"
+					class="h-[164px] w-[253.746px] max-w-none flex-none object-contain mix-blend-lighten"
+				/>
+			</div>
+		</div>
+
+		<div
+			class="perforated relative -mt-[3px] flex flex-1 flex-col gap-8 overflow-clip rounded-lg bg-gradient-ticket px-8 pt-5 pb-8"
+		>
+			<div class="relative z-10 flex flex-col gap-4">
+				<div>
+					<h3 id={nameId} class="font-display text-[25px] leading-[38px] text-content-brand">{tier.name}</h3>
+					<p class="flex items-start gap-2 font-bold whitespace-nowrap text-content-brand">
+						<span class="text-[61px] leading-[59px]">
+							{isDiscounted && <span class="sr-only">Discounted price: </span>}
+							<span class="text-[39px]">{currentPrice.symbol}</span>{currentPrice.value}
+						</span>
+						{
+							isDiscounted && (
+								<del class="text-[25px] leading-[38px] font-normal text-content-brand-secondary">
+									<span class="sr-only">Original price: </span>
+									{formatPrice(tier.price)}
+								</del>
+							)
+						}
+					</p>
+				</div>
+
+				<p class="text-content-brand-secondary">{tier.description}</p>
+
+				<ul class="flex flex-col gap-2 px-4">
+					{
+						tier.benefits.map(({ label, included }) => (
+							<li
+								class:list={[
+									'flex items-center gap-2',
+									included ? 'text-content-brand-secondary' : 'text-content-brand/65 line-through',
+								]}
+							>
+								<img
+									src={included ? '/assets/icons/circle_check.svg' : '/assets/icons/circle_check_muted.svg'}
+									alt=""
+									width="16"
+									height="16"
+									class="flex-none"
+								/>
+								<span>
+									{!included && <span class="sr-only">Not included: </span>}
+									{label}
+								</span>
+							</li>
+						))
+					}
+				</ul>
+			</div>
+
+			<div class="sparkle sparkle-lg" aria-hidden="true">
+				<div class="sparkle-inner">
+					<img src="/assets/decorations/ticket_sparkle_lg.svg" alt="" width="270.375" height="270.788" />
+				</div>
+			</div>
+			<div class="sparkle sparkle-sm" aria-hidden="true">
+				<div class="sparkle-inner">
+					<img src="/assets/decorations/ticket_sparkle_sm.svg" alt="" width="233.076" height="233.224" />
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<Button
+		label="Get Ticket Here"
+		href={formUrl}
+		variant="cta"
+		target={isExternal ? '_blank' : undefined}
+		aria-label={`Get Ticket Here: ${tier.name}${isExternal ? ' (opens in a new tab)' : ''}`}
+		class="text-h4"
+	/>
+</article>
+
+<style>
+
+	.perforated {
+		--perf-depth: 4px;
+		--perf-period: 31.5px;
+		mask:
+			linear-gradient(#000 0 0) 0 var(--perf-depth) / 100% calc(100% - var(--perf-depth)) no-repeat,
+			url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='31.5' height='4' viewBox='0 0 31.5 4'%3E%3Cpath d='M0 4A4 4 0 0 1 4 0H18.5A4 4 0 0 1 22.5 4Z'/%3E%3C/svg%3E")
+				-3.5px 0 / var(--perf-period) var(--perf-depth) repeat-x;
+	}
+
+	.sparkle {
+		position: absolute;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		pointer-events: none;
+	}
+
+	.sparkle-inner {
+		position: relative;
+		flex: none;
+		transform: rotate(-165deg) scaleY(-1);
+	}
+
+	.sparkle-inner img {
+		position: absolute;
+		max-width: none;
+	}
+
+	.sparkle-lg {
+		left: 189px;
+		top: -26.26px;
+		width: 136.05px;
+		height: 136.456px;
+	}
+	.sparkle-lg .sparkle-inner {
+		width: 110.964px;
+		height: 111.537px;
+	}
+	.sparkle-lg img {
+		top: -71.4%;
+		left: -71.88%;
+	}
+
+	.sparkle-sm {
+		left: 255px;
+		top: 41.74px;
+		width: 82.945px;
+		height: 83.192px;
+	}
+	.sparkle-sm .sparkle-inner {
+		width: 67.651px;
+		height: 68px;
+	}
+	.sparkle-sm img {
+		top: -121.44%;
+		left: -122.34%;
+	}
+</style>

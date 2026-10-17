@@ -1,0 +1,74 @@
+---
+import type { SocialPlatform, Speaker } from '../data/speakers';
+
+interface Props {
+	speaker: Speaker;
+}
+
+const { speaker } = Astro.props;
+const nameId = `speaker-${speaker.id}-name`;
+
+const platforms: Record<SocialPlatform, { label: string; icon: string }> = {
+	linkedin: { label: 'LinkedIn', icon: '/assets/icons/linkedin.svg' },
+	facebook: { label: 'Facebook', icon: '/assets/icons/facebook.svg' },
+};
+
+const initials = speaker.name
+	.split(/\s+/)
+	.filter((word) => word && !word.endsWith('.'))
+	.slice(0, 2)
+	.map((word) => word[0].toUpperCase())
+	.join('');
+---
+
+<article class="flex h-full flex-col" aria-labelledby={nameId}>
+	<div class="aspect-[323/332] w-full overflow-hidden border-2 border-surface-brand-tertiary">
+		{
+			speaker.image ? (
+				<img
+					src={speaker.image.src}
+					alt={speaker.image.alt}
+					width="323"
+					height="332"
+					loading="lazy"
+					decoding="async"
+					class="size-full object-cover"
+				/>
+			) : (
+				<div class="flex size-full items-center justify-center bg-surface-brand-secondary" aria-hidden="true">
+					<span class="font-body text-h1 font-bold text-content-primary">{initials}</span>
+				</div>
+			)
+		}
+	</div>
+
+	<div class="flex flex-1 flex-col gap-4 bg-surface-brand-tertiary p-4">
+		<div class="flex flex-col">
+			<h3 id={nameId} class="font-body text-h5 font-bold text-content-primary">{speaker.name}</h3>
+			<p class="min-h-12 text-h6 font-bold text-content-primary">{speaker.role}, {speaker.organization}</p>
+		</div>
+
+		{
+			speaker.socials.length > 0 && (
+				<ul class="flex items-center gap-2" aria-label={`${speaker.name} on social media`}>
+					{speaker.socials.map(({ platform, url }) => {
+						const { label, icon } = platforms[platform];
+						return (
+							<li>
+								<a
+									href={url}
+									target="_blank"
+									rel="noopener noreferrer"
+									aria-label={`${speaker.name} on ${label} (opens in a new tab)`}
+									class="relative block rounded-full transition-transform after:absolute after:-inset-1 after:content-[''] hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent motion-reduce:transition-none"
+								>
+									<img src={icon} alt="" width="24" height="24" class="size-6" />
+								</a>
+							</li>
+						);
+					})}
+				</ul>
+			)
+		}
+	</div>
+</article>
