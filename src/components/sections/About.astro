@@ -1,13 +1,16 @@
 ---
+import { readdirSync } from 'node:fs';
 import Section from '../layout/Section.astro';
 
+const slides = readdirSync('public/assets/slides').sort();
+
 const text =
-	'AWS Student Community Day Davao 2025 is a student-led cloud technology event that unites students, educators, and tech enthusiasts across Davao and nearby regions to learn, collaborate, and innovate through Amazon Web Services.';
+	'AWS Student Community Day Mindanao 2026 is the premier student-led cloud technology conference in Mindanao. It brings together over 200+ students, educators, industry professionals, and cloud enthusiasts for technical workshops, keynotes, panel discussions, and hands-on competitions focused on cloud computing, artificial intelligence, and cybersecurity.';
 const words = text.split(' ');
 ---
 
 <Section id="about" spacing="md" class="mt-[-76.3vw] md:mt-[-19.5vw] lg:mt-[-15.6vw] xl:mt-[min(17.5vw,16rem)]">
-	<!-- On desktop the photo spans the pill and card rows, so its top lines up with the pill and its bottom with the card -->
+	<!-- Mobile and tablet stack the photo above the card; from lg the photo sits beside the card and matches its height -->
 	<div class="grid max-md:grid-cols-[minmax(0,1fr)] gap-x-8 lg:gap-x-16 md:grid-cols-[423fr_453fr] xl:grid-cols-[509px_1fr]">
 		<div class="about-title relative max-md:w-[min(295px,100%)] max-md:-translate-x-[9%] max-md:justify-self-center max-md:text-center">
 			<h1 class="max-md:pr-[30px]">What is</h1>
@@ -24,8 +27,8 @@ const words = text.split(' ');
 			AWS Student Community Day Mindanao 2026?
 		</h5>
 
-		<div class="about-card order-2 -mx-8 -mb-16 px-8 py-16 text-center max-md:!rounded-none md:mx-0 md:mb-0 md:col-start-1 md:row-start-3 md:max-xl:px-8 md:max-xl:py-16 md:text-left xl:p-16">
-			<h4 class="text-h5 md:text-h4 text-content-secondary text-pretty md:max-xl:text-h5 md:max-xl:font-bold" data-scroll-reveal>
+		<div class="about-card order-2 -mx-8 -mb-16 px-8 py-16 text-left max-md:!rounded-none md:mx-0 md:mb-0 md:col-start-1 md:max-lg:col-span-2 md:max-lg:row-start-4 lg:row-start-3 md:max-xl:px-8 md:max-xl:py-16 xl:p-16">
+			<h4 class="text-h5 md:text-h4 text-content-secondary text-pretty md:max-xl:text-h5" data-scroll-reveal>
 				{
 					words.map((word) => (
 						<>
@@ -36,10 +39,45 @@ const words = text.split(' ');
 			</h4>
 		</div>
 
-		<!-- ponytail: drop the past-year photo at public/assets/images/about_past_year.jpg; until then the gradient shows -->
+		<!-- 3:2 like the slides when stacked; beside the card it stretches to the card's height, cropping the edges slightly -->
 		<div
-			class="about-photo order-1 mb-10 aspect-[351/239] w-[min(351px,calc(100vw-42px))] justify-self-center md:w-full md:justify-self-auto md:mb-0 rounded-[32px] border-4 border-surface-brand-tertiary p-2.5 md:col-start-2 md:row-start-3 md:aspect-auto xl:row-span-2 xl:row-start-2 xl:mt-4"
+			class="about-photo relative order-1 mb-10 aspect-[3/2] w-[min(351px,calc(100vw-42px))] justify-self-center md:w-full md:col-span-2 md:row-start-3 rounded-[32px] border-4 border-surface-brand-tertiary p-2.5 lg:col-span-1 lg:col-start-2 lg:mb-0 lg:aspect-auto"
 		>
+			<div class="relative h-full overflow-hidden rounded-3xl">
+				<div
+					data-carousel
+					class="flex h-full snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+					role="region"
+					aria-roledescription="carousel"
+					aria-label="Photos from last year's event"
+					tabindex="0"
+				>
+					{slides.map((file, i) => (
+						<img
+							src={`/assets/slides/${file}`}
+							alt={`Last year's event, photo ${i + 1} of ${slides.length}`}
+							loading={i ? 'lazy' : 'eager'}
+							decoding="async"
+							class="h-full w-full flex-none snap-center object-cover"
+						/>
+					))}
+				</div>
+
+				<!-- Dark backing keeps the pills readable over bright, busy photos -->
+				<div class="absolute bottom-2 left-1/2 flex -translate-x-1/2 rounded-full bg-surface-primary/60 px-2 backdrop-blur-sm md:bottom-3">
+					{slides.map((_, i) => (
+						<button
+							type="button"
+							data-dot={i}
+							aria-label={`Show photo ${i + 1}`}
+							aria-current={String(i === 0)}
+							class="group cursor-pointer px-1 py-2.5"
+						>
+							<span class="block h-2 w-2 rounded-full bg-surface-white/60 transition-all duration-300 group-hover:bg-surface-white group-aria-[current=true]:w-6 group-aria-[current=true]:bg-surface-accent motion-reduce:transition-none" />
+						</button>
+					))}
+				</div>
+			</div>
 		</div>
 	</div>
 </Section>
@@ -76,27 +114,9 @@ const words = text.split(' ');
 		box-shadow: 0 0 33.3px 4px rgba(255, 195, 0, 0.85) inset;
 	}
 
-	/* Photo offsets and sizes come from the design frames: mobile, then 1024, then desktop */
 	.about-photo {
-		--photo-pos: 0.007px -58.331px;
-		--photo-size: 100% 134.065%;
-		background:
-			url('/assets/images/about_past_year.jpg') lightgray var(--photo-pos) / var(--photo-size) no-repeat,
-			radial-gradient(76.84% 76.84% at 50% 57.67%, #320776 0%, #130445 48.08%, #020110 100%);
-	}
-
-	@media (min-width: 768px) {
-		.about-photo {
-			--photo-pos: -192.418px 0.29px;
-			--photo-size: 152.518% 100%;
-		}
-	}
-
-	@media (min-width: 1280px) {
-		.about-photo {
-			--photo-pos: 0.015px -132.039px;
-			--photo-size: 100% 134.065%;
-		}
+		box-shadow: var(--shadow-brand);
+		background: radial-gradient(76.84% 76.84% at 50% 57.67%, #320776 0%, #130445 48.08%, #020110 100%);
 	}
 
 	.reveal-word[data-lit] {
@@ -136,5 +156,46 @@ const words = text.split(' ');
 		window.addEventListener('scroll', onScroll, { passive: true });
 		window.addEventListener('resize', onScroll);
 		update();
+	}
+
+	// Autoplay every 4s; pauses while hovered, touched or keyboard-focused and resumes afterwards
+	const track = document.querySelector<HTMLElement>('[data-carousel]');
+
+	if (track) {
+		const dots = document.querySelectorAll<HTMLElement>('[data-dot]');
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const photo = track.closest<HTMLElement>('.about-photo')!;
+		let hovered = false;
+		let touching = false;
+		let timer: ReturnType<typeof setTimeout>;
+
+		const current = () => Math.round(track.scrollLeft / track.clientWidth);
+		const goTo = (i: number) =>
+			track.scrollTo({ left: (i % dots.length) * track.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
+
+		const schedule = () => {
+			clearTimeout(timer);
+			if (reduceMotion || hovered || touching || photo.querySelector(':focus-visible')) return;
+			timer = setTimeout(() => {
+				goTo(current() + 1);
+				schedule();
+			}, 4000);
+		};
+
+		track.addEventListener(
+			'scroll',
+			() => dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === current()))),
+			{ passive: true },
+		);
+		dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+
+		photo.addEventListener('mouseenter', () => ((hovered = true), schedule()));
+		photo.addEventListener('mouseleave', () => ((hovered = false), schedule()));
+		photo.addEventListener('touchstart', () => ((touching = true), schedule()), { passive: true });
+		photo.addEventListener('touchend', () => ((touching = false), schedule()));
+		photo.addEventListener('touchcancel', () => ((touching = false), schedule()));
+		photo.addEventListener('focusin', schedule);
+		photo.addEventListener('focusout', () => setTimeout(schedule));
+		schedule();
 	}
 </script>
