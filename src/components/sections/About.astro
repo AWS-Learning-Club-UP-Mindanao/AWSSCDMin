@@ -63,6 +63,31 @@ const words = text.split(' ');
 					))}
 				</div>
 
+				{[
+					{ step: -1, label: 'Previous photo', side: 'left-2 md:left-3', nudge: 'motion-safe:group-hover:-translate-x-1', path: 'm15 18-6-6 6-6' },
+					{ step: 1, label: 'Next photo', side: 'right-2 md:right-3', nudge: 'motion-safe:group-hover:translate-x-1', path: 'm9 18 6-6-6-6' },
+				].map(({ step, label, side, nudge, path }) => (
+					<button
+						type="button"
+						data-step={step}
+						aria-label={label}
+						class={`group absolute top-1/2 ${side} flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full text-surface-accent lg:h-14 lg:w-14 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent`}
+					>
+						<!-- Dark outline under the yellow stroke keeps the chevron readable on any photo; hover nudges it toward its direction and adds a yellow glow -->
+						<svg
+							viewBox="0 0 24 24"
+							class={`h-8 w-8 drop-shadow-[0_1px_3px_rgb(0_0_0/0.6)] transition-[translate,scale,filter] duration-200 ease-out lg:h-10 lg:w-10 ${nudge} group-hover:drop-shadow-[0_0_8px_rgb(255_221_0/0.65)] group-active:scale-90 motion-reduce:transition-none`}
+							fill="none"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d={path} stroke="var(--color-surface-primary)" stroke-width="4.5" stroke-opacity="0.75" />
+							<path d={path} stroke="currentColor" stroke-width="2" />
+						</svg>
+					</button>
+				))}
+
 				<!-- Dark backing keeps the pills readable over bright, busy photos -->
 				<div class="absolute bottom-2 left-1/2 flex -translate-x-1/2 rounded-full bg-surface-primary/60 px-2 backdrop-blur-sm md:bottom-3">
 					{slides.map((_, i) => (
@@ -171,7 +196,7 @@ const words = text.split(' ');
 
 		const current = () => Math.round(track.scrollLeft / track.clientWidth);
 		const goTo = (i: number) =>
-			track.scrollTo({ left: (i % dots.length) * track.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
+			track.scrollTo({ left: (((i % dots.length) + dots.length) % dots.length) * track.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
 
 		const schedule = () => {
 			clearTimeout(timer);
@@ -188,6 +213,13 @@ const words = text.split(' ');
 			{ passive: true },
 		);
 		dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+		track.addEventListener('keydown', (e) => {
+			const step = { ArrowLeft: -1, ArrowRight: 1 }[e.key];
+			if (step) (e.preventDefault(), goTo(current() + step));
+		});
+		photo
+			.querySelectorAll<HTMLElement>('[data-step]')
+			.forEach((btn) => btn.addEventListener('click', () => goTo(current() + Number(btn.dataset.step))));
 
 		photo.addEventListener('mouseenter', () => ((hovered = true), schedule()));
 		photo.addEventListener('mouseleave', () => ((hovered = false), schedule()));
