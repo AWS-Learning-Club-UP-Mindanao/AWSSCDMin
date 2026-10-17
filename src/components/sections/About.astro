@@ -70,7 +70,7 @@ const words = text.split(' ');
 							type="button"
 							data-dot={i}
 							aria-label={`Show photo ${i + 1}`}
-							aria-current={String(i === 0)}
+							aria-current={i === 0 ? 'true' : 'false'}
 							class="group cursor-pointer px-1 py-2.5"
 						>
 							<span class="block h-2 w-2 rounded-full bg-surface-white/60 transition-all duration-300 group-hover:bg-surface-white group-aria-[current=true]:w-6 group-aria-[current=true]:bg-surface-accent motion-reduce:transition-none" />
