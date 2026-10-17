@@ -6,7 +6,7 @@ export const ticketForms = {
 };
 
 export interface TicketTier {
-  id: 'regular' | 'pro' | 'vip';
+  id: 'lite' | 'regular' | 'pro';
   name: string;
   description: string;
   benefits: { label: string; included: boolean }[];
@@ -14,50 +14,45 @@ export interface TicketTier {
   discountPrice?: number;
 }
 
-// dummy data
 export const ticketTiers: TicketTier[] = [
+  {
+    id: 'lite',
+    name: 'Lite Pass',
+    description: 'This ticket tier is non-refundable, and all sales are final. For tier inclusions and full policy details, see the link.',
+    benefits: [
+      { label: 'Lanyard + ID', included: true },
+      { label: 'Lunch', included: true },
+      { label: 'Snacks', included: true },
+      { label: 'Sticker Sheet', included: true },
+    ],
+    price: 199,
+  },
   {
     id: 'regular',
     name: 'Regular Pass',
     description: 'This ticket tier is non-refundable, and all sales are final. For tier inclusions and full policy details, see the link.',
     benefits: [
-      { label: 'Item 1', included: true },
-      { label: 'Item 2', included: true },
-      { label: 'Item 3', included: true },
-      { label: 'Item 4', included: false },
-      { label: 'Item 5', included: false },
-      { label: 'Item 6', included: false },
+      { label: 'Lanyard + ID', included: true },
+      { label: 'Lunch', included: true },
+      { label: 'Snacks', included: true },
+      { label: 'Sticker Sheet', included: true },
+      { label: 'AWS Keychain', included: true },
     ],
-    price: 4500,
+    price: 289,
   },
   {
     id: 'pro',
     name: 'Pro Pass',
     description: 'This ticket tier is non-refundable, and all sales are final. For tier inclusions and full policy details, see the link.',
     benefits: [
-      { label: 'Item 1', included: true },
-      { label: 'Item 2', included: true },
-      { label: 'Item 3', included: true },
-      { label: 'Item 4', included: true },
-      { label: 'Item 5', included: false },
-      { label: 'Item 6', included: false },
+      { label: 'Lanyard + ID', included: true },
+      { label: 'Lunch', included: true },
+      { label: 'Snacks', included: true },
+      { label: 'Sticker Sheet', included: true },
+      { label: 'Clicker Keychain', included: true },
+      { label: 'Early slot for Workshops', included: true },
     ],
-    price: 4500,
-    discountPrice: 4500,
-  },
-  {
-    id: 'vip',
-    name: 'VIP Pass',
-    description: 'This ticket tier is non-refundable, and all sales are final. For tier inclusions and full policy details, see the link.',
-    benefits: [
-      { label: 'Item 1', included: true },
-      { label: 'Item 2', included: true },
-      { label: 'Item 3', included: true },
-      { label: 'Item 4', included: true },
-      { label: 'Item 5', included: true },
-      { label: 'Item 6', included: true },
-    ],
-    price: 4500,
+    price: 349,
   },
 ];
 
