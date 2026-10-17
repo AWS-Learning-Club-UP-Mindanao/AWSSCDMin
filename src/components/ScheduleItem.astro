@@ -1,0 +1,58 @@
+---
+import Button from './Button.astro';
+import type { ScheduleSession } from '../data/schedule';
+
+interface Props {
+	session: ScheduleSession;
+}
+
+const { session } = Astro.props;
+
+const label = [session.type, session.room].filter(Boolean).join(' · ');
+---
+
+<article class="schedule-item rounded-lg border-2 border-surface-brand-secondary p-6 md:p-8">
+	{label && <p class="text-h5 font-body font-bold text-content-secondary">{label}</p>}
+
+	<h3 class="mt-2 text-h2 font-body text-content-primary">{session.title}</h3>
+
+	{
+		session.registrationUrl && (
+			<div class="mt-2 flex justify-end">
+				<Button
+					label="Register"
+					href={session.registrationUrl}
+					variant="ghost"
+					size="sm"
+				/>
+			</div>
+		)
+	}
+</article>
+
+<style>
+	.schedule-item {
+		transition:
+			border-color 200ms ease-in-out,
+			box-shadow 200ms ease-in-out;
+	}
+
+	@media (hover: hover) {
+		.schedule-item:hover {
+			border-color: var(--color-surface-brand-tertiary);
+			box-shadow: 0 0 20px 0 var(--color-surface-brand-tertiary);
+		}
+	}
+
+	/* Keyboard reach and mobile tap share the same lit state as hover. */
+	.schedule-item:is(:focus-within, [data-pressed]) {
+		border-color: var(--color-surface-brand-tertiary);
+		box-shadow: 0 0 20px 0 var(--color-surface-brand-tertiary);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.schedule-item {
+			transition: none;
+		}
+	}
+</style>
