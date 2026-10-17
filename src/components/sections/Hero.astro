@@ -112,6 +112,15 @@ import Button from '../Button.astro';
 		translate: 0 -50%;
 	}
 
+	/* Tablet: the logo takes up most of the width here, so hold the nebulae at their 1024 pixel size instead of shrinking with the viewport */
+	@media (min-width: 768px) and (max-width: 1023px) {
+		.nebulae-hero {
+			--neb-w: 1188px;   /* 116% of 1024, so the swirl matches the 1024 look */
+			width: var(--neb-w);
+			left: calc((100% - var(--neb-w)) / 2);
+		}
+	}
+
 	/* Mobile: bigger and higher, so the swirl shows around the logo instead of behind it */
 	@media (max-width: 767px) {
 		.nebulae-hero {
