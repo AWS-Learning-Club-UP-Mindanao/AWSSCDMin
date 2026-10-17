@@ -1,6 +1,5 @@
 ---
-import Button from './Button.astro';
-import { getTicketFormUrl, type TicketTier } from '../data/ticket-tiers';
+import { isDiscountActive, type TicketTier } from '../data/ticket-tiers';
 
 interface Props {
 	tier: TicketTier;
@@ -10,9 +9,7 @@ const { tier } = Astro.props;
 const eventDate = { label: 'November 28, 2026', iso: '2026-11-28' };
 const eventCity = 'Davao City';
 
-const isDiscounted = tier.discountPrice !== undefined;
-const formUrl = getTicketFormUrl(tier);
-const isExternal = formUrl.startsWith('http');
+const isDiscounted = isDiscountActive(tier);
 const nameId = `ticket-${tier.id}-name`;
 
 const priceFormat = new Intl.NumberFormat('en-PH', {
@@ -35,14 +32,11 @@ const priceParts = (amount: number) => {
 	};
 };
 
-const currentPrice = priceParts(tier.discountPrice ?? tier.price);
+const currentPrice = priceParts(isDiscounted && tier.discountPrice !== undefined ? tier.discountPrice : tier.price);
 ---
 
-<article
-	class="flex h-full w-[328px] flex-col items-center gap-[var(--ticket-button-gap,2rem)]"
-	aria-labelledby={nameId}
->
-	<div class="flex w-full flex-1 flex-col" data-ticket-body>
+<article class="flex h-full w-[328px] flex-col" aria-labelledby={nameId}>
+	<div class="flex w-full flex-1 flex-col">
 		<header class="relative flex flex-col">
 			<p class="flex h-7 items-center justify-center bg-surface-white px-2" aria-hidden="true">
 				<span class="bg-gradient-ticket-name bg-clip-text font-display text-transparent text-[20px] leading-6 whitespace-nowrap">{tier.name}</span>
@@ -152,15 +146,6 @@ const currentPrice = priceParts(tier.discountPrice ?? tier.price);
 			</div>
 		</div>
 	</div>
-
-	<Button
-		label="Get Ticket Here"
-		href={formUrl}
-		variant="cta"
-		target={isExternal ? '_blank' : undefined}
-		aria-label={`Get Ticket Here: ${tier.name}${isExternal ? ' (opens in a new tab)' : ''}`}
-		class="text-h4"
-	/>
 </article>
 
 <style>

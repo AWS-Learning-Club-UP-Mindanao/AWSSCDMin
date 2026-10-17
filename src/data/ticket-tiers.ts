@@ -1,8 +1,29 @@
+// TICKET SALES SETTINGS
+// Change the values below, then redeploy the site.
+//
+// Turn the button on or off:
+//   open: true   = people can buy tickets
+//   open: false  = button is disabled and shows the closedLabel text
+//
+// Early bird or regular price:
+//   phase: 'discount' = early bird. Button opens the discount form and shows discountPrice.
+//   phase: 'regular'  = normal sales. Button opens the regular form and shows price.
+//
+// Change a link: paste the new Google Form URL in forms.
 
-// replace with the real Google Form links.
-export const ticketForms = {
-  regular: '#tickets', // regular gform
-  discount: '#tickets', // discount gform
+export const ticketSales: {
+  open: boolean;
+  phase: 'discount' | 'regular';
+  forms: Record<'discount' | 'regular', string>;
+  closedLabel: string;
+} = {
+  open: true,
+  phase: 'regular',
+  forms: {
+    discount: '#tickets', //gforms discount URL
+    regular: '#tickets', //gforms regular URL
+  },
+  closedLabel: 'Sold Out',
 };
 
 export interface TicketTier {
@@ -10,7 +31,7 @@ export interface TicketTier {
   name: string;
   description: string;
   benefits: { label: string; included: boolean }[];
-  price: number;           
+  price: number;
   discountPrice?: number;
 }
 
@@ -56,6 +77,10 @@ export const ticketTiers: TicketTier[] = [
   },
 ];
 
-export function getTicketFormUrl(tier: TicketTier) {
-  return tier.discountPrice !== undefined ? ticketForms.discount : ticketForms.regular;
+export function getTicketFormUrl() {
+  return ticketSales.forms[ticketSales.phase];
+}
+
+export function isDiscountActive(tier: TicketTier) {
+  return ticketSales.phase === 'discount' && tier.discountPrice !== undefined;
 }
