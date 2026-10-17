@@ -119,6 +119,13 @@ html {
 	
 	--background-image-gradient-content: linear-gradient(0deg, var(--primitive-yellow) -33.33%, var(--primitive-white) 91.83%);
 	--background-image-gradient-button: linear-gradient(0deg, var(--primitive-yellow) 0%, var(--primitive-white) 75%);
+	--background-image-gradient-banner: linear-gradient(
+		90deg,
+		color-mix(in srgb, var(--primitive-purple-700) 60%, transparent) 0%,
+		color-mix(in srgb, var(--primitive-purple-500) 60%, transparent) 15.87%,
+		color-mix(in srgb, var(--primitive-purple-500) 60%, transparent) 85.1%,
+		color-mix(in srgb, var(--primitive-purple-600) 60%, transparent) 100%
+	);
 
 	/* Box shadows */
 	--shadow-brand: 0 29px 35.8px 0 rgba(159, 44, 229, 0.15), 0 18px 30.1px 0 rgba(48, 11, 171, 0.46);

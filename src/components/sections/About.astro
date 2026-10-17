@@ -1,0 +1,233 @@
+---
+import { readdirSync } from 'node:fs';
+import Section from '../layout/Section.astro';
+
+const slides = readdirSync('public/assets/slides').sort();
+
+const text =
+	'AWS Student Community Day Mindanao 2026 is the premier student-led cloud technology conference in Mindanao. It brings together over 200+ students, educators, industry professionals, and cloud enthusiasts for technical workshops, keynotes, panel discussions, and hands-on competitions focused on cloud computing, artificial intelligence, and cybersecurity.';
+const words = text.split(' ');
+---
+
+<Section id="about" spacing="md" class="mt-[-76.3vw] md:mt-[-19.5vw] lg:mt-[-15.6vw] xl:mt-[min(17.5vw,16rem)]">
+	<!-- Mobile and tablet stack the photo above the card; from lg the photo sits beside the card and matches its height -->
+	<div class="grid max-md:grid-cols-[minmax(0,1fr)] gap-x-8 lg:gap-x-16 md:grid-cols-[423fr_453fr] xl:grid-cols-[509px_1fr]">
+		<div class="about-title relative max-md:w-[min(295px,100%)] max-md:-translate-x-[9%] max-md:justify-self-center max-md:text-center">
+			<h1 class="max-md:pr-[30px]">What is</h1>
+			<img
+				src="/assets/decorations/bright_star.svg"
+				alt=""
+				aria-hidden="true"
+				decoding="async"
+				class="pointer-events-none absolute bottom-[-120%] left-[26%] w-[70%] max-w-none max-md:bottom-[-105%] max-md:left-1/2 max-md:w-[55%]"
+			/>
+		</div>
+
+		<h5 class="about-pill relative mt-4 mb-10 w-fit max-md:w-[min(331px,100%)] max-md:justify-self-center max-md:text-center max-md:!rounded-xl max-md:!px-8 max-md:!py-2 md:max-xl:col-span-2 md:max-xl:mb-16 md:max-xl:whitespace-nowrap md:max-xl:text-h4 md:col-start-1 md:row-start-2">
+			AWS Student Community Day Mindanao 2026?
+		</h5>
+
+		<div class="about-card order-2 -mx-8 -mb-16 px-8 py-16 text-left max-md:!rounded-none md:mx-0 md:mb-0 md:col-start-1 md:max-lg:col-span-2 md:max-lg:row-start-4 lg:row-start-3 md:max-xl:px-8 md:max-xl:py-16 xl:p-16">
+			<h4 class="text-h5 md:text-h4 text-content-secondary text-pretty md:max-xl:text-h5" data-scroll-reveal>
+				{
+					words.map((word) => (
+						<>
+							<span class="reveal-word">{word}</span>{' '}
+						</>
+					))
+				}
+			</h4>
+		</div>
+
+		<!-- 3:2 like the slides when stacked; beside the card it stretches to the card's height, cropping the edges slightly -->
+		<div
+			class="about-photo relative order-1 mb-10 aspect-[3/2] w-[min(351px,calc(100vw-42px))] justify-self-center md:w-full md:col-span-2 md:row-start-3 rounded-[32px] border-4 border-surface-brand-tertiary p-2.5 lg:col-span-1 lg:col-start-2 lg:mb-0 lg:aspect-auto"
+		>
+			<div class="relative h-full overflow-hidden rounded-3xl">
+				<div
+					data-carousel
+					class="flex h-full snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+					role="region"
+					aria-roledescription="carousel"
+					aria-label="Photos from last year's event"
+					tabindex="0"
+				>
+					{slides.map((file, i) => (
+						<img
+							src={`/assets/slides/${file}`}
+							alt={`Last year's event, photo ${i + 1} of ${slides.length}`}
+							loading={i ? 'lazy' : 'eager'}
+							decoding="async"
+							class="h-full w-full flex-none snap-center object-cover"
+						/>
+					))}
+				</div>
+
+				{[
+					{ step: -1, label: 'Previous photo', side: 'left-2 md:left-3', nudge: 'motion-safe:group-hover:-translate-x-1', path: 'm15 18-6-6 6-6' },
+					{ step: 1, label: 'Next photo', side: 'right-2 md:right-3', nudge: 'motion-safe:group-hover:translate-x-1', path: 'm9 18 6-6-6-6' },
+				].map(({ step, label, side, nudge, path }) => (
+					<button
+						type="button"
+						data-step={step}
+						aria-label={label}
+						class={`group absolute top-1/2 ${side} flex h-11 w-11 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full text-surface-accent lg:h-14 lg:w-14 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent`}
+					>
+						<!-- Dark outline under the yellow stroke keeps the chevron readable on any photo; hover nudges it toward its direction and adds a yellow glow -->
+						<svg
+							viewBox="0 0 24 24"
+							class={`h-8 w-8 drop-shadow-[0_1px_3px_rgb(0_0_0/0.6)] transition-[translate,scale,filter] duration-200 ease-out lg:h-10 lg:w-10 ${nudge} group-hover:drop-shadow-[0_0_8px_rgb(255_221_0/0.65)] group-active:scale-90 motion-reduce:transition-none`}
+							fill="none"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							aria-hidden="true"
+						>
+							<path d={path} stroke="var(--color-surface-primary)" stroke-width="4.5" stroke-opacity="0.75" />
+							<path d={path} stroke="currentColor" stroke-width="2" />
+						</svg>
+					</button>
+				))}
+
+				<!-- Dark backing keeps the pills readable over bright, busy photos -->
+				<div class="absolute bottom-2 left-1/2 flex -translate-x-1/2 rounded-full bg-surface-primary/60 px-2 backdrop-blur-sm md:bottom-3">
+					{slides.map((_, i) => (
+						<button
+							type="button"
+							data-dot={i}
+							aria-label={`Show photo ${i + 1}`}
+							aria-current={i === 0 ? 'true' : 'false'}
+							class="group cursor-pointer px-1 py-2.5"
+						>
+							<span class="block h-2 w-2 rounded-full bg-surface-white/60 transition-all duration-300 group-hover:bg-surface-white group-aria-[current=true]:w-6 group-aria-[current=true]:bg-surface-accent motion-reduce:transition-none" />
+						</button>
+					))}
+				</div>
+			</div>
+		</div>
+	</div>
+</Section>
+
+<style>
+	/* Glow behind the title (same blurred pill as before) */
+	.about-title::before {
+		content: '';
+		position: absolute;
+		z-index: -1;
+		left: 50%;
+		top: calc(50% + 40px);
+		width: 896px;
+		max-width: 100vw;
+		height: 248px;
+		transform: translate(-50%, -50%);
+		border-radius: 896px;
+		background: var(--surface-secondary, #130445);
+		filter: blur(113.45px);
+		pointer-events: none;
+	}
+
+	.about-card {
+		border-radius: 32px;
+		background: var(--background-image-gradient-banner);
+		box-shadow: var(--shadow-brand);
+	}
+
+	.about-pill {
+		background: var(--background-image-gradient-content);
+		color: var(--color-surface-brand);
+		padding: 16px 32px;
+		border-radius: 16px;
+		box-shadow: 0 0 33.3px 4px rgba(255, 195, 0, 0.85) inset;
+	}
+
+	.about-photo {
+		box-shadow: var(--shadow-brand);
+		background: radial-gradient(76.84% 76.84% at 50% 57.67%, #320776 0%, #130445 48.08%, #020110 100%);
+	}
+
+	.reveal-word[data-lit] {
+		color: var(--color-content-primary);
+	}
+</style>
+
+<script>
+	const heading = document.querySelector<HTMLElement>('[data-scroll-reveal]');
+
+	if (heading) {
+		const words = heading.querySelectorAll<HTMLElement>('.reveal-word');
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		let ticking = false;
+
+		const update = () => {
+			const vh = window.innerHeight;
+			const { top } = heading.getBoundingClientRect();
+
+			// 0 when the heading's top is at 85% of the viewport, 1 once it reaches 35%
+			const progress = reduceMotion
+				? 1
+				: Math.min(1, Math.max(0, (vh * 0.85 - top) / (vh * 0.5)));
+
+			const litCount = Math.ceil(progress * words.length);
+			words.forEach((word, i) => word.toggleAttribute('data-lit', i < litCount));
+			ticking = false;
+		};
+
+		const onScroll = () => {
+			if (!ticking) {
+				ticking = true;
+				requestAnimationFrame(update);
+			}
+		};
+
+		window.addEventListener('scroll', onScroll, { passive: true });
+		window.addEventListener('resize', onScroll);
+		update();
+	}
+
+	// Autoplay every 4s; pauses while hovered, touched or keyboard-focused and resumes afterwards
+	const track = document.querySelector<HTMLElement>('[data-carousel]');
+
+	if (track) {
+		const dots = document.querySelectorAll<HTMLElement>('[data-dot]');
+		const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const photo = track.closest<HTMLElement>('.about-photo')!;
+		let hovered = false;
+		let touching = false;
+		let timer: ReturnType<typeof setTimeout>;
+
+		const current = () => Math.round(track.scrollLeft / track.clientWidth);
+		const goTo = (i: number) =>
+			track.scrollTo({ left: (((i % dots.length) + dots.length) % dots.length) * track.clientWidth, behavior: reduceMotion ? 'auto' : 'smooth' });
+
+		const schedule = () => {
+			clearTimeout(timer);
+			if (reduceMotion || hovered || touching || photo.querySelector(':focus-visible')) return;
+			timer = setTimeout(() => {
+				goTo(current() + 1);
+				schedule();
+			}, 4000);
+		};
+
+		track.addEventListener(
+			'scroll',
+			() => dots.forEach((dot, i) => dot.setAttribute('aria-current', String(i === current()))),
+			{ passive: true },
+		);
+		dots.forEach((dot, i) => dot.addEventListener('click', () => goTo(i)));
+		track.addEventListener('keydown', (e) => {
+			const step = { ArrowLeft: -1, ArrowRight: 1 }[e.key];
+			if (step) (e.preventDefault(), goTo(current() + step));
+		});
+		photo
+			.querySelectorAll<HTMLElement>('[data-step]')
+			.forEach((btn) => btn.addEventListener('click', () => goTo(current() + Number(btn.dataset.step))));
+
+		photo.addEventListener('mouseenter', () => ((hovered = true), schedule()));
+		photo.addEventListener('mouseleave', () => ((hovered = false), schedule()));
+		photo.addEventListener('touchstart', () => ((touching = true), schedule()), { passive: true });
+		photo.addEventListener('touchend', () => ((touching = false), schedule()));
+		photo.addEventListener('touchcancel', () => ((touching = false), schedule()));
+		photo.addEventListener('focusin', schedule);
+		photo.addEventListener('focusout', () => setTimeout(schedule));
+		schedule();
+	}
+</script>
