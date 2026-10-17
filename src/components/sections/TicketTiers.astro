@@ -8,6 +8,21 @@ const formUrl = getTicketFormUrl();
 const isExternal = formUrl.startsWith('http');
 ---
 
+<div
+	aria-hidden="true"
+	class="pointer-events-none relative z-20 -mb-[115px] flex justify-center overflow-x-clip md:-mb-[174px] xl:-mb-[168px]"
+>
+	<img
+		src="/assets/decorations/northstar_ticket.svg"
+		alt=""
+		width="1728"
+		height="1100"
+		loading="lazy"
+		decoding="async"
+		class="block h-auto w-[926px] max-w-none shrink-0 md:w-[1728px] md:translate-x-4 xl:translate-x-0"
+	/>
+</div>
+
 <Section id="tickets" spacing="none" class="z-10 rounded-t-[64px] bg-gradient-tickets pt-16 pb-24 shadow-brand md:pb-32">
 	<header class="text-center">
 		<h2 class="text-h1 text-content-primary">Select Your Ticket Tier</h2>
@@ -47,7 +62,6 @@ const isExternal = formUrl.startsWith('http');
 		</div>
 	</div>
 
-	<!-- 50px plus the pill buttons' 14px of padding gives the design's 64px; 14px + the track's 18px gives 32px on desktop. -->
 	<div class="mt-[50px] flex justify-center xl:mt-3.5">
 		{
 			ticketSales.open ? (
@@ -67,7 +81,7 @@ const isExternal = formUrl.startsWith('http');
 </Section>
 
 <style>
-	/* Side padding lets the first and last tickets reach the centre snap point. */
+	
 	.ticket-track {
 		--gutter: 2rem;
 		padding-inline: max(0px, calc(50% + var(--gutter) - 164px));
@@ -90,7 +104,6 @@ const isExternal = formUrl.startsWith('http');
 		}
 	}
 
-	/* The pills only work with the script, so they stay hidden until it runs. */
 	.ticket-pills:not([data-ready]) {
 		display: none;
 	}
