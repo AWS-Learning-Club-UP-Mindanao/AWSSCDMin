@@ -13,7 +13,7 @@ import { schedule } from "../../data/schedule";
     pb-[clamp(26rem,54vh,42rem)]"
   backgroundImage="/assets/backgrounds/star_background.svg"
 >
-  <h2 class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">
+  <h2 data-reveal class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">
     <span class="relative inline-block">
       <span class="relative z-10">Schedule Timeline</span>
       <img
@@ -40,6 +40,7 @@ import { schedule } from "../../data/schedule";
     id="schedule-timeline"
     class="mx-auto w-full max-w-[820px] space-y-8 md:space-y-10"
     data-expanded="false"
+    data-reveal-stagger
   >
     {schedule.map((slot, i) => (
       <li class="relative grid grid-cols-[4.5rem_2.5rem_1fr] md:grid-cols-[10rem_5rem_1fr]">
@@ -97,7 +98,7 @@ import { schedule } from "../../data/schedule";
     ))}
   </ol>
 
-  <div class="mt-12 flex justify-center md:mt-16">
+  <div class="mt-12 flex justify-center md:mt-16" data-reveal>
     <Button
       label="View full timeline"
       variant="ghost"

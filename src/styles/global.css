@@ -10,6 +10,42 @@ html {
 	}
 }
 
+/* Scroll reveals. BaseLayout tags <html data-reveal-ready> before first paint and
+   sets [data-revealed] as each element enters the viewport. Uses the standalone
+   translate/scale properties so existing transform utilities are left alone.
+   Don't put data-reveal on elements with their own transition (e.g. Button). */
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
+/* screen only, so content that hasn't scrolled into view still prints. */
+@media screen and (prefers-reduced-motion: no-preference) {
+	[data-reveal-ready] :is([data-reveal], [data-reveal-stagger] > *) {
+		opacity: 0;
+		translate: 0 32px;
+		scale: 0.98;
+		transition:
+			opacity 600ms cubic-bezier(0.16, 1, 0.3, 1),
+			translate 600ms cubic-bezier(0.16, 1, 0.3, 1),
+			scale 600ms cubic-bezier(0.16, 1, 0.3, 1);
+		transition-delay: calc(var(--reveal-i, 0) * 80ms);
+	}
+
+	/* Horizontal scrollers clip vertical overflow, so their items only fade and scale. */
+	[data-reveal-ready] [data-ticket-track][data-reveal-stagger] > * {
+		translate: none;
+	}
+
+	/* :focus-within so a keyboard-focused item in the bottom 10% of the viewport is never invisible. */
+	[data-reveal-ready] :is([data-reveal], [data-reveal-stagger] > *):is([data-revealed], :focus-within) {
+		opacity: 1;
+		translate: none;
+		scale: none;
+	}
+}
+
 /* Hover styles are suppressed on an element carrying [data-touch-released]
    (set by the Button touch handlers after touchend) so a tap doesn't leave
    the sticky mobile :hover state stuck until the pointer moves away.
