@@ -260,16 +260,28 @@ const links = [
   .event-header {
     position: sticky;
     top: 0;
-    z-index: 20;
+    z-index: 50;
     width: 100%;
     max-width: 1369px;
     margin-inline: auto;
     border-radius: 0 0 64px 64px;
-    background: rgb(50 7 118 / 75%);
+    background: rgb(40 7 100 / 85%);
     color: white;
     font-family: "Amazon Ember Display", sans-serif;
     font-size: 20px;
     font-weight: 700;
+  }
+
+  /* ponytail: blur lives on a pseudo, backdrop-filter on the header itself would
+     trap the position:fixed mobile drawer inside it */
+  .event-header::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    backdrop-filter: blur(16px) saturate(140%);
+    pointer-events: none;
+    content: "";
   }
 
   .event-header::after {
@@ -456,7 +468,8 @@ const links = [
       min-height: 257px;
       padding: 23px 24px 22px;
       border-radius: 0 0 32px 32px;
-      background: #320776BF;
+      background: #280764D9;
+      backdrop-filter: blur(16px) saturate(140%);
     }
 
     .mobile-drawer::before {
