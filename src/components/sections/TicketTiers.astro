@@ -12,6 +12,11 @@ const isExternal = formUrl.startsWith('http');
 	aria-hidden="true"
 	class="pointer-events-none relative z-20 -mb-[115px] flex justify-center overflow-x-clip md:-mb-[174px] xl:-mb-[168px]"
 >
+	<!-- Stars fill the gap between About and the tickets card; stops at the card's top edge -->
+	<div
+		class="absolute inset-x-0 top-0 bottom-[115px] -z-10 bg-repeat [--bg-w:1200px] md:bottom-[174px] md:[--bg-w:min(100%,1727px)] xl:bottom-[168px]"
+		style="background-image: url('/assets/backgrounds/star_background.svg'); background-size: var(--bg-w) auto;"
+	></div>
 	<img
 		src="/assets/decorations/northstar_ticket.svg"
 		alt=""
