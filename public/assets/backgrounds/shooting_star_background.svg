@@ -1,4 +1,26 @@
 <svg width="1496" height="1456" viewBox="0 0 1496 1456" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+/* Each top-level g is one streak; head is bottom-left, so it travels down-left. */
+@media (prefers-reduced-motion: no-preference) {
+  svg > g { opacity: 0; animation: shoot 9s ease-out infinite; animation-delay: var(--d); }
+  svg > g:nth-of-type(1) { --d: 0s; }
+  svg > g:nth-of-type(2) { --d: -1.8s; }
+  svg > g:nth-of-type(3) { --d: -4.1s; }
+  svg > g:nth-of-type(4) { --d: -6.3s; --o: .42; }
+  svg > g:nth-of-type(5) { --d: -2.9s; }
+  svg > g:nth-of-type(6) { --d: -7.4s; }
+  svg > g:nth-of-type(7) { --d: -5.2s; --o: .37; }
+  svg > g:nth-of-type(8) { --d: -0.9s; --o: .37; }
+  svg > g:nth-of-type(9) { --d: -8.3s; --o: .37; }
+  svg > g:nth-of-type(10) { --d: -3.6s; }
+}
+@keyframes shoot {
+  0% { opacity: 0; transform: translate(80px, -30px); }
+  4% { opacity: var(--o, .58); }
+  14% { opacity: 0; transform: translate(-220px, 85px); }
+  100% { opacity: 0; transform: translate(-220px, 85px); }
+}
+</style>
 <g opacity="0.58">
 <path d="M794.444 967.39C794.204 966.762 794.523 966.058 795.154 965.824L938.689 912.671L796.013 968.087C795.387 968.33 794.683 968.017 794.444 967.39Z" fill="white"/>
 <g opacity="0.5" filter="url(#filter0_f_238_1245)" style="mix-blend-mode:plus-lighter">
