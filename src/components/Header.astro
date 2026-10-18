@@ -1,15 +1,5 @@
 ---
 import Button from "./Button.astro";
-import { getTicketFormUrl } from "../data/ticket-tiers";
-
-interface Props {
-  ticketUrl?: string;
-}
-
-const formUrl = getTicketFormUrl();
-const defaultTicketUrl = formUrl.startsWith("#") ? `/${formUrl}` : formUrl;
-
-const { ticketUrl = defaultTicketUrl } = Astro.props;
 
 const links = [
   { label: "About", href: "/#about" },
@@ -205,8 +195,8 @@ const links = [
     </nav>
 
     <Button
-      label="Buy Tickets"
-      href={ticketUrl}
+      label="Get Tickets"
+      href="/#tickets"
       variant="outlined"
       class="ticket-link"
     />
