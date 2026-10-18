@@ -27,7 +27,7 @@ const words = text.split(' ');
 			AWS Student Community Day Mindanao 2026?
 		</h5>
 
-		<div class="about-card order-2 -mx-8 -mb-16 px-8 py-16 text-left max-md:!rounded-none md:mx-0 md:mb-0 md:col-start-1 md:max-lg:col-span-2 md:max-lg:row-start-4 lg:row-start-3 md:max-xl:px-8 md:max-xl:py-16 xl:p-16">
+		<div data-reveal class="about-card order-2 -mx-8 -mb-16 px-8 py-16 text-left max-md:!rounded-none md:mx-0 md:mb-0 md:col-start-1 md:max-lg:col-span-2 md:max-lg:row-start-4 lg:row-start-3 md:max-xl:px-8 md:max-xl:py-16 xl:p-16">
 			<h4 class="text-h5 md:text-h4 text-content-secondary text-pretty md:max-xl:text-h5" data-scroll-reveal>
 				{
 					words.map((word) => (
@@ -41,6 +41,7 @@ const words = text.split(' ');
 
 		<!-- 3:2 like the slides when stacked; beside the card it stretches to the card's height, cropping the edges slightly -->
 		<div
+			data-reveal
 			class="about-photo relative order-1 mb-10 aspect-[3/2] w-[min(351px,calc(100vw-42px))] justify-self-center md:w-full md:col-span-2 md:row-start-3 rounded-[32px] border-4 border-surface-brand-tertiary p-2.5 lg:col-span-1 lg:col-start-2 lg:mb-0 lg:aspect-auto"
 		>
 			<div class="relative h-full overflow-hidden rounded-3xl">

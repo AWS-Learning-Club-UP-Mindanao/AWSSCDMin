@@ -23,6 +23,8 @@ const {
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{title}</title>
+		<!-- Set before first paint so reveal targets start hidden instead of flashing in. -->
+		<script is:inline>document.documentElement.dataset.revealReady = '';</script>
 		<!-- Extra head tags per page (Open Graph, canonical, ...). -->
 		<slot name="head" />
 	</head>
@@ -45,4 +47,24 @@ const {
 			<slot name="footer" />
 		</footer>
 	</body>
+	<script>
+		const observer = new IntersectionObserver(
+			(entries) => {
+				// Stagger by order within each batch, not DOM position, so items revealed later
+				// (expanded schedule rows, swiped ticket cards, deep links) don't wait on a long delay.
+				let i = 0;
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					const el = entry.target as HTMLElement;
+					el.style.setProperty('--reveal-i', String(Math.min(i++, 6)));
+					el.setAttribute('data-revealed', '');
+					observer.unobserve(entry.target);
+				}
+			},
+			{ rootMargin: '0px 0px -10% 0px' },
+		);
+
+		document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+		document.querySelectorAll('[data-reveal-stagger] > *').forEach((el) => observer.observe(el));
+	</script>
 </html>
