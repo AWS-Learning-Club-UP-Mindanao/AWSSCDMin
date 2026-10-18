@@ -4,6 +4,8 @@ import Container from './Container.astro';
 interface Props {
 	/** Anchor id, so the header nav and the footer CTA can link straight to this section. */
 	id?: string;
+	/** id of the section's heading, so screen readers list the section as a named region. */
+	labelledby?: string;
 	/** Vertical rhythm. Pick from this scale instead of adding padding per section. */
 	spacing?: 'none' | 'sm' | 'md' | 'lg' | 'hero';
 	/** Full-bleed artwork behind the content. Clipped to the section. */
@@ -15,6 +17,7 @@ interface Props {
 
 const {
 	id,
+	labelledby,
 	spacing = 'md',
 	backgroundImage,
 	fullWidth = false,
@@ -37,7 +40,7 @@ const spacingClass = {
 	hangs off the side of a section gets cut horizontally, with no scrollbar and without
 	clipping vertically, so a nebula can still bleed into the section below it.
 -->
-<section id={id} class:list={['relative isolate', spacingClass, className]}>
+<section id={id} aria-labelledby={labelledby} class:list={['relative isolate', spacingClass, className]}>
 	{
 		backgroundImage && (
 			<div
