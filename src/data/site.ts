@@ -34,7 +34,7 @@ export const venue = {
   mapCenter: { lat: 7.0711276, lng: 125.61342 },
   mapZoom: 16,
 		mapId: "DEMO_MAP_ID", // swap for a JavaScript Vector map ID from your project
-  mapFallbackSrc: "/assets/maps/venue-map.png",
+  mapFallbackSrc: "/assets/maps/venue-map.webp",
   mapUrl: "",
   mapLabel: "Open the venue location in Google Maps (opens in a new tab)",
 };
