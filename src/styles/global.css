@@ -38,7 +38,7 @@ html {
 
 @font-face {
 	font-family: "JustCosmic";
-	src: url("/fonts/just-cosmic.otf") format("opentype");
+	src: url("/assets/fonts/just-cosmic.otf") format("opentype");
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
@@ -46,7 +46,7 @@ html {
 
 @font-face {
 	font-family: "Amazon Ember Display";
-	src: url("/fonts/amazon-ember-display.woff") format("woff");
+	src: url("/assets/fonts/amazon-ember-display.woff") format("woff");
 	font-weight: 400;
 	font-style: normal;
 	font-display: swap;
@@ -54,7 +54,7 @@ html {
 
 @font-face {
 	font-family: "Amazon Ember Display";
-	src: url("/fonts/amazon-ember-display-bold.woff") format("woff");
+	src: url("/assets/fonts/amazon-ember-display-bold.woff") format("woff");
 	font-weight: 700;
 	font-style: normal;
 	font-display: swap;
@@ -126,6 +126,16 @@ html {
 		color-mix(in srgb, var(--primitive-purple-500) 60%, transparent) 85.1%,
 		color-mix(in srgb, var(--primitive-purple-600) 60%, transparent) 100%
 	);
+
+	/* Ticket tiers section (Figma "ticket-section"): a 49% brand-tertiary glow rising from the
+	   bottom, layered over solid brand purple. */
+	--background-image-gradient-tickets: linear-gradient(0deg, color-mix(in srgb, var(--primitive-purple-400) 49%, transparent) 0%, transparent 100%), linear-gradient(var(--primitive-purple-600), var(--primitive-purple-600));
+	/* Ticket card's lower panel (Figma "Ticket-Content"): yellow at the top fading to white. */
+	--background-image-gradient-ticket: linear-gradient(0deg, var(--primitive-white) 17.518%, var(--primitive-yellow) 113.03%);
+	/* Tier name on the ticket's white stub, applied as text fill with bg-clip-text. */
+	--background-image-gradient-ticket-name: linear-gradient(174.3deg, var(--primitive-purple-500) 15.288%, var(--primitive-purple-700) 102.31%);
+	/* Event date and city on the ticket, applied as text fill with bg-clip-text. */
+	--background-image-gradient-ticket-date: linear-gradient(0deg, var(--primitive-yellow) 41.944%, var(--primitive-white) 91.83%);
 
 	/* Box shadows */
 	--shadow-brand: 0 29px 35.8px 0 rgba(159, 44, 229, 0.15), 0 18px 30.1px 0 rgba(48, 11, 171, 0.46);
