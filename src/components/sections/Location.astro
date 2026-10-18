@@ -21,7 +21,7 @@ const interactive = Boolean(key);
       <div class="flex flex-col gap-4" data-reveal>
         <h2 class="text-h1 text-content-primary">Location</h2>
         <h3
-          class="-mt-4 text-[20px]/[30px] font-body font-bold md:text-[25px]/[38px]"
+          class="-mt-4 text-[22px]/[32px] font-body font-bold md:text-[28px]/[40px]"
           style="background: var(--background-image-gradient-content); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; color: transparent;"
         >
           {venue.name}
@@ -29,11 +29,6 @@ const interactive = Boolean(key);
         {venue.address && (
           <p class="text-body text-content-secondary text-pretty">
             {venue.address}
-          </p>
-        )}
-        {venue.description && (
-          <p class="text-body text-content-secondary text-pretty">
-            {venue.description}
           </p>
         )}
       </div>
