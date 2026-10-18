@@ -10,6 +10,7 @@ import { contactEmail, socials } from "../data/site";
       src="/assets/logos/scd_logo_2.svg"
       alt="AWS Student Community Day Mindanao 2026"
       decoding="async"
+      data-reveal
       class="w-[70vw] max-w-[660px] mix-blend-lighten sm:w-[58vw] md:w-[46vw] lg:w-[38vw]"
     />
 
@@ -20,7 +21,7 @@ import { contactEmail, socials } from "../data/site";
       class="mt-10 md:mt-12"
     />
 
-    <p class="mt-6 text-caption font-body text-content-secondary md:text-body">
+    <p data-reveal class="mt-6 text-caption font-body text-content-secondary md:text-body">
       For inquiries, contact us at&#32;
       <Button
         variant="ghost"
@@ -31,7 +32,7 @@ import { contactEmail, socials } from "../data/site";
       />
     </p>
 
-    <nav aria-label="Social media" class="mt-4 flex items-center gap-3">
+    <nav data-reveal aria-label="Social media" class="mt-4 flex items-center gap-3">
       {socials.map(({ label, href, icon }) => (
         <a
           href={href}

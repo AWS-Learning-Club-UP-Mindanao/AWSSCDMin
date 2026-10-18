@@ -25,7 +25,7 @@ if (key) {
   backgroundImage="/assets/backgrounds/star_background.svg"
 >
     <div class="grid items-center gap-10 xl:grid-cols-[514fr_790fr] xl:gap-16">
-      <div class="flex flex-col gap-4">
+      <div class="flex flex-col gap-4" data-reveal>
         <h2 class="text-h1 text-content-primary">Location</h2>
         <h3
           class="-mt-4 text-[20px]/[30px] font-body font-bold md:text-[25px]/[38px]"
@@ -47,6 +47,7 @@ if (key) {
 
       {interactive ? (
         <div
+          data-reveal
           role="region"
           aria-label={`Map of ${venue.name}`}
           class="relative aspect-[357/369] w-full overflow-hidden rounded-2xl bg-[url('/assets/maps/venue-map.png')] bg-cover bg-center md:aspect-[859/331] xl:aspect-[790/496]"
@@ -69,6 +70,7 @@ if (key) {
           alt=""
           decoding="async"
           loading="lazy"
+          data-reveal
           class="aspect-[357/369] w-full rounded-2xl object-cover md:aspect-[859/331] xl:aspect-[790/496]"
         />
       )}
