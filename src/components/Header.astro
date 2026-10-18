@@ -495,6 +495,13 @@ const links = [
       content: "";
     }
 
+    /* The drawer sits in the flow as the no-JS fallback. When JS is on (BaseLayout's inline head
+       script sets data-reveal-ready before first paint), keep it out until the script takes over,
+       so the page doesn't jump when it gets hidden. */
+    :global([data-reveal-ready]) .event-header:not([data-enhanced]) .mobile-drawer {
+      display: none;
+    }
+
     .drawer-backdrop {
       position: fixed;
       top: var(--mobile-header-height);
