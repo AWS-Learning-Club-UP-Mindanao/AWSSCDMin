@@ -7,17 +7,9 @@ const key = import.meta.env.GOOGLE_MAPS_API_KEY;
 /* The interactive map uses the Maps JavaScript API, which is the only Maps API this key is allowed
    to call. The bootstrap is probed at build time: a rejected key and a keyless build both fall back
    to the exported frame image, which is what CI does. */
-let interactive = false;
-if (key) {
-  try {
-    const res = await fetch(
-      `https://maps.googleapis.com/maps/api/js?key=${key}&loading=async&v=weekly`,
-    );
-    interactive = res.ok && (await res.text()).includes("google.maps");
-  } catch {
-    /* offline build: keep the static image */
-  }
-}
+// The key is confirmed at runtime: a refused key fires gm_authFailure, which removes
+// the map so the frame image underneath shows.
+const interactive = Boolean(key);
 ---
 
 <Section
@@ -51,7 +43,7 @@ if (key) {
           data-reveal
           role="region"
           aria-label={`Map of ${venue.name}`}
-          class="relative aspect-[357/369] w-full overflow-hidden rounded-2xl bg-[url('/assets/maps/venue-map.png')] bg-cover bg-center md:aspect-[859/331] xl:aspect-[790/496]"
+          class="relative aspect-[357/369] w-full overflow-hidden rounded-2xl bg-[url('/assets/maps/venue-map.webp')] bg-cover bg-center md:aspect-[859/331] xl:aspect-[790/496]"
         >
           <gmp-map
             center={`${venue.mapCenter.lat},${venue.mapCenter.lng}`}
@@ -113,6 +105,8 @@ if (key) {
       /* Google calls this when the key is refused, for example when the request's referrer is
 				   not on the key's allow list. Hiding the map lets the frame image behind it show. */
       window.gm_authFailure = function () {
+        const map = document.querySelector("#location gmp-map");
+        if (map) map.remove();
         console.error(
           "[location] Google Maps refused this key. If the console says ApiTargetBlockedMapError, allow Maps JavaScript API in the key restrictions.",
         );
@@ -120,8 +114,33 @@ if (key) {
     </script>
     <script
       is:inline
-      async
-      src={`https://maps.googleapis.com/maps/api/js?key=${key}&callback=console.debug&libraries=maps,marker&v=beta&loading=async`}
-    ></script>
+      define:vars={{ mapsSrc: `https://maps.googleapis.com/maps/api/js?key=${key}&libraries=maps,marker&v=beta&loading=async` }}
+    >
+      /* gmp-map upgrades itself when the API arrives, so the script can wait until the
+         section is near the viewport. The frame image behind it covers the gap. */
+      (() => {
+        const map = document.querySelector("#location gmp-map");
+        if (!map) return;
+        const load = () => {
+          if (document.querySelector("script[data-maps-api]")) return;
+          const s = document.createElement("script");
+          s.src = mapsSrc;
+          s.async = true;
+          s.dataset.mapsApi = "";
+          document.head.appendChild(s);
+        };
+        if (!("IntersectionObserver" in window)) return load();
+        const io = new IntersectionObserver(
+          (entries) => {
+            if (entries.some((e) => e.isIntersecting)) {
+              io.disconnect();
+              load();
+            }
+          },
+          { rootMargin: "400px 0px" },
+        );
+        io.observe(map);
+      })();
+    </script>
   </>
 )}
