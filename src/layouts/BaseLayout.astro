@@ -5,12 +5,21 @@ interface Props {
 	/** Page title. */
 	title: string;
 	description?: string;
+	/** Social sharing image, a path under public/ or an absolute URL. */
+	image?: string;
+	/** Keep the page out of search results (404). */
+	noindex?: boolean;
 }
 
 const {
 	title,
 	description = 'AWS Student Community Day Mindanao. A one-day student conference on cloud, AI, and building in community.',
+	image = '/og_image.webp',
+	noindex = false,
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site);
 ---
 
 <!doctype html>
@@ -19,11 +28,26 @@ const {
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
+		<link rel="icon" href="/favicon.ico" sizes="32x32" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{title}</title>
-		<!-- Extra head tags per page (Open Graph, canonical, ...). -->
+		{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+		<meta name="theme-color" content="#020110" />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="AWS Student Community Day Mindanao" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={imageUrl} />
+		<meta property="og:image:width" content="4850" />
+		<meta property="og:image:height" content="2845" />
+		<meta property="og:image:alt" content="AWS Student Community Day Mindanao 2026, November 2026. Build Beyond, Dream Limitless." />
+		<meta name="twitter:card" content="summary_large_image" />
+		<!-- Set before first paint so reveal targets start hidden instead of flashing in. -->
+		<script is:inline>document.documentElement.dataset.revealReady = '';</script>
+		<!-- Extra head tags per page. -->
 		<slot name="head" />
 	</head>
 	<body class="bg-surface-primary font-body text-content-primary">
@@ -34,12 +58,9 @@ const {
 			Skip to content
 		</a>
 
-		<!-- Ticket 04 puts the site header in here. -->
-		<header>
-			<slot name="header" />
-		</header>
+		<slot name="header" />
 
-		<main id="main">
+		<main id="main" class="overflow-x-clip">
 			<slot />
 		</main>
 
@@ -47,5 +68,45 @@ const {
 		<footer>
 			<slot name="footer" />
 		</footer>
+
+		<script>
+			// Star SVGs only animate when loaded as `file.svg#play` (svg:target in the SVG), so the
+			// sequence starts each time one scrolls into view and stops when it leaves.
+			const io = new IntersectionObserver(
+				(entries) => {
+					for (const { target, isIntersecting } of entries) {
+						const img = target as HTMLImageElement;
+						const src = img.src.split('#')[0] + (isIntersecting ? '#play' : '');
+						if (img.src !== src) img.src = src;
+					}
+				},
+				// Any part inside the top 80% of the viewport counts: some star images are huge and mostly
+				// clipped, so a visible-ratio threshold would never fire for them.
+				{ rootMargin: '0px 0px -20% 0px' },
+			);
+			if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				document.querySelectorAll('img[data-play-in-view]').forEach((img) => io.observe(img));
+			}
+		</script>
 	</body>
+	<script>
+		const observer = new IntersectionObserver(
+			(entries) => {
+				// Stagger by order within each batch, not DOM position, so items revealed later
+				// (expanded schedule rows, swiped ticket cards, deep links) don't wait on a long delay.
+				let i = 0;
+				for (const entry of entries) {
+					if (!entry.isIntersecting) continue;
+					const el = entry.target as HTMLElement;
+					el.style.setProperty('--reveal-i', String(Math.min(i++, 6)));
+					el.setAttribute('data-revealed', '');
+					observer.unobserve(entry.target);
+				}
+			},
+			{ rootMargin: '0px 0px -10% 0px' },
+		);
+
+		document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
+		document.querySelectorAll('[data-reveal-stagger] > *').forEach((el) => observer.observe(el));
+	</script>
 </html>

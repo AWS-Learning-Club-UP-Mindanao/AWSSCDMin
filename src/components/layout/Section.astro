@@ -4,8 +4,10 @@ import Container from './Container.astro';
 interface Props {
 	/** Anchor id, so the header nav and the footer CTA can link straight to this section. */
 	id?: string;
+	/** id of the section's heading, so screen readers list the section as a named region. */
+	labelledby?: string;
 	/** Vertical rhythm. Pick from this scale instead of adding padding per section. */
-	spacing?: 'none' | 'sm' | 'md' | 'lg';
+	spacing?: 'none' | 'sm' | 'md' | 'lg' | 'hero';
 	/** Full-bleed artwork behind the content. Clipped to the section. */
 	backgroundImage?: string;
 	/** Let the children run past the content column, page gutters still applied. */
@@ -15,6 +17,7 @@ interface Props {
 
 const {
 	id,
+	labelledby,
 	spacing = 'md',
 	backgroundImage,
 	fullWidth = false,
@@ -26,6 +29,9 @@ const spacingClass = {
 	sm: 'py-12 md:py-16 lg:py-20',
 	md: 'py-16 md:py-24 lg:py-32',
 	lg: 'py-24 md:py-32 lg:py-40',
+	// Vertical padding that clears the fixed header and grows as the screen shrinks (~104px at 1440px+,
+	// ~166px at 393px). Exposed as --hero-pad so the hero can size its content box to fill the viewport.
+	hero: '[--hero-pad:clamp(104px,calc(190px_-_6.2vw),32px)] py-(--hero-pad)',
 }[spacing];
 ---
 
@@ -34,14 +40,13 @@ const spacingClass = {
 	hangs off the side of a section gets cut horizontally, with no scrollbar and without
 	clipping vertically, so a nebula can still bleed into the section below it.
 -->
-<section id={id} class:list={['relative isolate overflow-x-clip', spacingClass, className]}>
+<section id={id} aria-labelledby={labelledby} class:list={['relative isolate', spacingClass, className]}>
 	{
 		backgroundImage && (
-			<img
-				src={backgroundImage}
-				alt=""
-				decoding="async"
-				class="pointer-events-none absolute inset-0 -z-10 h-full w-full object-cover"
+			<div
+				aria-hidden="true"
+				class="pointer-events-none absolute inset-0 -z-10 bg-repeat [--bg-w:1200px] md:[--bg-w:min(100%,1727px)]"
+				style={`background-image: url('${backgroundImage}'); background-size: var(--bg-w) auto;`}
 			/>
 		)
 	}
@@ -49,12 +54,20 @@ const spacingClass = {
 	<!--
 		Decorative stars and nebulae belong in the decorations slot. They are positioned
 		absolutely inside this layer, so they never push layout around or add page width.
+
+		Deliberately no z-index on this layer. A negative z-index makes it a stacking
+		context, and an element inside it then has no backdrop to blend against, so its
+		mix-blend-mode can never reach the section background. Raising the content column
+		instead keeps the same paint order without cutting decorations off from the
+		background they are meant to dodge into.
 	-->
-	<div class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true">
+	<div class="pointer-events-none absolute inset-0" aria-hidden="true">
 		<slot name="decorations" />
 	</div>
 
-	<Container wide={fullWidth}>
-		<slot />
-	</Container>
+	<div class="relative z-10">
+		<Container wide={fullWidth}>
+			<slot />
+		</Container>
+	</div>
 </section>

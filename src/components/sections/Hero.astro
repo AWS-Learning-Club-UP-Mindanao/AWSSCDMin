@@ -1,0 +1,203 @@
+---
+import Section from '../layout/Section.astro';
+import Button from '../Button.astro';
+---
+
+<Section
+	id="hero"
+	spacing="hero"
+	class="max-md:[--hero-pad:32px] bg-surface-primary"
+>
+	<div class="flex min-h-[calc(100svh-2*var(--hero-pad))] flex-col items-center justify-center text-center">
+		<img
+			src="/assets/logos/scd_logo_2.webp"
+			srcset="/assets/logos/scd_logo_2-480.webp 480w, /assets/logos/scd_logo_2-800.webp 800w, /assets/logos/scd_logo_2.webp 1320w"
+			sizes="(min-width: 1728px) min(47.5vw, 1500px), (min-width: 1024px) calc(25.57vw + 200px), (min-width: 393px) calc(43.9vw + 191.5px), min(92.6vw, 364px)"
+			width="1320"
+			height="896"
+			alt="AWS Student Community Day Mindanao 2026"
+			fetchpriority="high"
+			draggable="false"
+			class="select-none [-webkit-user-drag:none] aspect-[255/173] w-[min(92.6vw,364px)] mix-blend-lighten min-[393px]:w-[calc(43.9vw_+_191.5px)] lg:w-[calc(25.57vw_+_200px)] min-[1728px]:w-[47.5vw] min-[1728px]:max-w-[1500px]"
+		/>
+
+		<Button
+			label="Get Tickets"
+			href="#tickets"
+			variant="cta"
+			class="mt-10 w-fit shrink-0 whitespace-nowrap md:mt-12"
+		/>
+	</div>
+
+	<!-- Reserves extra hero height for the absolutely positioned title -->
+	<div class="hero-spacer" aria-hidden="true"></div>
+
+	<Fragment slot="decorations">
+		<div aria-hidden="true" class="hero-layer hero-bg -z-30"></div>
+
+		<img
+			src="/assets/decorations/nebulae_hero.svg"
+			alt=""
+			aria-hidden="true"
+			decoding="async"
+			class="hero-layer nebulae-hero"
+		/>
+
+		<img
+			src="/assets/decorations/nebulae_extension.svg"
+			alt=""
+			decoding="async"
+			class="nebulae-extension"
+		/>
+
+		<div aria-hidden="true" class="star-bg pointer-events-none absolute inset-x-0 top-0 -z-20 w-full"></div>
+
+		<img
+			src="/assets/backgrounds/shooting_star_background.svg"
+			data-play-in-view
+			alt=""
+			decoding="async"
+			class="shooting-stars pointer-events-none absolute -z-20 inset-0 h-full w-full object-cover object-[60%_100%]"
+		/>
+	</Fragment>
+</Section>
+
+<style>
+	/* ---------- Hero extra height (shared by spacer, layers, extension) ---------- */
+	:global(:root) {
+		--hero-extra: 0vw;
+	}
+
+	@media (max-width: 767px) {
+		:global(:root) {
+			--hero-extra: 50vw;
+		}
+	}
+
+	.hero-spacer {
+		height: var(--hero-extra);
+	}
+
+	/* Layers sized to the ORIGINAL hero height (section minus the extra) */
+	.hero-layer {
+		position: absolute;
+		left: 0;
+		top: -4vh;
+		width: 100%;
+		height: calc(100% - var(--hero-extra));
+		pointer-events: none;
+	}
+
+	/* ---------- Background glow ---------- */
+	.hero-bg {
+		background: radial-gradient(60% 30% at 50% 50%, #320776 0%, #130445 65%, #020110 100%);
+	}
+
+	@media (min-width: 768px) {
+		.hero-bg {
+			background: radial-gradient(56% 36% at 50% 50%, #320776 0%, #130445 65%, #020110 100%);
+		}
+	}
+
+	@media (min-width: 1024px){
+		.hero-bg {
+			background: radial-gradient(48% 40% at 50% 45.92%, #320776 0%, #130445 65%, #020110 100%);
+		}
+	}
+
+	/* ---------- Hero nebulae (plain image, no effects) ---------- */
+	.nebulae-hero {
+		width: 116%;
+		max-width: none; /* Tailwind preflight caps img at 100% */
+		left: -8%;       /* -(width - 100%) / 2 keeps it centered */
+		/* natural height, centered on the layer, so nothing is cropped (cover cut the trail's top) */
+		height: auto;
+		/* center of the original hero area: the section also contains --hero-extra below it */
+		top: calc(50% - var(--hero-extra) / 2);
+		translate: 0 -50%;
+	}
+
+	/* Tablet: the logo takes up most of the width here, so hold the nebulae at their 1024 pixel size instead of shrinking with the viewport */
+	@media (min-width: 768px) and (max-width: 1023px) {
+		.nebulae-hero {
+			--neb-w: 1188px;   /* 116% of 1024, so the swirl matches the 1024 look */
+			width: var(--neb-w);
+			left: calc((100% - var(--neb-w)) / 2);
+		}
+	}
+
+	/* Mobile: bigger and higher, so the swirl shows around the logo instead of behind it */
+	@media (max-width: 767px) {
+		.nebulae-hero {
+			width: 180%;
+			left: -40%;   /* -(width - 100%) / 2 keeps it centered */
+			top: calc(50% - var(--hero-extra) / 2 - 18px);   /* more px = higher */
+
+			rotate: -8deg;
+		}
+	}
+
+	/* ---------- Nebulae extension (hangs below the original hero edge) ---------- */
+	.nebulae-extension {
+		--ext-width: 102%;
+		--ext-left: -2%;
+		/* Top edge measured from the nebulae's center, so the two keep their spacing at any viewport height.
+		   Fluid from -14vw at 768 to -26.2vw at 1024, held proportional above */
+		--ext-offset: clamp(-26.2vw, 374.8px - 62.8vw, -14vw);
+
+		position: absolute;
+		left: var(--ext-left);
+		/* same anchor as .nebulae-hero: the center of the original hero area */
+		top: calc(50% - var(--hero-extra) / 2 + var(--ext-offset));
+		width: var(--ext-width);
+		max-width: none;
+		height: auto;
+		pointer-events: none;
+	}
+
+	/* Mobile (393 design; vw units scale it up to 767) */
+	@media (max-width: 767px) {
+		.nebulae-extension {
+			--ext-width: 122%;
+			--ext-left: -18%;
+			--ext-offset: -6.9vw;
+
+			rotate: -8deg;
+			transform-origin: 50% 30%;
+		}
+	}
+
+	/* ---------- Star background offset ---------- */
+	.star-bg {
+		--star-bg-y:10vw;            /* how far the stars are lifted */
+		height: calc(100% + var(--star-bg-y)); /* extra height covers the gap left at the bottom */
+		translate: 0 calc(-1 * var(--star-bg-y));
+		background: url('/assets/backgrounds/star_background.svg') center top / cover;
+	}
+
+	/* Mobile: the hero is tall and narrow, so cover would crop to a sparse sliver. Tile it smaller instead */
+	@media (max-width: 767px) {
+		.star-bg {
+			background-size: auto 50%;
+			background-repeat: repeat-y;
+		}
+	}
+
+	/* ---------- Shooting stars offset ---------- */
+	.shooting-stars {
+		--stars-y: -3vw;             /* desktop: positive moves the stars down */
+		translate: 0 var(--stars-y);
+	}
+
+	@media (min-width: 768px) and (max-width: 1279px) {
+		.shooting-stars {
+			--stars-y: 0vw;
+		}
+	}
+
+	@media (max-width: 767px) {
+		.shooting-stars {
+			--stars-y: 3vw;
+		}
+	}
+</style>

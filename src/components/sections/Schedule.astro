@@ -1,0 +1,255 @@
+---
+import Section from "../layout/Section.astro";
+import Button from "../Button.astro";
+import ScheduleItem from "../ScheduleItem.astro";
+import { schedule } from "../../data/schedule";
+---
+
+<Section
+  id="schedule"
+  labelledby="schedule-heading"
+  spacing="none"
+  class="bg-[radial-gradient(ellipse_closest-side,var(--color-surface-secondary,#130445)_0%,var(--color-surface-primary,#020110)_100%)]
+    pt-[clamp(6rem,12vh,40rem)] xl:pt-[clamp(12rem,28vh,52rem)] 2xl:pt-[clamp(16rem,34vh,64rem)]
+    pb-[clamp(26rem,54vh,42rem)]"
+  backgroundImage="/assets/backgrounds/star_background.svg"
+>
+  <h2 id="schedule-heading" data-reveal class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">
+    <span class="relative inline-block">
+      <span class="relative z-10">Schedule Timeline</span>
+      <img
+        src="/assets/decorations/north-star-schedule.svg"
+        alt=""
+        aria-hidden="true"
+        decoding="async"
+        class="pointer-events-none absolute left-full top-[-25%] -z-10 w-[40rem]
+          sm:w-[105vw]
+          md:w-[115vw]
+          lg:w-[120vw] max-w-none translate-x-[calc(-72%+1.5rem)] -translate-y-[78%]
+          md:translate-x-[calc(-72%+4rem)]
+          xl:top-[-34%]
+          xl:translate-x-[calc(-72%+6rem)]
+          2xl:top-[-40%]
+          2xl:translate-x-[calc(-72%+10rem)]
+          xl:-translate-y-[80%]
+          2xl:-translate-y-[82%]"
+      />
+    </span>
+  </h2>
+
+  <ol
+    id="schedule-timeline"
+    class="mx-auto w-full max-w-[820px] space-y-8 md:space-y-10"
+    data-expanded="false"
+    data-reveal-stagger
+  >
+    {schedule.map((slot, i) => (
+      <li class="relative grid grid-cols-[4.5rem_2.5rem_1fr] md:grid-cols-[10rem_5rem_1fr]">
+        <div class="md:text-right">
+          <p class="text-h4 font-body text-content-primary">{slot.label}</p>
+          <p class="mt-1 text-caption font-body text-content-secondary md:text-body md:whitespace-nowrap">
+            {slot.time.split(/\s*-\s*/).map((part, idx) => (
+              <>
+                {idx > 0 && " "}
+                <span class="whitespace-nowrap">
+                  {idx === 0 ? part : `- ${part}`}
+                </span>
+              </>
+            ))}
+          </p>
+        </div>
+
+        <div class="mt-[18px] flex items-center self-start">
+          <span class="connector-dot relative z-[1] ml-[14px] h-3 w-3 shrink-0 rounded-full bg-surface-brand-secondary md:ml-[38px]"></span>
+          <span class="connector-line h-[2px] flex-1 bg-surface-brand-secondary"></span>
+        </div>
+
+        {i === 0 && (
+          <span
+            aria-hidden="true"
+            class="absolute -top-[16px] left-[91px] h-10 w-[1px] bg-linear-to-b from-transparent to-surface-brand md:left-[203px]"
+          />
+        )}
+        {i < schedule.length - 1 ? (
+          <span
+            aria-hidden="true"
+            class="row-spine absolute top-[24px] left-[91px] h-[calc(100%_+_2rem)] w-[1px] bg-surface-brand
+              md:left-[203px]
+              md:h-[calc(100%_+_2.5rem)]"
+          />
+        ) : (
+          <span
+            aria-hidden="true"
+            class="absolute top-[24px] left-[91px] h-10 w-[1px] bg-linear-to-b from-surface-brand to-transparent md:left-[203px]"
+          />
+        )}
+
+        <div class="space-y-4 text-h2">
+          {slot.rows.map((row) => (
+            <div
+              class:list={["grid gap-4", row.length > 1 && "md:grid-cols-2"]}
+            >
+              {row.map((session) => (
+                <ScheduleItem session={session} />
+              ))}
+            </div>
+          ))}
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <div class="mt-12 flex justify-center md:mt-16" data-reveal>
+    <Button
+      label="View full timeline"
+      variant="ghost"
+      data-timeline-toggle
+      aria-expanded="false"
+      aria-controls="schedule-timeline"
+      class="text-body lg:text-[25px] underline decoration-white"
+    />
+  </div>
+
+  <Fragment slot="decorations">
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute inset-0 bg-repeat bg-auto bg-[url('/assets/backgrounds/star_background.svg')] md:hidden"
+    ></div>
+
+    <img
+      src="/assets/backgrounds/star_background.svg"
+      alt=""
+      decoding="async"
+      class="pointer-events-none absolute inset-0 hidden h-full w-full object-cover md:block"
+    />
+
+    <img
+      src="/assets/decorations/constellation_1.svg"
+      alt=""
+      decoding="async"
+      class="pointer-events-none absolute top-[37vw] right-[22vw] hidden w-[12rem] translate-x-1/2
+        xl:right-[11vw]
+        xl:bottom-[10vh]
+        xl:block
+        2xl:right[11vw]
+        2xl:bottom-[10vh]
+        3xl:right-[14vw]
+        3xl:bottom-[10vh]"
+    />
+    <img
+      src="/assets/decorations/constellation_2.svg"
+      alt=""
+      decoding="async"
+      class="pointer-events-none absolute bottom-[40vh] left-[19vw] w-[5rem] -translate-x-1/2
+        sm:w-[6rem]
+        md:w-[7.5rem]
+        lg:w-[9rem]
+        xl:w-[10rem]
+        2xl:w-[11rem]
+        3xl:w-[12rem]"
+    />
+
+    {/* masked so the blur fades out before the section edges instead of being cut */}
+    <div aria-hidden="true" class="schedule-glow pointer-events-none absolute inset-0 -z-10">
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute left-1/2 top-1/2 h-[85%] w-[34rem] max-w-none -translate-x-1/2 -translate-y-1/2 rounded-full bg-surface-secondary blur-[400px]
+        md:w-[42rem]
+        lg:w-[48rem]"
+    ></div>
+    </div>
+  </Fragment>
+</Section>
+
+<style>
+  .schedule-glow {
+    --fade-y: linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent);
+    --fade-x: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+    mask-image: var(--fade-y), var(--fade-x);
+    mask-composite: intersect;
+    -webkit-mask-image: var(--fade-y), var(--fade-x);
+    -webkit-mask-composite: source-in;
+  }
+
+  .connector-dot,
+  .connector-line {
+    transition:
+      background-color 200ms ease-in-out,
+      box-shadow 200ms ease-in-out;
+  }
+
+  li:has(:global(.schedule-item):is(:hover, :focus-within, [data-pressed]))
+    .connector-dot {
+    background-color: var(--color-surface-white);
+    box-shadow: 0 0 20px 0 var(--color-surface-white);
+  }
+
+  li:has(:global(.schedule-item):is(:hover, :focus-within, [data-pressed]))
+    .connector-line {
+    background-color: var(--color-surface-white);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .connector-dot,
+    .connector-line {
+      transition: none;
+    }
+  }
+
+  [data-expanded="false"] > li:nth-child(n + 6) {
+    display: none;
+  }
+
+  [data-expanded="false"] > li:nth-child(5) .row-spine {
+    background-color: transparent;
+    background-image: linear-gradient(
+      to bottom,
+      var(--color-surface-brand),
+      transparent
+    );
+  }
+</style>
+
+<script>
+  document.addEventListener(
+    "touchstart",
+    (e) => {
+      const target = e.target instanceof Element ? e.target : null;
+      const card = target?.closest(".schedule-item");
+
+      document
+        .querySelectorAll(".schedule-item[data-pressed]")
+        .forEach((el) => {
+          if (el !== card) el.removeAttribute("data-pressed");
+        });
+
+      card?.setAttribute("data-pressed", "");
+    },
+    { passive: true },
+  );
+
+  document.querySelectorAll("[data-timeline-toggle]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const controls = button.getAttribute("aria-controls");
+      if (!controls) return;
+
+      const list = document.getElementById(controls);
+      if (!list) return;
+
+      const expanded = list.getAttribute("data-expanded") === "true";
+      const before = button.getBoundingClientRect().top;
+      list.setAttribute("data-expanded", expanded ? "false" : "true");
+      button.setAttribute("aria-expanded", expanded ? "false" : "true");
+      const label = button.querySelector(".btn-label") ?? button;
+      label.textContent = expanded ? "View full timeline" : "Show less";
+
+      // keep the button where it was so collapsing doesn't dump the user at the footer
+      if (expanded) {
+        window.scrollBy({
+          top: button.getBoundingClientRect().top - before,
+          behavior: "instant",
+        });
+      }
+    });
+  });
+</script>

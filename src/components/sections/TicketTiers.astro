@@ -1,0 +1,183 @@
+---
+import Section from '../layout/Section.astro';
+import Button from '../Button.astro';
+import TicketCard from '../TicketCard.astro';
+import { getTicketFormUrl, ticketSales, ticketTiers } from '../../data/ticket-tiers';
+
+const formUrl = getTicketFormUrl();
+const isExternal = formUrl.startsWith('http');
+---
+
+<div
+	aria-hidden="true"
+	class="pointer-events-none relative z-20 -mb-[115px] flex justify-center overflow-x-clip md:-mb-[174px] xl:-mb-[168px]"
+>
+	<!-- Stars fill the gap between About and the tickets card; stops at the card's top edge -->
+	<div
+		class="absolute inset-x-0 top-0 bottom-[115px] -z-10 bg-repeat [--bg-w:1200px] md:bottom-[174px] md:[--bg-w:min(100%,1727px)] xl:bottom-[168px]"
+		style="background-image: url('/assets/backgrounds/star_background.svg'); background-size: var(--bg-w) auto;"
+	></div>
+	<img
+		src="/assets/decorations/northstar_ticket.svg"
+		data-play-in-view
+		alt=""
+		width="1728"
+		height="1100"
+		loading="lazy"
+		decoding="async"
+		class="block h-auto w-[926px] max-w-none shrink-0 md:w-[1728px] md:translate-x-4 xl:translate-x-0"
+	/>
+</div>
+
+<Section id="tickets" labelledby="tickets-heading" spacing="none" class="z-10 rounded-t-[32px] bg-gradient-tickets md:rounded-t-[64px] pt-16 pb-24 shadow-brand md:pb-32">
+	<header class="text-center" data-reveal>
+		<h2 id="tickets-heading" class="text-h1 text-content-primary">Select Your Ticket Tier</h2>
+		<p class="text-content-secondary">
+			Different tickets unlock different access and benefits. Pick the one that’s right for you.
+		</p>
+	</header>
+
+	<div class="mt-4 md:mt-12 xl:mt-4" data-ticket-carousel>
+		<ul
+			class="ticket-track relative -mx-8 flex snap-x snap-mandatory gap-6 overflow-x-auto pt-4 pb-[18px] md:-mx-12 md:gap-16 xl:mx-0 xl:justify-center xl:overflow-visible"
+			data-ticket-track
+			data-reveal-stagger
+		>
+			{
+				ticketTiers.map((tier) => (
+					<li class="shrink-0 snap-center">
+						<TicketCard tier={tier} />
+					</li>
+				))
+			}
+		</ul>
+
+		<div class="ticket-pills flex justify-center xl:hidden" data-ticket-pills>
+			{
+				ticketTiers.map((tier) => (
+					<button
+						type="button"
+						class="ticket-pill flex h-11 cursor-pointer items-center px-2 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent"
+						aria-label={`Show ${tier.name}`}
+						aria-current="false"
+						data-ticket-pill
+					>
+						<span class="ticket-pill-dot block h-4 w-4 rounded-full bg-surface-white/50"></span>
+					</button>
+				))
+			}
+		</div>
+	</div>
+
+	<div class="mt-[50px] flex justify-center xl:mt-3.5" data-reveal>
+		{
+			ticketSales.open ? (
+				<Button
+					label="Secure Your Ticket"
+					href={formUrl}
+					variant="cta"
+					target={isExternal ? '_blank' : undefined}
+					aria-label={isExternal ? 'Secure Your Ticket (opens in a new tab)' : undefined}
+					class="text-h4"
+				/>
+			) : (
+				<Button label={ticketSales.closedLabel} href={formUrl} variant="cta" disabled class="text-h4" />
+			)
+		}
+	</div>
+</Section>
+
+<style>
+	
+	.ticket-track {
+		--gutter: 2rem;
+		padding-inline: max(0px, calc(50% + var(--gutter) - 164px));
+		scrollbar-width: none;
+	}
+
+	.ticket-track::-webkit-scrollbar {
+		display: none;
+	}
+
+	@media (min-width: 768px) {
+		.ticket-track {
+			--gutter: 3rem;
+		}
+	}
+
+	@media (min-width: 1280px) {
+		.ticket-track {
+			padding-inline: 0;
+		}
+	}
+
+	.ticket-pills:not([data-ready]) {
+		display: none;
+	}
+
+	.ticket-pill[aria-current='true'] .ticket-pill-dot {
+		width: 3rem;
+		background-color: var(--color-surface-accent);
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.ticket-pill-dot {
+			transition:
+				width 200ms ease-out,
+				background-color 200ms ease-out;
+		}
+	}
+</style>
+
+<script>
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	for (const carousel of document.querySelectorAll<HTMLElement>('[data-ticket-carousel]')) {
+		const track = carousel.querySelector<HTMLElement>('[data-ticket-track]');
+		if (!track) continue;
+
+		const slides = Array.from(track.children) as HTMLElement[];
+		const pills = Array.from(carousel.querySelectorAll<HTMLButtonElement>('[data-ticket-pill]'));
+		carousel.querySelector<HTMLElement>('[data-ticket-pills]')?.setAttribute('data-ready', '');
+
+		const scrollTargetFor = (slide: HTMLElement) =>
+			slide.offsetLeft + slide.offsetWidth / 2 - track.clientWidth / 2;
+
+		const nearestIndex = () => {
+			let best = 0;
+			slides.forEach((slide, i) => {
+				const distance = Math.abs(scrollTargetFor(slide) - track.scrollLeft);
+				if (distance < Math.abs(scrollTargetFor(slides[best]) - track.scrollLeft)) best = i;
+			});
+			return best;
+		};
+
+		const setActive = (index: number) => {
+			pills.forEach((pill, i) => pill.setAttribute('aria-current', String(i === index)));
+		};
+
+		let frame = 0;
+		track.addEventListener(
+			'scroll',
+			() => {
+				cancelAnimationFrame(frame);
+				frame = requestAnimationFrame(() => setActive(nearestIndex()));
+			},
+			{ passive: true },
+		);
+
+		pills.forEach((pill, i) => {
+			pill.addEventListener('click', () => {
+				track.scrollTo({
+					left: scrollTargetFor(slides[i]),
+					behavior: reduceMotion.matches ? 'auto' : 'smooth',
+				});
+			});
+		});
+
+		if (track.scrollWidth > track.clientWidth) {
+			track.scrollLeft = scrollTargetFor(slides[Math.floor(slides.length / 2)]);
+		}
+		setActive(nearestIndex());
+	}
+</script>
