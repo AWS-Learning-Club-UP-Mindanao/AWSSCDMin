@@ -44,5 +44,23 @@ const {
 		<footer>
 			<slot name="footer" />
 		</footer>
+
+		<script>
+			// Star SVGs only animate when loaded as `file.svg#play` (svg:target in the SVG), so the
+			// sequence starts each time one scrolls into view and stops when it leaves.
+			const io = new IntersectionObserver(
+				(entries) => {
+					for (const { target, isIntersecting } of entries) {
+						const img = target as HTMLImageElement;
+						const src = img.src.split('#')[0] + (isIntersecting ? '#play' : '');
+						if (img.src !== src) img.src = src;
+					}
+				},
+				// Any part inside the top 80% of the viewport counts: some star images are huge and mostly
+				// clipped, so a visible-ratio threshold would never fire for them.
+				{ rootMargin: '0px 0px -20% 0px' },
+			);
+			document.querySelectorAll('img[data-play-in-view]').forEach((img) => io.observe(img));
+		</script>
 	</body>
 </html>
