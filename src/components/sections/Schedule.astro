@@ -8,7 +8,7 @@ import { schedule } from "../../data/schedule";
 <Section
   id="schedule"
   spacing="none"
-  class="bg-[radial-gradient(circle,var(--color-surface-secondary,#130445)_0%,var(--color-surface-primary,#020110)_100%)]
+  class="bg-[radial-gradient(ellipse_closest-side,var(--color-surface-secondary,#130445)_0%,var(--color-surface-primary,#020110)_100%)]
     pt-[clamp(6rem,12vh,40rem)] xl:pt-[clamp(12rem,28vh,52rem)] 2xl:pt-[clamp(16rem,34vh,64rem)]
     pb-[clamp(26rem,54vh,42rem)]"
   backgroundImage="/assets/backgrounds/star_background.svg"
@@ -148,20 +148,28 @@ import { schedule } from "../../data/schedule";
         3xl:w-[12rem]"
     />
 
+    {/* masked so the blur fades out before the section edges instead of being cut */}
+    <div aria-hidden="true" class="schedule-glow pointer-events-none absolute inset-0 -z-10">
     <div
       aria-hidden="true"
-      class="pointer-events-none absolute left-1/2 top-[calc(50%-9.75rem)]
-        md:top-[calc(50%-2.9rem)]
-        lg:top-[calc(50%-0.75rem)] -z-10 h-[68rem] w-[34rem] max-w-none -translate-x-1/2 -translate-y-1/2 rounded-full bg-surface-secondary blur-[400px]
-        md:h-[58rem]
+      class="pointer-events-none absolute left-1/2 top-1/2 h-[85%] w-[34rem] max-w-none -translate-x-1/2 -translate-y-1/2 rounded-full bg-surface-secondary blur-[400px]
         md:w-[42rem]
-        lg:h-[70rem]
         lg:w-[48rem]"
     ></div>
+    </div>
   </Fragment>
 </Section>
 
 <style>
+  .schedule-glow {
+    --fade-y: linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent);
+    --fade-x: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+    mask-image: var(--fade-y), var(--fade-x);
+    mask-composite: intersect;
+    -webkit-mask-image: var(--fade-y), var(--fade-x);
+    -webkit-mask-composite: source-in;
+  }
+
   .connector-dot,
   .connector-line {
     transition:
@@ -228,10 +236,19 @@ import { schedule } from "../../data/schedule";
       if (!list) return;
 
       const expanded = list.getAttribute("data-expanded") === "true";
+      const before = button.getBoundingClientRect().top;
       list.setAttribute("data-expanded", expanded ? "false" : "true");
       button.setAttribute("aria-expanded", expanded ? "false" : "true");
       const label = button.querySelector(".btn-label") ?? button;
       label.textContent = expanded ? "View full timeline" : "Show less";
+
+      // keep the button where it was so collapsing doesn't dump the user at the footer
+      if (expanded) {
+        window.scrollBy({
+          top: button.getBoundingClientRect().top - before,
+          behavior: "instant",
+        });
+      }
     });
   });
 </script>

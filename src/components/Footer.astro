@@ -32,7 +32,7 @@ import { contactEmail, socials } from "../data/site";
       />
     </p>
 
-    <nav data-reveal aria-label="Social media" class="mt-4 flex items-center gap-3">
+    <nav aria-label="Social media" class="mt-4 flex items-center gap-3">
       {socials.map(({ label, href, icon }) => (
         <a
           href={href}
@@ -55,17 +55,18 @@ import { contactEmail, socials } from "../data/site";
   </div>
 
   <Fragment slot="decorations">
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute inset-0 top-[-2rem] h-full w-full bg-[radial-gradient(44.86%_44.85%_at_48.41%_47.24%,#320776_0%,#130445_50%,#020110_100%)]"
-    ></div>
-
-    <img
-      src="/assets/decorations/nebulae.svg"
-      alt=""
-      decoding="async"
-      class="pointer-events-none absolute inset-0 top-[-5rem] h-full w-full object-cover"
-    />
+    {/* Glow + nebulae are masked so they fade in from the top edge instead of starting on a hard line. */}
+    <div aria-hidden="true" class="footer-glow pointer-events-none absolute inset-0">
+      <div
+        class="absolute inset-0 bg-[radial-gradient(44.86%_44.85%_at_50%_40%,#320776_0%,#130445_50%,#020110_100%)]"
+      ></div>
+      <img
+        src="/assets/decorations/nebulae.svg"
+        alt=""
+        decoding="async"
+        class="absolute inset-0 top-[-5rem] h-full w-full object-cover"
+      />
+    </div>
 
     <img
       src="/assets/backgrounds/star_background.svg"
@@ -82,3 +83,10 @@ import { contactEmail, socials } from "../data/site";
     />
   </Fragment>
 </Section>
+
+<style>
+  .footer-glow {
+    mask-image: linear-gradient(to bottom, transparent, #000 30%);
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 30%);
+  }
+</style>
