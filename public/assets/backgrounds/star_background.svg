@@ -1,4 +1,16 @@
 <svg width="1727" height="1057" viewBox="0 0 1727 1057" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+/* ponytail: only every few stars twinkle, staggered by group; animating all ~720 looks noisy and costs more repaint. */
+@media (prefers-reduced-motion: no-preference) {
+  svg > :nth-child(3n) { animation: twinkle 3.2s ease-in-out infinite; }
+  svg > :nth-child(5n+1) { animation: twinkle 4.6s ease-in-out -1.5s infinite; }
+  svg > :nth-child(7n+2) { animation: twinkle 2.6s ease-in-out -0.8s infinite; }
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .2; }
+}
+</style>
 <path d="M1519.98 269.862C1519.98 270.317 1519.55 270.685 1519.01 270.685C1518.47 270.685 1518.03 270.317 1518.03 269.862C1518.03 269.407 1518.47 269.039 1519.01 269.039C1519.55 269.039 1519.98 269.407 1519.98 269.862Z" fill="#D9D9D9"/>
 <path d="M1617.05 348.883C1617.05 349.338 1616.61 349.707 1616.07 349.707C1615.53 349.707 1615.1 349.338 1615.1 348.883C1615.1 348.429 1615.53 348.06 1616.07 348.06C1616.61 348.06 1617.05 348.429 1617.05 348.883Z" fill="#D9D9D9"/>
 <path d="M1613.14 357.938C1613.14 358.198 1612.89 358.408 1612.58 358.408C1612.28 358.408 1612.03 358.198 1612.03 357.938C1612.03 357.678 1612.28 357.468 1612.58 357.468C1612.89 357.468 1613.14 357.678 1613.14 357.938Z" fill="#D9D9D9"/>

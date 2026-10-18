@@ -1,4 +1,35 @@
-<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="1728" height="1100" viewBox="0 0 1728 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg id="play" preserveAspectRatio="none" overflow="visible" style="display: block;" width="1728" height="1100" viewBox="0 0 1728 1100" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+/* Plays only when loaded as file.svg#play; BaseLayout adds #play when the image scrolls into view. */
+/* Glints light up from the trail tip down to the star, then the star pulses: guides the eye to the content below.
+   7s cycle, motion in the first ~2.5s then rest, so the loop stays calm. */
+@media (prefers-reduced-motion: no-preference) {
+  [id^="glint_"] { opacity: .5; } /* resting glint level, set before playing so the start doesn't jump */
+  svg:target :is([id^="glint_"], #sparkle, #sparkle_glow) { transform-box: fill-box; transform-origin: center; }
+  svg:target [id^="glint_"] { animation: glint 7s ease-out infinite; }
+  svg:target [id^="glint_right"] { animation-delay: .35s; }
+  svg:target [id^="glint_mid"] { animation-delay: .7s; }
+  svg:target [id^="glint_low"] { animation-delay: .9s; }
+  svg:target #sparkle { animation: arrive 7s infinite; }
+  svg:target #sparkle_glow { animation: arrive-glow 7s infinite; }
+}
+@keyframes glint {
+  0%, 100% { opacity: .5; transform: scale(1); }
+  5% { opacity: 1; transform: scale(1.5); animation-timing-function: ease-in; }
+  14% { opacity: .5; transform: scale(1); }
+}
+/* Ease-out swell, slower settle. The glow swells more than the star, so the light reads as arriving. */
+@keyframes arrive {
+  0%, 15% { transform: scale(1); animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+  21% { transform: scale(1.1); animation-timing-function: ease-in-out; }
+  36%, 100% { transform: scale(1); }
+}
+@keyframes arrive-glow {
+  0%, 15% { transform: scale(1); animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+  21% { transform: scale(var(--glow, 1.25)); animation-timing-function: ease-in-out; }
+  36%, 100% { transform: scale(1); }
+}
+</style>
 <g id="north-star-ticket" clip-path="url(#clip0_0_4)">
 <g id="backdrop_glow" filter="url(#filter0_f_0_4)">
 <path id="Vector" d="M1504.36 699.241C1537.27 667.971 1549.39 634.583 1539.83 601.508C1530.28 568.432 1499.29 536.503 1449.12 508.044C1398.96 479.586 1330.88 455.315 1249.85 436.999C1168.82 418.683 1076.87 406.784 980.707 402.167C884.541 397.55 786.577 400.332 693.949 410.311C601.322 420.289 516.363 437.213 445.259 459.85C374.156 482.486 318.698 510.266 282.925 541.165C247.151 572.064 231.963 605.305 238.466 638.467L890 623.5L1504.36 699.241Z" fill="#130445"/>

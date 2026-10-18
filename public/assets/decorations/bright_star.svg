@@ -1,4 +1,29 @@
-<svg width="357" height="358" viewBox="0 0 357 358" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg id="play" width="357" height="358" viewBox="0 0 357 358" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+/* Plays only when loaded as file.svg#play; BaseLayout adds #play when the image scrolls into view. */
+/* Same "arrive" pulse as the north stars (no trail here), marking the About heading. Glow kept at 1.1 so it doesn't clip the viewBox. */
+@media (prefers-reduced-motion: no-preference) {
+  svg:target > * { transform-box: fill-box; transform-origin: center; --glow: 1.1; }
+  svg:target > path { animation: arrive 7s infinite; }
+  svg:target > g { animation: arrive-glow 7s infinite; }
+}
+@keyframes glint {
+  0%, 100% { opacity: .5; transform: scale(1); }
+  5% { opacity: 1; transform: scale(1.5); animation-timing-function: ease-in; }
+  14% { opacity: .5; transform: scale(1); }
+}
+/* Ease-out swell, slower settle. The glow swells more than the star, so the light reads as arriving. */
+@keyframes arrive {
+  0%, 15% { transform: scale(1); animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+  21% { transform: scale(1.1); animation-timing-function: ease-in-out; }
+  36%, 100% { transform: scale(1); }
+}
+@keyframes arrive-glow {
+  0%, 15% { transform: scale(1); animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+  21% { transform: scale(var(--glow, 1.25)); animation-timing-function: ease-in-out; }
+  36%, 100% { transform: scale(1); }
+}
+</style>
 <path d="M168.104 100.982L167.039 159.84C167.026 160.582 166.237 161.052 165.578 160.709L145.347 150.191C144.405 149.701 143.449 150.824 144.083 151.675L157.691 169.958C158.117 170.531 157.823 171.354 157.13 171.526L100.759 185.543C99.6307 185.824 99.8092 187.48 100.972 187.513L158.923 189.193C159.645 189.214 160.108 189.97 159.797 190.622L150.062 211.065C149.616 212.003 150.719 212.916 151.557 212.301L169.581 199.084C170.161 198.659 170.987 198.966 171.147 199.667L184.197 256.634C184.457 257.769 186.119 257.619 186.171 256.456L188.811 197.777C188.843 197.074 189.571 196.623 190.215 196.908L211.12 206.149C212.074 206.57 212.955 205.433 212.309 204.615L198.149 186.67C197.696 186.096 197.991 185.247 198.702 185.078L255.571 171.529C256.703 171.259 256.539 169.599 255.375 169.557L196.842 167.422C196.12 167.396 195.663 166.637 195.978 165.987L206.007 145.289C206.471 144.33 205.314 143.406 204.482 144.072L186.29 158.618C185.722 159.071 184.876 158.788 184.696 158.084L170.073 100.753C169.784 99.6238 168.125 99.8169 168.104 100.982Z" fill="url(#paint0_radial_113_665)"/>
 <g opacity="0.5" filter="url(#filter0_f_113_665)" style="mix-blend-mode:plus-lighter">
 <path d="M168.104 100.982L167.039 159.84C167.026 160.582 166.237 161.052 165.578 160.709L145.347 150.191C144.405 149.701 143.449 150.824 144.083 151.675L157.691 169.958C158.117 170.531 157.823 171.354 157.13 171.526L100.759 185.543C99.6307 185.824 99.8092 187.48 100.972 187.513L158.923 189.193C159.645 189.214 160.108 189.97 159.797 190.622L150.062 211.065C149.616 212.003 150.719 212.916 151.557 212.301L169.581 199.084C170.161 198.659 170.987 198.966 171.147 199.667L184.197 256.634C184.457 257.769 186.119 257.619 186.171 256.456L188.811 197.777C188.843 197.074 189.571 196.623 190.215 196.908L211.12 206.149C212.074 206.57 212.955 205.433 212.309 204.615L198.149 186.67C197.696 186.096 197.991 185.247 198.702 185.078L255.571 171.529C256.703 171.259 256.539 169.599 255.375 169.557L196.842 167.422C196.12 167.396 195.663 166.637 195.978 165.987L206.007 145.289C206.471 144.33 205.314 143.406 204.482 144.072L186.29 158.618C185.722 159.071 184.876 158.788 184.696 158.084L170.073 100.753C169.784 99.6238 168.125 99.8169 168.104 100.982Z" fill="url(#paint1_radial_113_665)"/>
