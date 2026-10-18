@@ -1,4 +1,34 @@
-<svg width="652" height="589" viewBox="0 0 652 589" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg id="play" width="652" height="589" viewBox="0 0 652 589" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+/* Plays only when loaded as file.svg#play; BaseLayout adds #play when the image scrolls into view. */
+/* Glints light up from the trail tip down to the star, then the star pulses: guides the eye to the content below.
+   7s cycle, motion in the first ~2.5s then rest, so the loop stays calm.
+   No ids in this export: children 1-2 are the star and its glow, 18-21 the glint by the star, 22-25 the glint at the tip. */
+@media (prefers-reduced-motion: no-preference) {
+  svg > g > :nth-child(n+18):nth-child(-n+25) { opacity: .5; } /* resting glint level, set before playing so the start doesn't jump */
+  svg:target > g > :is(:nth-child(-n+2), :nth-child(n+18)) { transform-box: fill-box; transform-origin: center; }
+  svg:target > g > :nth-child(n+18):nth-child(-n+25) { animation: glint 7s ease-out infinite; }
+  svg:target > g > :nth-child(n+18):nth-child(-n+21) { animation-delay: .45s; }
+  svg:target > g > :nth-child(1) { animation: arrive 7s -.4s infinite; }
+  svg:target > g > :nth-child(2) { animation: arrive-glow 7s -.4s infinite; }
+}
+@keyframes glint {
+  0%, 100% { opacity: .5; transform: scale(1); }
+  5% { opacity: 1; transform: scale(1.5); animation-timing-function: ease-in; }
+  14% { opacity: .5; transform: scale(1); }
+}
+/* Ease-out swell, slower settle. The glow swells more than the star, so the light reads as arriving. */
+@keyframes arrive {
+  0%, 15% { transform: scale(1); animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+  21% { transform: scale(1.1); animation-timing-function: ease-in-out; }
+  36%, 100% { transform: scale(1); }
+}
+@keyframes arrive-glow {
+  0%, 15% { transform: scale(1); animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+  21% { transform: scale(var(--glow, 1.25)); animation-timing-function: ease-in-out; }
+  36%, 100% { transform: scale(1); }
+}
+</style>
 <g clip-path="url(#clip0_526_1972)">
 <path d="M192.553 296.722L176.56 358.017C176.373 358.735 175.495 359.006 174.936 358.519L156.311 342.295C155.51 341.598 154.318 342.464 154.734 343.441L164.406 366.148C164.686 366.805 164.207 367.535 163.492 367.54L100.994 367.951C99.8312 367.958 99.6157 369.61 100.738 369.915L160.924 386.322C161.622 386.512 161.893 387.355 161.438 387.917L146.003 406.942C145.349 407.749 146.206 408.895 147.165 408.495L169.486 399.174C170.149 398.897 170.879 399.39 170.871 400.109L170.119 462.989C170.105 464.153 171.755 464.397 172.079 463.279L189.672 402.582C189.868 401.906 190.682 401.639 191.241 402.066L210.875 417.097C211.703 417.731 212.827 416.833 212.391 415.885L202.059 393.41C201.753 392.747 202.24 391.99 202.97 391.993L265.876 392.198C267.04 392.202 267.27 390.55 266.149 390.235L205.47 373.207C204.775 373.011 204.509 372.166 204.968 371.609L220.792 352.37C221.469 351.548 220.561 350.378 219.596 350.829L196.747 361.512C196.089 361.819 195.333 361.345 195.323 360.618L194.521 296.962C194.506 295.796 192.848 295.594 192.553 296.722Z" fill="url(#paint0_radial_526_1972)"/>
 <g filter="url(#filter0_f_526_1972)">
