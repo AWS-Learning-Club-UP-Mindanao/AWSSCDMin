@@ -5,12 +5,21 @@ interface Props {
 	/** Page title. */
 	title: string;
 	description?: string;
+	/** Social sharing image, a path under public/ or an absolute URL. */
+	image?: string;
+	/** Keep the page out of search results (404). */
+	noindex?: boolean;
 }
 
 const {
 	title,
 	description = 'AWS Student Community Day Mindanao. A one-day student conference on cloud, AI, and building in community.',
+	image = '/og_image.webp',
+	noindex = false,
 } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site);
 ---
 
 <!doctype html>
@@ -20,12 +29,25 @@ const {
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" sizes="32x32" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="description" content={description} />
 		<title>{title}</title>
+		{noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonical} />}
+		<meta name="theme-color" content="#020110" />
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="AWS Student Community Day Mindanao" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={imageUrl} />
+		<meta property="og:image:width" content="4850" />
+		<meta property="og:image:height" content="2845" />
+		<meta property="og:image:alt" content="AWS Student Community Day Mindanao 2026, November 2026. Build Beyond, Dream Limitless." />
+		<meta name="twitter:card" content="summary_large_image" />
 		<!-- Set before first paint so reveal targets start hidden instead of flashing in. -->
 		<script is:inline>document.documentElement.dataset.revealReady = '';</script>
-		<!-- Extra head tags per page (Open Graph, canonical, ...). -->
+		<!-- Extra head tags per page. -->
 		<slot name="head" />
 	</head>
 	<body class="bg-surface-primary font-body text-content-primary">
