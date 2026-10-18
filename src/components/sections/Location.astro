@@ -22,6 +22,7 @@ if (key) {
 
 <Section
   id="location"
+  class="bg-[radial-gradient(ellipse_closest-side,var(--color-surface-secondary,#130445)_0%,var(--color-surface-primary,#020110)_100%)]"
   backgroundImage="/assets/backgrounds/star_background.svg"
 >
     <div class="grid items-center gap-10 xl:grid-cols-[514fr_790fr] xl:gap-16">
@@ -77,6 +78,12 @@ if (key) {
     </div>
 
   <Fragment slot="decorations">
+    {/* Same approach as Schedule: the glow is a % of the section so it scales at every size.
+        The mask feathers all four edges so the blur fades out instead of clipping. */}
+    <div aria-hidden="true" class="location-glow pointer-events-none absolute inset-0">
+      <div class="absolute left-1/2 top-1/2 h-[85%] w-[90%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-surface-secondary blur-[120px] md:w-[70%] md:blur-[200px]"></div>
+    </div>
+
     <div class="pointer-events-none absolute inset-0 mx-auto w-full max-w-[1400px]">
       <img
         src="/assets/decorations/north-star-location.svg"
@@ -88,6 +95,17 @@ if (key) {
     </div>
   </Fragment>
 </Section>
+
+<style>
+  .location-glow {
+    --fade-y: linear-gradient(to bottom, transparent, #000 15%, #000 85%, transparent);
+    --fade-x: linear-gradient(to right, transparent, #000 15%, #000 85%, transparent);
+    mask-image: var(--fade-y), var(--fade-x);
+    mask-composite: intersect;
+    -webkit-mask-image: var(--fade-y), var(--fade-x);
+    -webkit-mask-composite: source-in;
+  }
+</style>
 
 {interactive && (
   <>
