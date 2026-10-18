@@ -8,11 +8,32 @@ import { schedule } from "../../data/schedule";
 <Section
   id="schedule"
   spacing="none"
-  class="bg-[radial-gradient(circle,var(--color-surface-secondary,#130445)_0%,var(--color-surface-primary,#020110)_100%)] pt-80 pb-[50vh] md:pt-90 md:pb-[54vh] lg:pt-108 lg:pb-[58vh]"
+  class="bg-[radial-gradient(circle,var(--color-surface-secondary,#130445)_0%,var(--color-surface-primary,#020110)_100%)]
+    pt-[clamp(6rem,12vh,40rem)] xl:pt-[clamp(12rem,28vh,52rem)] 2xl:pt-[clamp(16rem,34vh,64rem)]
+    pb-[clamp(26rem,54vh,42rem)]"
   backgroundImage="/assets/backgrounds/star_background.svg"
 >
   <h2 data-reveal class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">
-    Schedule Timeline
+    <span class="relative inline-block">
+      <span class="relative z-10">Schedule Timeline</span>
+      <img
+        src="/assets/decorations/north-star-schedule.svg"
+        alt=""
+        aria-hidden="true"
+        decoding="async"
+        class="pointer-events-none absolute left-full top-[-25%] -z-10 w-[40rem]
+          sm:w-[105vw]
+          md:w-[115vw]
+          lg:w-[120vw] max-w-none translate-x-[calc(-72%+1.5rem)] -translate-y-[78%]
+          md:translate-x-[calc(-72%+4rem)]
+          xl:top-[-34%]
+          xl:translate-x-[calc(-72%+6rem)]
+          2xl:top-[-40%]
+          2xl:translate-x-[calc(-72%+10rem)]
+          xl:-translate-y-[80%]
+          2xl:-translate-y-[82%]"
+      />
+    </span>
   </h2>
 
   <ol
@@ -29,7 +50,9 @@ import { schedule } from "../../data/schedule";
             {slot.time.split(/\s*-\s*/).map((part, idx) => (
               <>
                 {idx > 0 && " "}
-                <span class="whitespace-nowrap">{idx === 0 ? part : `- ${part}`}</span>
+                <span class="whitespace-nowrap">
+                  {idx === 0 ? part : `- ${part}`}
+                </span>
               </>
             ))}
           </p>
@@ -49,7 +72,9 @@ import { schedule } from "../../data/schedule";
         {i < schedule.length - 1 ? (
           <span
             aria-hidden="true"
-            class="row-spine absolute top-[24px] left-[91px] h-[calc(100%_+_2rem)] w-[1px] bg-surface-brand md:left-[203px] md:h-[calc(100%_+_2.5rem)]"
+            class="row-spine absolute top-[24px] left-[91px] h-[calc(100%_+_2rem)] w-[1px] bg-surface-brand
+              md:left-[203px]
+              md:h-[calc(100%_+_2.5rem)]"
           />
         ) : (
           <span
@@ -98,52 +123,41 @@ import { schedule } from "../../data/schedule";
     />
 
     <img
-      src="/assets/decorations/star_trail_4.svg"
-      data-play-in-view
-      alt=""
-      decoding="async"
-      class="pointer-events-none absolute left-[13.5vw] w-full sm:left-[13.5vw] sm:w-full
-      top-[calc(338px_-_70vw)]
-      md:left-[1.9vw] md:top-[calc(378px_-_70vw)] md:w-[120rem] lg:left-[16.5vw] lg:top-[calc(450px_-_70vw)] lg:w-[140rem] xl:left-[1.9vw] xl:w-[150rem] 2xl:left-[13.5vw] 3xl:left-[13.5vw]
-      star-trail-mask"
-    />
-
-    <img
       src="/assets/decorations/constellation_1.svg"
       alt=""
       decoding="async"
       class="pointer-events-none absolute top-[37vw] right-[22vw] hidden w-[12rem] translate-x-1/2
-            xl:right-[11vw] xl:bottom-[10vh] xl:block
-            2xl:right[11vw] 2xl:bottom-[10vh]
-            3xl:right-[14vw] 3xl:bottom-[10vh]"
+        xl:right-[11vw]
+        xl:bottom-[10vh]
+        xl:block
+        2xl:right[11vw]
+        2xl:bottom-[10vh]
+        3xl:right-[14vw]
+        3xl:bottom-[10vh]"
     />
     <img
       src="/assets/decorations/constellation_2.svg"
       alt=""
       decoding="async"
       class="pointer-events-none absolute bottom-[40vh] left-[19vw] w-[5rem] -translate-x-1/2
-			       sm:w-[6rem]
-			       md:w-[7.5rem]
-			       lg:w-[9rem]
-            xl:w-[10rem]
-            2xl:w-[11rem]
-            3xl:w-[12rem]"
+        sm:w-[6rem]
+        md:w-[7.5rem]
+        lg:w-[9rem]
+        xl:w-[10rem]
+        2xl:w-[11rem]
+        3xl:w-[12rem]"
     />
-    <img
-      src="/assets/decorations/northstar_ticket.svg"
-      data-play-in-view
-      alt=""
-      decoding="async"
-      class="pointer-events-none absolute bottom-[-8vh] left-1/2 -translate-x-1/2 overflow-visible max-w-none
-		       w-[115vw]
-		       sm:w-[110vw] sm:bottom-[8vh]
-		       md:w-[105vw] md:bottom-[2vh]
-		       lg:w-[102vw] lg:bottom-[-7vh]
-		       xl:w-[100vw] xl:bottom-[-9vh]
-		       2xl:w-[100vw] 2xl:bottom-[-11vh]
-		       3xl:w-[100vw] 3xl:bottom-[-15vh]
-		       northstar-mask"
-    />
+
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute left-1/2 top-[calc(50%-9.75rem)]
+        md:top-[calc(50%-2.9rem)]
+        lg:top-[calc(50%-0.75rem)] -z-10 h-[68rem] w-[34rem] max-w-none -translate-x-1/2 -translate-y-1/2 rounded-full bg-surface-secondary blur-[400px]
+        md:h-[58rem]
+        md:w-[42rem]
+        lg:h-[70rem]
+        lg:w-[48rem]"
+    ></div>
   </Fragment>
 </Section>
 
@@ -185,81 +199,6 @@ import { schedule } from "../../data/schedule";
       transparent
     );
   }
-
-  .star-trail-mask {
-    background:
-      radial-gradient(
-        28% 30% at 22% 62%,
-        rgba(255, 99, 230, 0.9) 0%,
-        rgba(255, 99, 230, 0) 70%
-      ),
-      radial-gradient(
-        26% 32% at 80% 58%,
-        rgba(192, 77, 255, 0.9) 0%,
-        rgba(192, 77, 255, 0) 70%
-      ),
-      linear-gradient(
-        100deg,
-        #3a1fe0 0%,
-        #7a3cff 35%,
-        #7a3cff 65%,
-        #4a22e8 100%
-      );
-    -webkit-mask-image:
-      url("/assets/decorations/star_trail_4.svg"),
-      linear-gradient(
-        to bottom,
-        transparent 0%,
-        black 15%,
-        black 95%,
-        transparent 100%
-      );
-    mask-image:
-      url("/assets/decorations/star_trail_4.svg"),
-      linear-gradient(
-        to bottom,
-        transparent 0%,
-        black 15%,
-        black 95%,
-        transparent 100%
-      );
-    -webkit-mask-size:
-      cover,
-      100% 100%;
-    mask-size:
-      cover,
-      100% 100%;
-    -webkit-mask-position: center, center;
-    mask-position: center, center;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    -webkit-mask-composite: source-in;
-    mask-composite: intersect;
-  }
-
-  .northstar-mask {
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      black 10%,
-      black 90%,
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      black 10%,
-      black 90%,
-      transparent 100%
-    );
-    -webkit-mask-size: cover;
-    mask-size: cover;
-    -webkit-mask-position: center;
-    mask-position: center;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-  }
-
 </style>
 
 <script>
@@ -295,42 +234,4 @@ import { schedule } from "../../data/schedule";
       label.textContent = expanded ? "View full timeline" : "Show less";
     });
   });
-
-  const trail = document.querySelector<HTMLElement>(".star-trail-mask");
-  const heading = [
-    ...document.querySelectorAll("#schedule h1, #schedule h2, #schedule h3"),
-  ].find((el) => el.textContent.trim().toUpperCase().startsWith("SCHEDULE"));
-
-  if (trail && heading) {
-    const STAR_X = 0.7505;
-    const STAR_Y = 0.7896;
-    const IMG_RATIO = 1955 / 2205;
-    const GAP = 0.25;
-    const DROP = 15;
-    const MAX_X = 0.85;
-
-    const place = () => {
-      const section = trail.closest("section");
-      if (!section) return;
-
-      const text = document.createRange();
-      text.selectNodeContents(heading);
-      const textBox = text.getBoundingClientRect();
-      const sectionBox = section.getBoundingClientRect();
-      const width = trail.getBoundingClientRect().width || window.innerWidth;
-
-      const starX = Math.min(
-        textBox.right + GAP * textBox.width - sectionBox.left,
-        window.innerWidth * MAX_X - sectionBox.left,
-      );
-      const starY = heading.getBoundingClientRect().top - sectionBox.top + DROP;
-
-      trail.style.left = `${Math.round(starX - STAR_X * width)}px`;
-      trail.style.top = `${Math.round(starY - STAR_Y * width * IMG_RATIO)}px`;
-    };
-
-    place();
-    window.addEventListener("resize", place);
-    document.fonts?.ready.then(place);
-  }
 </script>
