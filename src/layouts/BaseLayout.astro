@@ -84,7 +84,9 @@ const imageUrl = new URL(image, Astro.site);
 				// clipped, so a visible-ratio threshold would never fire for them.
 				{ rootMargin: '0px 0px -20% 0px' },
 			);
-			document.querySelectorAll('img[data-play-in-view]').forEach((img) => io.observe(img));
+			if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
+				document.querySelectorAll('img[data-play-in-view]').forEach((img) => io.observe(img));
+			}
 		</script>
 	</body>
 	<script>
