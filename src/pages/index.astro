@@ -5,6 +5,7 @@ import Schedule from "../components/sections/Schedule.astro";
 import Hero from "../components/sections/Hero.astro";
 import Header from "../components/Header.astro";
 import Location from "../components/sections/Location.astro";
+import About from "../components/sections/About.astro";
 import TicketTiers from "../components/sections/TicketTiers.astro";
 import Footer from "../components/Footer.astro";
 import FAQ from "../components/sections/FAQ.astro";
@@ -19,16 +20,13 @@ import FAQ from "../components/sections/FAQ.astro";
   <!-- Ticket 07 -->
   <Hero />
 
-  <Section id="about">
-    <p class="text-caption text-content-secondary">About (Ticket 08)</p>
-  </Section>
-  <TicketTiers />
-	<Schedule />
+  <!-- Ticket 08 -->
+  <About />
 
-	<!-- Ticket 10 -->
-	<Section id="tickets">
-		<p class="text-caption text-content-secondary">Ticket tiers (Ticket 10)</p>
-	</Section>
+  <TicketTiers />
+
+	<!-- Ticket 09 -->
+	<Schedule />
 
 	<!-- Ticket 11 -->
 	<Section id="speakers">
@@ -41,6 +39,6 @@ import FAQ from "../components/sections/FAQ.astro";
 	<!-- Ticket 13 -->
 	<FAQ />
 
-	<!-- Ticket 06: the closing CTA and footer. Lives in the layout's footer slot. -->
+	<!-- Ticket 06  -->
 	<Footer slot="footer" />
 </BaseLayout>
