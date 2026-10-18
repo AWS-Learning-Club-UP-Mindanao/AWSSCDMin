@@ -22,7 +22,7 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: Can we read the bucket (no writes)
-        run: aws s3 ls "s3://awsscdmin-site-344275816419" | head -5
+        run: aws s3 ls "s3://awsscdmin-site-344275816419" --summarize --human-readable
 
       - name: Can we see the fonts
         run: aws s3 ls "s3://awsscdmin-fonts-344275816419/fonts/"
