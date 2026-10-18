@@ -9,11 +9,11 @@ const text =
 const words = text.split(' ');
 ---
 
-<Section id="about" spacing="md" backgroundImage="/assets/backgrounds/star_background.svg" class="mt-[-76.3vw] md:mt-[-19.5vw] lg:mt-[-15.6vw] xl:mt-[min(17.5vw,16rem)]">
+<Section id="about" labelledby="about-heading" spacing="md" backgroundImage="/assets/backgrounds/star_background.svg" class="mt-[-76.3vw] md:mt-[-19.5vw] lg:mt-[-15.6vw] xl:mt-[min(17.5vw,16rem)]">
 	<!-- Mobile and tablet stack the photo above the card; from lg the photo sits beside the card and matches its height -->
 	<div class="grid max-md:grid-cols-[minmax(0,1fr)] gap-x-8 lg:gap-x-16 md:grid-cols-[423fr_453fr] xl:grid-cols-[509px_1fr]">
 		<div class="about-title relative max-md:w-[min(295px,100%)] max-md:-translate-x-[9%] max-md:justify-self-center max-md:text-center">
-			<h1 class="max-md:pr-[30px]">What is</h1>
+			<h1 id="about-heading" class="max-md:pr-[30px]">What is<span class="sr-only"> AWS Student Community Day Mindanao 2026?</span></h1>
 			<img
 				src="/assets/decorations/bright_star.svg"
 				data-play-in-view
@@ -24,12 +24,12 @@ const words = text.split(' ');
 			/>
 		</div>
 
-		<h5 class="about-pill relative mt-4 mb-10 w-fit max-md:w-[min(331px,100%)] max-md:justify-self-center max-md:text-center max-md:!rounded-xl max-md:!px-8 max-md:!py-2 md:max-xl:col-span-2 md:max-xl:mb-16 md:max-xl:whitespace-nowrap md:max-xl:text-h4 md:col-start-1 md:row-start-2">
+		<p aria-hidden="true" class="about-pill text-h5 font-bold relative mt-4 mb-10 w-fit max-md:w-[min(331px,100%)] max-md:justify-self-center max-md:text-center max-md:!rounded-xl max-md:!px-8 max-md:!py-2 md:max-xl:col-span-2 md:max-xl:mb-16 md:max-xl:whitespace-nowrap md:max-xl:text-h4 md:col-start-1 md:row-start-2">
 			AWS Student Community Day Mindanao 2026?
-		</h5>
+		</p>
 
 		<div data-reveal class="about-card order-2 -mx-8 -mb-16 px-8 py-16 text-left max-md:!rounded-none md:mx-0 md:mb-0 md:col-start-1 md:max-lg:col-span-2 md:max-lg:row-start-4 lg:row-start-3 md:max-xl:px-8 md:max-xl:py-16 xl:p-16">
-			<h4 class="text-h5 md:text-h4 text-content-secondary text-pretty md:max-xl:text-h5" data-scroll-reveal>
+			<p class="text-h5 md:text-h4 text-content-secondary text-pretty md:max-xl:text-h5" data-scroll-reveal>
 				{
 					words.map((word) => (
 						<>
@@ -37,7 +37,7 @@ const words = text.split(' ');
 						</>
 					))
 				}
-			</h4>
+			</p>
 		</div>
 
 		<!-- 3:2 like the slides when stacked; beside the card it stretches to the card's height, cropping the edges slightly -->
@@ -57,6 +57,10 @@ const words = text.split(' ');
 					{slides.map((file, i) => (
 						<img
 							src={`/assets/slides/${file}`}
+							srcset={`/assets/slides-800/${file} 800w, /assets/slides/${file} 1600w`}
+							sizes="(min-width: 1024px) 50vw, (min-width: 768px) 100vw, 351px"
+							width="1600"
+							height="1066"
 							alt={`Last year's event, photo ${i + 1} of ${slides.length}`}
 							loading={i ? 'lazy' : 'eager'}
 							decoding="async"

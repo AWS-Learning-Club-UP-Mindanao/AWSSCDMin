@@ -6,11 +6,12 @@ import { faqs } from "../../data/faqs";
 
 <Section
   id="faq"
+  labelledby="faq-heading"
   spacing="lg"
   class="z-10 min-h-[55rem] sm:min-h-[42rem] md:min-h-[46rem] lg:min-h-[50rem] xl:min-h-[44rem]"
   backgroundImage="/assets/backgrounds/star_background.svg"
 >
-  <h2 class="text-h1 text-content-primary" data-reveal>Frequently Asked Questions</h2>
+  <h2 id="faq-heading" class="text-h1 text-content-primary" data-reveal>Frequently Asked Questions</h2>
 
   <div class="relative mt-10 grid items-start gap-x-8 gap-y-4 xl:grid-cols-2">
     <!-- Sized by the grid, so the glow grows with the list. Blur is lower than the frames' since it now wraps the content instead of the section. -->

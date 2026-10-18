@@ -7,13 +7,14 @@ import { schedule } from "../../data/schedule";
 
 <Section
   id="schedule"
+  labelledby="schedule-heading"
   spacing="none"
   class="bg-[radial-gradient(ellipse_closest-side,var(--color-surface-secondary,#130445)_0%,var(--color-surface-primary,#020110)_100%)]
     pt-[clamp(6rem,12vh,40rem)] xl:pt-[clamp(12rem,28vh,52rem)] 2xl:pt-[clamp(16rem,34vh,64rem)]
     pb-[clamp(26rem,54vh,42rem)]"
   backgroundImage="/assets/backgrounds/star_background.svg"
 >
-  <h2 data-reveal class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">
+  <h2 id="schedule-heading" data-reveal class="mb-16 text-center text-h1 font-display text-content-primary md:mb-24">
     <span class="relative inline-block">
       <span class="relative z-10">Schedule Timeline</span>
       <img

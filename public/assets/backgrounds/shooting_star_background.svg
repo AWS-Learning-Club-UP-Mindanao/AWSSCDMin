@@ -1,8 +1,11 @@
 <svg width="1496" height="1456" viewBox="0 0 1496 1456" fill="none" xmlns="http://www.w3.org/2000/svg">
 <style>
-/* Each top-level g is one streak; head is bottom-left, so it travels down-left. */
+/* Each top-level g is one streak; head is bottom-left, so it travels down-left.
+   Plays only when loaded as file.svg#play; BaseLayout adds #play while the image is in view.
+   The streaks stay hidden until then, so they never flash in place before the first frame. */
 @media (prefers-reduced-motion: no-preference) {
-  svg > g { opacity: 0; animation: shoot 9s ease-out infinite; animation-delay: var(--d); }
+  svg > g { opacity: 0; }
+  svg:target > g { animation: shoot 9s ease-out infinite; animation-delay: var(--d); }
   svg > g:nth-of-type(1) { --d: 0s; }
   svg > g:nth-of-type(2) { --d: -1.8s; }
   svg > g:nth-of-type(3) { --d: -4.1s; }

@@ -11,8 +11,12 @@ import Button from '../Button.astro';
 	<div class="flex min-h-[calc(100svh-2*var(--hero-pad))] flex-col items-center justify-center text-center">
 		<img
 			src="/assets/logos/scd_logo_2.webp"
+			srcset="/assets/logos/scd_logo_2-480.webp 480w, /assets/logos/scd_logo_2-800.webp 800w, /assets/logos/scd_logo_2.webp 1320w"
+			sizes="(min-width: 1728px) min(47.5vw, 1500px), (min-width: 1024px) calc(25.57vw + 200px), (min-width: 393px) calc(43.9vw + 191.5px), min(92.6vw, 364px)"
+			width="1320"
+			height="896"
 			alt="AWS Student Community Day Mindanao 2026"
-			decoding="async"
+			fetchpriority="high"
 			draggable="false"
 			class="select-none [-webkit-user-drag:none] aspect-[255/173] w-[min(92.6vw,364px)] mix-blend-lighten min-[393px]:w-[calc(43.9vw_+_191.5px)] lg:w-[calc(25.57vw_+_200px)] min-[1728px]:w-[47.5vw] min-[1728px]:max-w-[1500px]"
 		/>
@@ -50,6 +54,7 @@ import Button from '../Button.astro';
 
 		<img
 			src="/assets/backgrounds/shooting_star_background.svg"
+			data-play-in-view
 			alt=""
 			decoding="async"
 			class="shooting-stars pointer-events-none absolute -z-20 inset-0 h-full w-full object-cover object-[60%_100%]"
