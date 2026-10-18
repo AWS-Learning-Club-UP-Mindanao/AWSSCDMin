@@ -20,8 +20,8 @@ export const ticketSales: {
   open: true,
   phase: 'regular',
   forms: {
-    discount: '#tickets', //gforms discount URL
-    regular: '#tickets', //gforms regular URL
+    discount: 'https://forms.gle/g3JjdLLDZ2Mb1KsA8',
+    regular: 'https://forms.gle/G1MnG7pjCiSUCbAz5',
   },
   closedLabel: 'Sold Out',
 };
@@ -47,6 +47,7 @@ export const ticketTiers: TicketTier[] = [
       { label: 'Sticker Sheet', included: true },
     ],
     price: 199,
+    discountPrice: 170,
   },
   {
     id: 'regular',
@@ -60,6 +61,7 @@ export const ticketTiers: TicketTier[] = [
       { label: 'AWS Keychain', included: true },
     ],
     price: 289,
+    discountPrice: 246,
   },
   {
     id: 'pro',
@@ -71,9 +73,10 @@ export const ticketTiers: TicketTier[] = [
       { label: 'Snacks', included: true },
       { label: 'Sticker Sheet', included: true },
       { label: 'Clicker Keychain', included: true },
-      { label: 'Early slot for Workshops', included: true },
+      { label: 'Early Slot Reservation for Workshops', included: true },
     ],
     price: 349,
+    discountPrice: 297,
   },
 ];
 
