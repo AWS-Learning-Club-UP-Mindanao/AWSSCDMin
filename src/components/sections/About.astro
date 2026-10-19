@@ -1,8 +1,11 @@
 ---
-import { readdirSync } from 'node:fs';
+import { Image } from 'astro:assets';
 import Section from '../layout/Section.astro';
 
-const slides = readdirSync('public/assets/slides').sort();
+// Sorted by path, so slide_1 leads.
+const slides = Object.entries(import.meta.glob<ImageMetadata>('../../assets/slides/*.webp', { eager: true, import: 'default' }))
+	.sort(([a], [b]) => a.localeCompare(b))
+	.map(([, img]) => img);
 
 const paragraphs: { text: string; bold?: boolean }[][] = [
 	[
@@ -65,9 +68,10 @@ const paragraphs: { text: string; bold?: boolean }[][] = [
 		<!-- 3:2 like the slides when stacked; beside the card it stretches to the card's height, cropping the edges slightly -->
 		<div
 			data-reveal
+			data-reveal-wait="1"
 			class="about-photo relative order-1 mb-10 aspect-[3/2] w-[min(351px,calc(100vw-42px))] justify-self-center md:w-full md:col-span-2 md:row-start-3 rounded-[32px] border-4 border-surface-brand-tertiary p-2.5 lg:col-span-1 lg:col-start-2 lg:mb-0 lg:aspect-auto"
 		>
-			<div class="relative h-full overflow-hidden rounded-3xl">
+			<div class="slides-frame relative h-full overflow-hidden rounded-3xl">
 				<div
 					data-carousel
 					class="flex h-full snap-x snap-mandatory overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
@@ -76,16 +80,14 @@ const paragraphs: { text: string; bold?: boolean }[][] = [
 					aria-label="Photos from last year's event"
 					tabindex="0"
 				>
-					{slides.map((file, i) => (
-						<img
-							src={`/assets/slides/${file}`}
-							srcset={`/assets/slides-800/${file} 800w, /assets/slides/${file} 1600w`}
+					{slides.map((img, i) => (
+						<Image
+							src={img}
+							widths={[800, 1600]}
 							sizes="(min-width: 1024px) 50vw, (min-width: 768px) 100vw, 351px"
-							width="1600"
-							height="1066"
-							alt={`Last year's event, photo ${i + 1} of ${slides.length}`}
-							loading={i ? 'lazy' : 'eager'}
-							decoding="async"
+							alt={`Last year's event, ${i + 1} of ${slides.length}`}
+							loading="eager"
+							fetchpriority={i >= 2 ? 'low' : undefined}
 							class="h-full w-full flex-none snap-center object-cover"
 						/>
 					))}

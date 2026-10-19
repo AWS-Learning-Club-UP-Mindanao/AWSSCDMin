@@ -2,19 +2,18 @@
 import Section from "./layout/Section.astro";
 import Button from "./Button.astro";
 import { contactEmail, socials } from "../data/site";
+import { Image } from "astro:assets";
+import logo from "../assets/logos/scd_logo_2.webp";
 ---
 
 <Section id="cta" spacing="none" class="bg-[#020110]">
   <div class="flex min-h-[66vw] flex-col items-center justify-center py-16 text-center md:py-24">
-    <img
-      src="/assets/logos/scd_logo_2.webp"
-      srcset="/assets/logos/scd_logo_2-480.webp 480w, /assets/logos/scd_logo_2-800.webp 800w, /assets/logos/scd_logo_2.webp 1320w"
+    <Image
+      src={logo}
+      widths={[480, 800, 1320]}
       sizes="(min-width: 1024px) min(38vw, 660px), (min-width: 768px) 46vw, (min-width: 640px) 58vw, 70vw"
-      width="1320"
-      height="896"
       alt="AWS Student Community Day Mindanao 2026"
-      loading="lazy"
-      decoding="async"
+      loading="eager"
       data-reveal
       class="w-[70vw] max-w-[660px] mix-blend-lighten sm:w-[58vw] md:w-[46vw] lg:w-[38vw]"
     />

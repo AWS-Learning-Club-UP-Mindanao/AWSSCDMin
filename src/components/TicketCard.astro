@@ -1,5 +1,7 @@
 ---
+import { Image } from 'astro:assets';
 import { isDiscountActive, type TicketTier } from '../data/ticket-tiers';
+import logo from '../assets/logos/scd_logo_2.webp';
 
 interface Props {
 	tier: TicketTier;
@@ -72,15 +74,12 @@ const currentPrice = priceParts(isDiscounted && tier.discountPrice !== undefined
 		<div class="relative -mt-px h-[259px]" aria-hidden="true">
 			<img src="/assets/decorations/ticket_body.svg" alt="" width="328" height="358.683" />
 			<div class="absolute top-[47.37px] left-1/2 flex h-[164px] w-[253.746px] -translate-x-1/2 items-center justify-center">
-				<img
-					src="/assets/logos/scd_logo_2.webp"
-					srcset="/assets/logos/scd_logo_2-480.webp 480w, /assets/logos/scd_logo_2-800.webp 800w, /assets/logos/scd_logo_2.webp 1320w"
+				<Image
+					src={logo}
+					widths={[480, 800, 1320]}
 					sizes="254px"
 					alt=""
-					width="821"
-					height="557"
-					loading="lazy"
-					decoding="async"
+					loading="eager"
 					class="h-[164px] w-[253.746px] max-w-none flex-none object-contain mix-blend-lighten"
 				/>
 			</div>
