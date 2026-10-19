@@ -10,6 +10,13 @@ html {
 	}
 }
 
+/* BaseLayout marks each <img> [data-loaded] once it has fully downloaded. */
+@media screen {
+	[data-reveal-ready] img:not([data-loaded]) {
+		visibility: hidden;
+	}
+}
+
 /* Scroll reveals. BaseLayout tags <html data-reveal-ready> before first paint and
    sets [data-revealed] as each element enters the viewport. Uses the standalone
    translate/scale properties so existing transform utilities are left alone.
