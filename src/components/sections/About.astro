@@ -4,9 +4,21 @@ import Section from '../layout/Section.astro';
 
 const slides = readdirSync('public/assets/slides').sort();
 
-const text =
-	'AWS Student Community Day Mindanao 2026 is the premier student-led cloud technology conference in Mindanao. It brings together over 200+ students, educators, industry professionals, and cloud enthusiasts for technical workshops, keynotes, panel discussions, and hands-on competitions focused on cloud computing, artificial intelligence, and cybersecurity.';
-const words = text.split(' ');
+const paragraphs: { text: string; bold?: boolean }[][] = [
+	[
+		{ text: 'AWS Student Community Day Mindanao 2026', bold: true },
+		{
+			text: ' is the premier student-led cloud technology conference in Mindanao. This conference brings together students, educators, industry professionals, and tech enthusiasts from across Mindanao to explore, build, and grow with Amazon Web Services (AWS). Through technical talks, hands-on workshops, panel discussions, and collaborative learning experiences, builders can discover new possibilities.',
+		},
+	],
+	[
+		{ text: 'With the theme ' },
+		{ text: '\u201cBuild Beyond, Dream Limitless.\u201d', bold: true },
+		{
+			text: ' the event empowers students to learn, build, and connect. More than a conference, it is a community where student builders encourage beginners to start building, reminding them that the sky is only the beginning, and there is more beyond it.',
+		},
+	],
+];
 ---
 
 <Section id="about" labelledby="about-heading" spacing="md" backgroundImage="/assets/backgrounds/star_background.svg" class="mt-[-76.3vw] md:mt-[-19.5vw] lg:mt-[-15.6vw] xl:mt-[min(17.5vw,16rem)]">
@@ -29,15 +41,25 @@ const words = text.split(' ');
 		</p>
 
 		<div data-reveal class="about-card order-2 -mx-8 -mb-16 px-8 py-16 text-left max-md:!rounded-none md:mx-0 md:mb-0 md:col-start-1 md:max-lg:col-span-2 md:max-lg:row-start-4 lg:row-start-3 md:max-xl:px-8 md:max-xl:py-16 xl:p-16">
-			<p class="text-h5 md:text-h4 text-content-secondary text-pretty md:max-xl:text-h5" data-scroll-reveal>
+			<div class="text-h5 md:text-h4 text-content-secondary text-pretty md:max-xl:text-h5" data-scroll-reveal>
 				{
-					words.map((word) => (
-						<>
-							<span class="reveal-word">{word}</span>{' '}
-						</>
+					paragraphs.map((para, i) => (
+						<p class:list={[i > 0 && 'mt-4']}>
+							{para.map((part) => (
+								<>
+									{part.text.split(' ').map((word) => (
+										<>
+											<span class:list={['reveal-word', part.bold && 'font-bold']}>
+												{word}
+											</span>{' '}
+										</>
+									))}
+								</>
+							))}
+						</p>
 					))
 				}
-			</p>
+			</div>
 		</div>
 
 		<!-- 3:2 like the slides when stacked; beside the card it stretches to the card's height, cropping the edges slightly -->
