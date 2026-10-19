@@ -138,6 +138,34 @@ const paragraphs: { text: string; bold?: boolean }[][] = [
 </Section>
 
 <style>
+	/* Skeleton behind the slides. Unloaded slides are hidden (BaseLayout's data-loaded), so the
+	   frame shows through until each photo is in; it stops once all of them are. */
+	.slides-frame:has(img:not([data-loaded])) {
+		background: linear-gradient(
+				100deg,
+				var(--color-surface-secondary) 30%,
+				var(--color-surface-brand) 50%,
+				var(--color-surface-secondary) 70%
+			)
+			0 0 / 300% 100%;
+		animation: slides-shimmer 1.4s linear infinite;
+	}
+
+	@keyframes slides-shimmer {
+		from {
+			background-position: 100% 0;
+		}
+		to {
+			background-position: 0 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.slides-frame {
+			animation: none;
+		}
+	}
+
 	/* Glow behind the title (same blurred pill as before) */
 	.about-title::before {
 		content: '';

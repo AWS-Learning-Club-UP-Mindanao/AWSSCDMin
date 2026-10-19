@@ -44,7 +44,7 @@ const currentPrice = priceParts(isDiscounted && tier.discountPrice !== undefined
 				<span class="bg-gradient-ticket-name bg-clip-text font-display text-transparent text-[20px] leading-6 whitespace-nowrap">{tier.name}</span>
 			</p>
 
-			<div class="flex h-[95.257px] items-center justify-center" aria-hidden="true">
+			<div class="skeleton flex h-[95.257px] items-center justify-center" aria-hidden="true">
 				<img
 					src="/assets/decorations/ticket_top.svg"
 					alt=""
@@ -71,7 +71,7 @@ const currentPrice = priceParts(isDiscounted && tier.discountPrice !== undefined
 			</div>
 		</header>
 
-		<div class="relative -mt-px h-[259px]" aria-hidden="true">
+		<div class="skeleton relative -mt-px h-[259px]" aria-hidden="true">
 			<img src="/assets/decorations/ticket_body.svg" alt="" width="328" height="358.683" />
 			<div class="absolute top-[47.37px] left-1/2 flex h-[164px] w-[253.746px] -translate-x-1/2 items-center justify-center">
 				<Image
@@ -150,6 +150,23 @@ const currentPrice = priceParts(isDiscounted && tier.discountPrice !== undefined
 </article>
 
 <style>
+	/* Ticket images stay hidden until downloaded (global.css), so hold their shape with a pulse. */
+	@media screen {
+		:global([data-reveal-ready]) .skeleton:has(img:not([data-loaded])) {
+			border-radius: 8px;
+			background: color-mix(in srgb, var(--color-surface-white) 10%, transparent);
+		}
+	}
+	@media screen and (prefers-reduced-motion: no-preference) {
+		:global([data-reveal-ready]) .skeleton:has(img:not([data-loaded])) {
+			animation: skeleton-pulse 1.5s ease-in-out infinite;
+		}
+	}
+	@keyframes skeleton-pulse {
+		50% {
+			opacity: 0.5;
+		}
+	}
 
 	.perforated {
 		--perf-depth: 4px;

@@ -51,6 +51,13 @@ const imageUrl = new URL(image, Astro.site);
 		<meta name="twitter:card" content="summary_large_image" />
 		<!-- Set before first paint so reveal targets start hidden instead of flashing in. -->
 		<script is:inline>document.documentElement.dataset.revealReady = '';</script>
+		<!-- Images stay hidden until fully downloaded, so a slow connection never shows them painting in
+		     strips. load/error don't bubble, so listen in the capture phase; this runs before any image
+		     is parsed. error counts too, or a failed image would hide its alt text forever. -->
+		<script is:inline>
+			for (const type of ['load', 'error'])
+				document.addEventListener(type, (e) => e.target.tagName === 'IMG' && e.target.setAttribute('data-loaded', ''), true);
+		</script>
 		<!-- Extra head tags per page. -->
 		<slot name="head" />
 	</head>
@@ -75,13 +82,22 @@ const imageUrl = new URL(image, Astro.site);
 
 		<script>
 			// Star SVGs only animate when loaded as `file.svg#play` (svg:target in the SVG), so the
-			// sequence starts each time one scrolls into view and stops when it leaves.
+			// sequence starts each time one scrolls into view and stops when it leaves. It waits for the
+			// file to finish loading so a slow connection doesn't play it half-drawn.
 			const io = new IntersectionObserver(
 				(entries) => {
 					for (const { target, isIntersecting } of entries) {
 						const img = target as HTMLImageElement;
-						const src = img.src.split('#')[0] + (isIntersecting ? '#play' : '');
-						if (img.src !== src) img.src = src;
+						const base = img.src.split('#')[0];
+						img.toggleAttribute('data-in-view', isIntersecting);
+						if (!isIntersecting) {
+							if (img.src !== base) img.src = base;
+							continue;
+						}
+						// Still in view once loaded? Then play.
+						img.decode().catch(() => {}).then(() => {
+							if (img.hasAttribute('data-in-view') && img.src === base) img.src = base + '#play';
+						});
 					}
 				},
 				// Any part inside the top 80% of the viewport counts: some star images are huge and mostly
@@ -103,8 +119,18 @@ const imageUrl = new URL(image, Astro.site);
 					if (!entry.isIntersecting) continue;
 					const el = entry.target as HTMLElement;
 					el.style.setProperty('--reveal-i', String(Math.min(i++, 6)));
-					el.setAttribute('data-revealed', '');
 					observer.unobserve(entry.target);
+					// Hold the reveal until its images are in, so they don't fade in half-painted, but no
+					// longer than 1s so a slow connection still sees the content.
+					// data-reveal-wait="N" waits for only the first N (e.g. a carousel's opening slides).
+					const imgs = (el.matches('img') ? [el as HTMLImageElement] : [...el.querySelectorAll('img')]).slice(
+						0,
+						Number(el.dataset.revealWait) || undefined,
+					);
+					Promise.race([
+						Promise.all(imgs.map((img) => img.decode().catch(() => {}))),
+						new Promise((r) => setTimeout(r, 1000)),
+					]).then(() => el.setAttribute('data-revealed', ''));
 				}
 			},
 			{ rootMargin: '0px 0px -10% 0px' },
