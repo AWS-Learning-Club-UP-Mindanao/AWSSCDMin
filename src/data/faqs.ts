@@ -3,7 +3,6 @@ export interface Faq {
 	answer: string;
 }
 
-/** Source of truth for the FAQ section, Ticket 13. */
 export const faqs: Faq[] = [
 	{
 		question: 'Who is organizing this event?',
