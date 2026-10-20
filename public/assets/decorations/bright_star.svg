@@ -4,8 +4,8 @@
 /* Same "arrive" pulse as the north stars (no trail here), marking the About heading. Glow kept at 1.1 so it doesn't clip the viewBox. */
 @media (prefers-reduced-motion: no-preference) {
   svg:target > * { transform-box: fill-box; transform-origin: center; --glow: 1.1; }
-  svg:target > path { animation: arrive 7s infinite; }
-  svg:target > g { animation: arrive-glow 7s infinite; }
+  svg:target > path { animation: arrive 7s; }
+  svg:target > g { animation: arrive-glow 7s; }
 }
 @keyframes glint {
   0%, 100% { opacity: .5; transform: scale(1); }

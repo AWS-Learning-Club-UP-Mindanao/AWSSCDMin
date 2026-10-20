@@ -2,15 +2,15 @@
 <style>
 /* Plays only when loaded as file.svg#play; BaseLayout adds #play when the image scrolls into view. */
 /* Glints light up from the trail tip down to the star, then the star pulses: guides the eye to the content below.
-   7s cycle, motion in the first ~2.5s then rest, so the loop stays calm.
+   Plays once: motion in the first ~2.5s, then it rests (a loop kept re-rasterizing the blurs every frame).
    No ids in this export: children 1-2 are the star and its glow, 18-21 the glint by the star, 22-25 the glint at the tip. */
 @media (prefers-reduced-motion: no-preference) {
   svg > g > :nth-child(n+18):nth-child(-n+25) { opacity: .5; } /* resting glint level, set before playing so the start doesn't jump */
   svg:target > g > :is(:nth-child(-n+2), :nth-child(n+18)) { transform-box: fill-box; transform-origin: center; }
-  svg:target > g > :nth-child(n+18):nth-child(-n+25) { animation: glint 7s ease-out infinite; }
+  svg:target > g > :nth-child(n+18):nth-child(-n+25) { animation: glint 7s ease-out; }
   svg:target > g > :nth-child(n+18):nth-child(-n+21) { animation-delay: .45s; }
-  svg:target > g > :nth-child(1) { animation: arrive 7s -.4s infinite; }
-  svg:target > g > :nth-child(2) { animation: arrive-glow 7s -.4s infinite; }
+  svg:target > g > :nth-child(1) { animation: arrive 7s -.4s; }
+  svg:target > g > :nth-child(2) { animation: arrive-glow 7s -.4s; }
 }
 @keyframes glint {
   0%, 100% { opacity: .5; transform: scale(1); }
