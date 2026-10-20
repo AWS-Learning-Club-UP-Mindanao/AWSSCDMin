@@ -82,21 +82,18 @@ const imageUrl = new URL(image, Astro.site);
 
 		<script>
 			// Star SVGs only animate when loaded as `file.svg#play` (svg:target in the SVG), so the
-			// sequence starts each time one scrolls into view and stops when it leaves. It waits for the
-			// file to finish loading so a slow connection doesn't play it half-drawn.
+			// sequence starts the first time one scrolls into view. It waits for the file to finish
+			// loading so a slow connection doesn't play it half-drawn.
+			// ponytail: play once and never swap back. Every src swap re-rasterizes the whole SVG
+			// (blurs included) mid-scroll, which was the stutter; browsers skip painting offscreen images anyway.
 			const io = new IntersectionObserver(
 				(entries) => {
 					for (const { target, isIntersecting } of entries) {
+						if (!isIntersecting) continue;
 						const img = target as HTMLImageElement;
-						const base = img.src.split('#')[0];
-						img.toggleAttribute('data-in-view', isIntersecting);
-						if (!isIntersecting) {
-							if (img.src !== base) img.src = base;
-							continue;
-						}
-						// Still in view once loaded? Then play.
+						io.unobserve(img);
 						img.decode().catch(() => {}).then(() => {
-							if (img.hasAttribute('data-in-view') && img.src === base) img.src = base + '#play';
+							img.src = img.src.split('#')[0] + '#play';
 						});
 					}
 				},
@@ -117,26 +114,42 @@ const imageUrl = new URL(image, Astro.site);
 				let i = 0;
 				for (const entry of entries) {
 					if (!entry.isIntersecting) continue;
-					const el = entry.target as HTMLElement;
-					el.style.setProperty('--reveal-i', String(Math.min(i++, 6)));
-					observer.unobserve(entry.target);
-					// Hold the reveal until its images are in, so they don't fade in half-painted, but no
-					// longer than 1s so a slow connection still sees the content.
-					// data-reveal-wait="N" waits for only the first N (e.g. a carousel's opening slides).
-					const imgs = (el.matches('img') ? [el as HTMLImageElement] : [...el.querySelectorAll('img')]).slice(
-						0,
-						Number(el.dataset.revealWait) || undefined,
-					);
-					Promise.race([
-						Promise.all(imgs.map((img) => img.decode().catch(() => {}))),
-						new Promise((r) => setTimeout(r, 1000)),
-					]).then(() => el.setAttribute('data-revealed', ''));
+					const parent = entry.target.parentElement;
+					// data-reveal-stagger="together": the first child in view reveals every rendered sibling in
+					// one stagger. Hidden ones (collapsed schedule rows) stay observed for when they're shown.
+					const batch =
+						parent?.dataset.revealStagger === 'together'
+							? [...parent.children].filter((c) => pending.has(c) && c.getClientRects().length)
+							: [entry.target];
+					for (const el of batch as HTMLElement[]) {
+						if (!pending.delete(el)) continue;
+						el.style.setProperty('--reveal-i', String(Math.min(i++, 6)));
+						observer.unobserve(el);
+						reveal(el);
+					}
 				}
 			},
 			{ rootMargin: '0px 0px -10% 0px' },
 		);
+		const pending = new WeakSet<Element>();
 
-		document.querySelectorAll('[data-reveal]').forEach((el) => observer.observe(el));
-		document.querySelectorAll('[data-reveal-stagger] > *').forEach((el) => observer.observe(el));
+		const reveal = (el: HTMLElement) => {
+			// Hold the reveal until its images are in, so they don't fade in half-painted, but no
+			// longer than 1s so a slow connection still sees the content.
+			// data-reveal-wait="N" waits for only the first N (e.g. a carousel's opening slides).
+			const imgs = (el.matches('img') ? [el as HTMLImageElement] : [...el.querySelectorAll('img')]).slice(
+				0,
+				Number(el.dataset.revealWait) || undefined,
+			);
+			Promise.race([
+				Promise.all(imgs.map((img) => img.decode().catch(() => {}))),
+				new Promise((r) => setTimeout(r, 1000)),
+			]).then(() => el.setAttribute('data-revealed', ''));
+		};
+
+		document.querySelectorAll('[data-reveal], [data-reveal-stagger] > *').forEach((el) => {
+			pending.add(el);
+			observer.observe(el);
+		});
 	</script>
 </html>

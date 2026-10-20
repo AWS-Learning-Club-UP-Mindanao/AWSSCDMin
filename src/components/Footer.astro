@@ -1,6 +1,7 @@
 ---
 import Section from "./layout/Section.astro";
 import Button from "./Button.astro";
+import ShootingStars from "./ShootingStars.astro";
 import { contactEmail, socials } from "../data/site";
 import { Image } from "astro:assets";
 import logo from "../assets/logos/scd_logo_2.webp";
@@ -10,7 +11,8 @@ import logo from "../assets/logos/scd_logo_2.webp";
   <div class="flex min-h-[66vw] flex-col items-center justify-center py-16 text-center md:py-24">
     <Image
       src={logo}
-      widths={[480, 800, 1320]}
+      widths={[480, 640, 800, 1320]}
+      quality={70}
       sizes="(min-width: 1024px) min(38vw, 660px), (min-width: 768px) 46vw, (min-width: 640px) 58vw, 70vw"
       alt="AWS Student Community Day Mindanao 2026"
       loading="eager"
@@ -79,13 +81,7 @@ import logo from "../assets/logos/scd_logo_2.webp";
       class="pointer-events-none absolute inset-0 h-full w-full object-cover"
     />
 
-    <img
-      src="/assets/backgrounds/shooting_star_background.svg"
-      data-play-in-view
-      alt=""
-      decoding="async"
-      class="pointer-events-none absolute inset-0 h-full w-full object-cover object-[50%_100%]"
-    />
+    <ShootingStars />
   </Fragment>
 </Section>
 
