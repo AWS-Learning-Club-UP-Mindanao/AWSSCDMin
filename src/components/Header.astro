@@ -198,7 +198,7 @@ const links = [
     </nav>
 
     <Button
-      label="Get Tickets"
+      label="Sold out"
       href="/#tickets"
       variant="outlined"
       disabled={!ticketSales.open}
@@ -269,8 +269,6 @@ const links = [
     font-weight: 700;
   }
 
-  /* ponytail: blur lives on a pseudo, backdrop-filter on the header itself would
-     trap the position:fixed mobile drawer inside it */
   .event-header::before {
     position: absolute;
     inset: 0;
