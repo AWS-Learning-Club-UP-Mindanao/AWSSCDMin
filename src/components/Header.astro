@@ -2,6 +2,7 @@
 import Button from "./Button.astro";
 import { Image } from "astro:assets";
 import logo from "../assets/logos/scd_logo_1.webp";
+import { ticketSales } from "../data/ticket-tiers";
 
 const links = [
   { label: "About", href: "/#about" },
@@ -200,6 +201,7 @@ const links = [
       label="Get Tickets"
       href="/#tickets"
       variant="outlined"
+      disabled={!ticketSales.open}
       class="ticket-link"
     />
     <Button
