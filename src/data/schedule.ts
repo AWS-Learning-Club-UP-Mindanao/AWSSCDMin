@@ -1,29 +1,14 @@
-/**
- * Schedule content for AWS Student Community Day Mindanao.
- *
- * Source: the organisers' run sheet. Talk titles for the parallel tracks are not confirmed yet,
- * so the workshops read as Workshop 1, Workshop 2 and so on.
- */
-
 export interface ScheduleSession {
-  /** "Workshop", "Panel", "Networking". Left out when a session has no type label. */
+
   type?: string;
-  /** Room the session runs in. Left out when the session is not tied to one. */
   room?: string;
   title: string;
-  /** Where "Register" points. Left out when there is nothing to register for. */
   registrationUrl?: string;
 }
 
 export interface ScheduleSlot {
-  /** The short marker printed above the range, e.g. "09:30". */
   label: string;
-  /** The full range, e.g. "09:30 AM - 10:30 AM". */
   time: string;
-  /**
-   * The lines printed under this time. A line holds one session, or two or more when those
-   * sessions run in parallel rooms.
-   */
   rows: ScheduleSession[][];
 }
 
