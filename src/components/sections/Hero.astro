@@ -1,7 +1,6 @@
 ---
 import Section from '../layout/Section.astro';
 import Button from '../Button.astro';
-import { ticketSales } from '../../data/ticket-tiers';
 import ShootingStars from '../ShootingStars.astro';
 import { heroLogo, heroLogoSizes } from '../../assets/logos/hero-logo';
 import starsSvg from '../../../public/assets/backgrounds/star_background.svg?raw';
@@ -43,7 +42,6 @@ const svgUri = (svg: string) =>
 			label="Get Tickets"
 			href="#tickets"
 			variant="cta"
-			disabled={!ticketSales.open}
 			class="mt-10 w-fit shrink-0 whitespace-nowrap md:mt-12"
 		/>
 	</div>
