@@ -7,9 +7,7 @@ import {
   ticketSales,
   ticketTiers,
 } from "../../data/ticket-tiers";
-import { socials } from "../../data/site";
 
-const facebookUrl = socials.find((social) => social.label === "Facebook")?.href;
 
 const formUrl = getTicketFormUrl();
 const isExternal = formUrl.startsWith("http");

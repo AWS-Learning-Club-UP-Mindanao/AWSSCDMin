@@ -24,9 +24,9 @@ export const socials = [
 // falls back to the exported image so a keyless build still renders. mapUrl overrides the default
 // Google Maps link for the venue.
 export const venue = {
-  name: "Bapa Benny Auditorium, Ateneo de Davao University, Davao City, Philippines",
+  name: "Finster Auditorium, Ateneo de Davao University, Davao City, Philippines",
   address: "",
-  mapQuery: "Bapa Benny Auditorium, Ateneo de Davao University, Davao City",
+  mapQuery: "Finster Auditorium, Ateneo de Davao University, Davao City",
   // Emilio Jacinto St. campus. Wikipedia gives 7°4′20″N 125°36′47″E and a coordinate lookup
   // 7.0731, 125.6128, hence the shared values below.
   mapCenter: { lat: 7.0711276, lng: 125.61342 },
