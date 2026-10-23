@@ -18,7 +18,7 @@ export const ticketSales: {
   closedLabel: string;
 } = {
   open: true,
-  phase: 'discount',
+  phase: 'regular',
   forms: {
     discount: 'https://forms.gle/g3JjdLLDZ2Mb1KsA8',
     regular: 'https://forms.gle/G1MnG7pjCiSUCbAz5',
