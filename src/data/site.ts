@@ -26,6 +26,8 @@ export const socials = [
 export const venue = {
   name: "Finster Auditorium, Ateneo de Davao University, Davao City, Philippines",
   address: "",
+  description:
+    "Drop off along Roxas Avenue directly across from Freedom Park and the Roxas Night Market. Enter through Gate 5 (Roxas Gate) to step straight into Finster Hall, then take the stairs or elevator up to the 7th floor for the Finster Auditorium.",
   mapQuery: "Finster Auditorium, Ateneo de Davao University, Davao City",
   // Emilio Jacinto St. campus. Wikipedia gives 7°4′20″N 125°36′47″E and a coordinate lookup
   // 7.0731, 125.6128, hence the shared values below.
