@@ -1,0 +1,95 @@
+---
+// Shooting stars, split out of shooting_star_background.svg (still the source of truth: edit the
+// Figma export there). Each streak is its own small inline <svg> animated with translate/opacity,
+// so the GPU moves it without repainting. Animating inside one big <img> SVG re-rasterized all
+// 1496x1456 px (blurs included) every frame, ~100% CPU while on screen.
+import svg from '../../public/assets/backgrounds/shooting_star_background.svg?raw';
+
+interface Props {
+	/** Horizontal crop like object-position x: 0 = left edge, 0.5 = centre, 1 = right edge. The bottom edge is always kept. */
+	x?: number;
+	class?: string;
+}
+
+const { x = 0.5, class: className = '' } = Astro.props;
+const W = 1496;
+const H = 1456;
+
+const filters = [...svg.matchAll(/<filter id="filter(\d+)_[^"]*" x="([-\d.e]+)" y="([-\d.e]+)" width="([\d.]+)" height="([\d.]+)"/g)].map(
+	(m) => m.slice(2).map(Number),
+);
+const delays = Object.fromEntries([...svg.matchAll(/nth-of-type\((\d+)\) \{ --d: (-?[\d.]+)s/g)].map((m) => [m[1], m[2]]));
+const streaks = [...svg.matchAll(/<g opacity="([\d.]+)">\s*<path d="([^"]+)"/g)].map((m, i) => {
+	const [fx, fy, fw, fh] = filters[i];
+	return { o: m[1], d: m[2], delay: delays[i + 1] ?? '0', fx, fy, fw, fh };
+});
+// ponytail: regex over a Figma export; if a re-export changes its shape, fail the build instead of shipping an empty hero.
+if (!streaks.length || streaks.length !== filters.length) throw new Error('ShootingStars: unexpected shooting_star_background.svg structure');
+const id = `ss${Math.random().toString(36).slice(2, 7)}`;
+---
+
+<div aria-hidden="true" class:list={['shooting-stars pointer-events-none absolute inset-0 overflow-hidden', className]} style={`--x: ${x}`}>
+	<div class="ss-box">
+		{streaks.map(({ o, d, delay, fx, fy, fw, fh }, i) => (
+			<svg
+				class="ss-streak"
+				viewBox={`${fx} ${fy} ${fw} ${fh}`}
+				style={`left:${(fx / W) * 100}%;top:${(fy / H) * 100}%;width:${(fw / W) * 100}%;height:${(fh / H) * 100}%;--o:${o};--d:${delay}s;--x0:${(80 / fw) * 100}%;--y0:${(-30 / fh) * 100}%;--x1:${(-220 / fw) * 100}%;--y1:${(85 / fh) * 100}%`}
+			>
+				<defs>
+					<filter id={`${id}-${i}`} x={fx} y={fy} width={fw} height={fh} filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+						<feGaussianBlur stdDeviation="8.3" />
+					</filter>
+				</defs>
+				<path d={d} fill="white" />
+				<path d={d} fill="white" opacity="0.5" filter={`url(#${id}-${i})`} style="mix-blend-mode: plus-lighter" />
+			</svg>
+		))}
+	</div>
+</div>
+
+<style>
+	.shooting-stars {
+		container-type: size;
+	}
+
+	/* The SVG's full artboard, sized and placed like object-fit: cover with object-position (x, bottom). */
+	.ss-box {
+		--w: max(100cqw, 100cqh * 1496 / 1456);
+		position: absolute;
+		bottom: 0;
+		left: calc((100cqw - var(--w)) * var(--x));
+		width: var(--w);
+		aspect-ratio: 1496 / 1456;
+	}
+
+	.ss-streak {
+		position: absolute;
+		overflow: visible;
+		opacity: var(--o);
+	}
+
+	/* Same timing as the old in-SVG animation: each streak shoots for the first 14% of a 9s cycle. */
+	@media (prefers-reduced-motion: no-preference) {
+		.ss-streak {
+			opacity: 0;
+			animation: ss-shoot 9s ease-out infinite;
+			animation-delay: var(--d);
+		}
+	}
+
+	@keyframes ss-shoot {
+		0% {
+			opacity: 0;
+			translate: var(--x0) var(--y0);
+		}
+		4% {
+			opacity: var(--o);
+		}
+		14%,
+		100% {
+			opacity: 0;
+			translate: var(--x1) var(--y1);
+		}
+	}
+</style>

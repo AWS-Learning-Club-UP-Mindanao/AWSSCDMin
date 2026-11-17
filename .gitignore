@@ -30,3 +30,7 @@ pnpm-debug.log*
 
 # Private fonts
 public/fonts/
+
+# Licensed fonts: pulled from the private bucket at build time, never committed
+public/assets/fonts/*
+!public/assets/fonts/.gitkeep

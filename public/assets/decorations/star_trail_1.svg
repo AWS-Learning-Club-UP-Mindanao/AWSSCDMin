@@ -206,6 +206,7 @@
 </radialGradient>
 <linearGradient id="paint4_linear_186_2461" x1="1286.71" y1="149.722" x2="-115.743" y2="466.899" gradientUnits="userSpaceOnUse">
 <<<<<<< HEAD
+<<<<<<< HEAD
 <stop stop-color="#D9D9D9"/>
 <stop offset="1" stop-color="#737373" stop-opacity="0.25"/>
 </linearGradient>
@@ -253,6 +254,8 @@
 <stop stop-color="#BCBCBC"/>
 <stop offset="1" stop-color="#565656" stop-opacity="0.25"/>
 =======
+=======
+>>>>>>> 68a69dbb5d427ac465db1f3efe13171595232ae5
 <stop stop-color="#6B45F0"/>
 <stop offset="1" stop-color="#331787" stop-opacity="0.25"/>
 </linearGradient>
@@ -299,7 +302,10 @@
 <linearGradient id="paint15_linear_186_2461" x1="1011" y1="247.045" x2="968.499" y2="-1246.27" gradientUnits="userSpaceOnUse">
 <stop stop-color="#4F2FC4"/>
 <stop offset="1" stop-color="#1E0C52" stop-opacity="0.25"/>
+<<<<<<< HEAD
 >>>>>>> 07d52009fe0f9bb9a66c2dc3197d6e34c923cf45
+=======
+>>>>>>> 68a69dbb5d427ac465db1f3efe13171595232ae5
 </linearGradient>
 <linearGradient id="paint16_linear_186_2461" x1="648.501" y1="266.125" x2="621.428" y2="-685.105" gradientUnits="userSpaceOnUse">
 <stop stop-color="#FFF9C0"/>

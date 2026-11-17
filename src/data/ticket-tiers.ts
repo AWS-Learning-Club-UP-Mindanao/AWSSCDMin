@@ -1,66 +1,89 @@
+// TICKET SALES SETTINGS
+// Change the values below, then redeploy the site.
+//
+// Turn the button on or off:
+//   open: true   = people can buy tickets
+//   open: false  = button is disabled and shows the closedLabel text
+//
+// Early bird or regular price:
+//   phase: 'discount' = early bird. Button opens the discount form and shows discountPrice.
+//   phase: 'regular'  = normal sales. Button opens the regular form and shows price.
+//
+// Change a link: paste the new Google Form URL in forms.
 
-// replace with the real Google Form links.
-export const ticketForms = {
-  regular: '#tickets', // regular gform
-  discount: '#tickets', // discount gform
+export const ticketSales: {
+  open: boolean;
+  phase: 'discount' | 'regular';
+  forms: Record<'discount' | 'regular', string>;
+  closedLabel: string;
+} = {
+  open: true,
+  phase: 'regular',
+  forms: {
+    discount: 'https://forms.gle/g3JjdLLDZ2Mb1KsA8',
+    regular: 'https://forms.gle/G1MnG7pjCiSUCbAz5',
+  },
+  closedLabel: 'Sold Out',
 };
 
 export interface TicketTier {
-  id: 'regular' | 'pro' | 'vip';
+  id: 'lite' | 'regular' | 'pro';
   name: string;
   description: string;
   benefits: { label: string; included: boolean }[];
-  price: number;           
+  price: number;
   discountPrice?: number;
 }
 
-// dummy data
 export const ticketTiers: TicketTier[] = [
+  {
+    id: 'lite',
+    name: 'Lite Pass',
+    description: 'This ticket tier is non-refundable, and all sales are final. For tier inclusions and full policy details, see the link.',
+    benefits: [
+      { label: 'Lanyard + ID', included: true },
+      { label: 'Lunch', included: true },
+      { label: 'Snacks', included: true },
+      { label: 'Sticker Sheet', included: true },
+    ],
+    price: 199,
+    discountPrice: 170,
+  },
   {
     id: 'regular',
     name: 'Regular Pass',
     description: 'This ticket tier is non-refundable, and all sales are final. For tier inclusions and full policy details, see the link.',
     benefits: [
-      { label: 'Item 1', included: true },
-      { label: 'Item 2', included: true },
-      { label: 'Item 3', included: true },
-      { label: 'Item 4', included: false },
-      { label: 'Item 5', included: false },
-      { label: 'Item 6', included: false },
+      { label: 'Lanyard + ID', included: true },
+      { label: 'Lunch', included: true },
+      { label: 'Snacks', included: true },
+      { label: 'Sticker Sheet', included: true },
+      { label: 'AWS Keychain', included: true },
     ],
-    price: 4500,
+    price: 289,
+    discountPrice: 246,
   },
   {
     id: 'pro',
     name: 'Pro Pass',
     description: 'This ticket tier is non-refundable, and all sales are final. For tier inclusions and full policy details, see the link.',
     benefits: [
-      { label: 'Item 1', included: true },
-      { label: 'Item 2', included: true },
-      { label: 'Item 3', included: true },
-      { label: 'Item 4', included: true },
-      { label: 'Item 5', included: false },
-      { label: 'Item 6', included: false },
+      { label: 'Lanyard + ID', included: true },
+      { label: 'Lunch', included: true },
+      { label: 'Snacks', included: true },
+      { label: 'Sticker Sheet', included: true },
+      { label: 'Clicker Keychain', included: true },
+      { label: 'Early Slot Reservation for Workshops', included: true },
     ],
-    price: 4500,
-    discountPrice: 4500,
-  },
-  {
-    id: 'vip',
-    name: 'VIP Pass',
-    description: 'This ticket tier is non-refundable, and all sales are final. For tier inclusions and full policy details, see the link.',
-    benefits: [
-      { label: 'Item 1', included: true },
-      { label: 'Item 2', included: true },
-      { label: 'Item 3', included: true },
-      { label: 'Item 4', included: true },
-      { label: 'Item 5', included: true },
-      { label: 'Item 6', included: true },
-    ],
-    price: 4500,
+    price: 349,
+    discountPrice: 297,
   },
 ];
 
-export function getTicketFormUrl(tier: TicketTier) {
-  return tier.discountPrice !== undefined ? ticketForms.discount : ticketForms.regular;
+export function getTicketFormUrl() {
+  return ticketSales.forms[ticketSales.phase];
+}
+
+export function isDiscountActive(tier: TicketTier) {
+  return ticketSales.phase === 'discount' && tier.discountPrice !== undefined;
 }

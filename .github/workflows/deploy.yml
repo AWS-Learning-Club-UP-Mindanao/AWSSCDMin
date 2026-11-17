@@ -1,0 +1,65 @@
+name: Deploy to production
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: ap-southeast-1
+  BUCKET: awsscdmin-site-344275816419
+  FONTS_BUCKET: awsscdmin-fonts-344275816419
+  DISTRIBUTION_ID: E187X07G5N98UI
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::344275816419:role/scdmin-deploy
+          aws-region: ${{ env.AWS_REGION }}
+
+      # The licensed fonts are deliberately not in git, so the build has no
+      # public/fonts until they are pulled from the private bucket.
+      - name: Pull licensed fonts
+        run: aws s3 sync "s3://$FONTS_BUCKET/fonts/" public/assets/fonts/
+
+      - run: pnpm build
+        env:
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}
+
+      - name: Upload hashed assets (immutable)
+        run: |
+          aws s3 sync dist/ "s3://$BUCKET" --delete \
+            --exclude "test/*" --exclude "test" --exclude "*.html" \
+            --cache-control "public, max-age=31536000, immutable"
+
+      - name: Upload HTML (always revalidate)
+        run: |
+          aws s3 sync dist/ "s3://$BUCKET" \
+            --exclude "*" --include "*.html" \
+            --cache-control "no-cache"
+
+      - name: Invalidate the edge
+        run: aws cloudfront create-invalidation --distribution-id "$DISTRIBUTION_ID" --paths "/*"

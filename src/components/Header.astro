@@ -1,16 +1,12 @@
 ---
 import Button from "./Button.astro";
-
-interface Props {
-  ticketUrl?: string;
-}
-
-const { ticketUrl = "https://example.com/tickets" } = Astro.props;
+import { Image } from "astro:assets";
+import logo from "../assets/logos/scd_logo_1.webp";
+import { ticketSales } from "../data/ticket-tiers";
 
 const links = [
   { label: "About", href: "/#about" },
   { label: "Schedule", href: "/#schedule" },
-  { label: "Speakers", href: "/#speakers" },
   { label: "FAQ", href: "/#faq" },
 ];
 ---
@@ -184,7 +180,7 @@ const links = [
       aria-label="AWS Student Community Day Mindanao home"
       data-home-link
     >
-      <img draggable="false" src="/assets/logos/scd_logo_1.svg" alt="" width="116" height="66" />
+      <Image draggable="false" src={logo} width={116} densities={[2, 3]} quality={70} alt="" loading="eager" decoding="auto" />
     </a>
 
     <nav class="desktop-nav" aria-label="Primary">
@@ -202,9 +198,10 @@ const links = [
     </nav>
 
     <Button
-      label="Buy Tickets"
-      href={ticketUrl}
+      label="Get Tickets"
+      href="/#tickets"
       variant="outlined"
+      disabled={!ticketSales.open}
       class="ticket-link"
     />
     <Button
@@ -260,16 +257,26 @@ const links = [
   .event-header {
     position: sticky;
     top: 0;
-    z-index: 20;
+    z-index: 50;
     width: 100%;
     max-width: 1369px;
     margin-inline: auto;
     border-radius: 0 0 64px 64px;
-    background: rgb(50 7 118 / 75%);
+    background: rgb(40 7 100 / 85%);
     color: white;
     font-family: "Amazon Ember Display", sans-serif;
     font-size: 20px;
     font-weight: 700;
+  }
+
+  .event-header::before {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    backdrop-filter: blur(16px) saturate(140%);
+    pointer-events: none;
+    content: "";
   }
 
   .event-header::after {
@@ -456,7 +463,8 @@ const links = [
       min-height: 257px;
       padding: 23px 24px 22px;
       border-radius: 0 0 32px 32px;
-      background: #320776BF;
+      background: #280764D9;
+      backdrop-filter: blur(16px) saturate(140%);
     }
 
     .mobile-drawer::before {
@@ -477,6 +485,13 @@ const links = [
       mask-composite: exclude;
       pointer-events: none;
       content: "";
+    }
+
+    /* The drawer sits in the flow as the no-JS fallback. When JS is on (BaseLayout's inline head
+       script sets data-reveal-ready before first paint), keep it out until the script takes over,
+       so the page doesn't jump when it gets hidden. */
+    :global([data-reveal-ready]) .event-header:not([data-enhanced]) .mobile-drawer {
+      display: none;
     }
 
     .drawer-backdrop {

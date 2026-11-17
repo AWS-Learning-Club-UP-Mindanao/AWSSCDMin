@@ -1,6 +1,7 @@
 ---
-import Button from './Button.astro';
-import { getTicketFormUrl, type TicketTier } from '../data/ticket-tiers';
+import { Image } from 'astro:assets';
+import { isDiscountActive, type TicketTier } from '../data/ticket-tiers';
+import logo from '../assets/logos/scd_logo_2.webp';
 
 interface Props {
 	tier: TicketTier;
@@ -10,9 +11,7 @@ const { tier } = Astro.props;
 const eventDate = { label: 'November 28, 2026', iso: '2026-11-28' };
 const eventCity = 'Davao City';
 
-const isDiscounted = tier.discountPrice !== undefined;
-const formUrl = getTicketFormUrl(tier);
-const isExternal = formUrl.startsWith('http');
+const isDiscounted = isDiscountActive(tier);
 const nameId = `ticket-${tier.id}-name`;
 
 const priceFormat = new Intl.NumberFormat('en-PH', {
@@ -35,17 +34,17 @@ const priceParts = (amount: number) => {
 	};
 };
 
-const currentPrice = priceParts(tier.discountPrice ?? tier.price);
+const currentPrice = priceParts(isDiscounted && tier.discountPrice !== undefined ? tier.discountPrice : tier.price);
 ---
 
-<article class="flex h-full w-[328px] flex-col items-center gap-8" aria-labelledby={nameId}>
+<article class="flex h-full w-[328px] flex-col" aria-labelledby={nameId}>
 	<div class="flex w-full flex-1 flex-col">
 		<header class="relative flex flex-col">
 			<p class="flex h-7 items-center justify-center bg-surface-white px-2" aria-hidden="true">
 				<span class="bg-gradient-ticket-name bg-clip-text font-display text-transparent text-[20px] leading-6 whitespace-nowrap">{tier.name}</span>
 			</p>
 
-			<div class="flex h-[95.257px] items-center justify-center" aria-hidden="true">
+			<div class="skeleton flex h-[95.257px] items-center justify-center" aria-hidden="true">
 				<img
 					src="/assets/decorations/ticket_top.svg"
 					alt=""
@@ -72,16 +71,16 @@ const currentPrice = priceParts(tier.discountPrice ?? tier.price);
 			</div>
 		</header>
 
-		<div class="relative -mt-px h-[259px]" aria-hidden="true">
+		<div class="skeleton relative -mt-px h-[259px]" aria-hidden="true">
 			<img src="/assets/decorations/ticket_body.svg" alt="" width="328" height="358.683" />
 			<div class="absolute top-[47.37px] left-1/2 flex h-[164px] w-[253.746px] -translate-x-1/2 items-center justify-center">
-				<img
-					src="/assets/logos/scd_logo_2.svg"
+				<Image
+					src={logo}
+					widths={[256, 480, 800]}
+					quality={70}
+					sizes="254px"
 					alt=""
-					width="821"
-					height="557"
-					loading="lazy"
-					decoding="async"
+					loading="eager"
 					class="h-[164px] w-[253.746px] max-w-none flex-none object-contain mix-blend-lighten"
 				/>
 			</div>
@@ -149,18 +148,26 @@ const currentPrice = priceParts(tier.discountPrice ?? tier.price);
 			</div>
 		</div>
 	</div>
-
-	<Button
-		label="Get Ticket Here"
-		href={formUrl}
-		variant="cta"
-		target={isExternal ? '_blank' : undefined}
-		aria-label={`Get Ticket Here: ${tier.name}${isExternal ? ' (opens in a new tab)' : ''}`}
-		class="text-h4"
-	/>
 </article>
 
 <style>
+	/* Ticket images stay hidden until downloaded (global.css), so hold their shape with a pulse. */
+	@media screen {
+		:global([data-reveal-ready]) .skeleton:has(img:not([data-loaded])) {
+			border-radius: 8px;
+			background: color-mix(in srgb, var(--color-surface-white) 10%, transparent);
+		}
+	}
+	@media screen and (prefers-reduced-motion: no-preference) {
+		:global([data-reveal-ready]) .skeleton:has(img:not([data-loaded])) {
+			animation: skeleton-pulse 1.5s ease-in-out infinite;
+		}
+	}
+	@keyframes skeleton-pulse {
+		50% {
+			opacity: 0.5;
+		}
+	}
 
 	.perforated {
 		--perf-depth: 4px;

@@ -1,4 +1,36 @@
-<svg width="2205" height="1955" viewBox="0 0 2205 1955" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg id="play" width="2205" height="1955" viewBox="0 0 2205 1955" fill="none" xmlns="http://www.w3.org/2000/svg">
+<style>
+/* Plays only when loaded as file.svg#play; BaseLayout adds #play when the image scrolls into view.
+   Same guide and timing as the north stars: glints light up along the trail toward the stars, then both stars pulse. 7s cycle.
+   No ids in this export: 1-2 small star + glow, 3-4 big star + glow, 6-7 / 8-9 / 10-11 the glints (middle, right, left). */
+@media (prefers-reduced-motion: no-preference) {
+  svg > :is(:nth-child(-n+4), :nth-child(n+6):nth-child(-n+11)) { transform-box: fill-box; transform-origin: center; }
+  svg > :nth-child(n+6):nth-child(-n+11) { opacity: .5; } /* resting glint level, set before playing so the start doesn't jump */
+  svg:target > :nth-child(n+6):nth-child(-n+11) { animation: glint 7s ease-out infinite; }
+  svg:target > :nth-child(n+6):nth-child(-n+7) { animation-delay: .35s; }
+  svg:target > :nth-child(n+8):nth-child(-n+9) { animation-delay: .7s; }
+  svg:target > :nth-child(3) { animation: arrive 7s infinite; }
+  svg:target > :nth-child(4) { animation: arrive-glow 7s infinite; }
+  svg:target > :nth-child(1) { animation: arrive 7s infinite; }
+  svg:target > :nth-child(2) { animation: arrive-glow 7s infinite; }
+}
+@keyframes glint {
+  0%, 100% { opacity: .5; transform: scale(1); }
+  5% { opacity: 1; transform: scale(1.5); animation-timing-function: ease-in; }
+  14% { opacity: .5; transform: scale(1); }
+}
+/* Ease-out swell, slower settle. The glow swells more than the star, so the light reads as arriving. */
+@keyframes arrive {
+  0%, 15% { transform: scale(1); animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+  21% { transform: scale(1.1); animation-timing-function: ease-in-out; }
+  36%, 100% { transform: scale(1); }
+}
+@keyframes arrive-glow {
+  0%, 15% { transform: scale(1); animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+  21% { transform: scale(1.25); animation-timing-function: ease-in-out; }
+  36%, 100% { transform: scale(1); }
+}
+</style>
 <path d="M1594.41 1609.08L1593.95 1634.49C1593.94 1635.23 1593.15 1635.7 1592.49 1635.36L1584.84 1631.38C1583.9 1630.89 1582.94 1632.01 1583.57 1632.87L1588.76 1639.83C1589.18 1640.4 1588.89 1641.22 1588.19 1641.39L1563.8 1647.46C1562.67 1647.74 1562.85 1649.4 1564.01 1649.43L1589.07 1650.16C1589.79 1650.18 1590.25 1650.93 1589.94 1651.59L1586.17 1659.51C1585.72 1660.45 1586.82 1661.36 1587.66 1660.75L1594.63 1655.64C1595.21 1655.21 1596.03 1655.52 1596.19 1656.22L1601.84 1680.86C1602.1 1682 1603.76 1681.84 1603.81 1680.68L1604.95 1655.25C1604.99 1654.55 1605.71 1654.1 1606.36 1654.38L1614.49 1657.98C1615.44 1658.4 1616.32 1657.26 1615.68 1656.44L1610.2 1649.5C1609.75 1648.93 1610.04 1648.08 1610.75 1647.91L1635.33 1642.06C1636.46 1641.79 1636.3 1640.13 1635.14 1640.08L1609.81 1639.16C1609.09 1639.13 1608.64 1638.38 1608.95 1637.73L1612.76 1629.86C1613.22 1628.9 1612.07 1627.98 1611.24 1628.65L1604.3 1634.19C1603.74 1634.64 1602.89 1634.36 1602.71 1633.66L1596.38 1608.85C1596.09 1607.72 1594.44 1607.92 1594.41 1609.08Z" fill="url(#paint0_radial_443_1023)"/>
 <g opacity="0.5" filter="url(#filter0_f_443_1023)" style="mix-blend-mode:plus-lighter">
 <path d="M1594.41 1609.08L1593.95 1634.49C1593.94 1635.23 1593.15 1635.7 1592.49 1635.36L1584.84 1631.38C1583.9 1630.89 1582.94 1632.01 1583.57 1632.87L1588.76 1639.83C1589.18 1640.4 1588.89 1641.22 1588.19 1641.39L1563.8 1647.46C1562.67 1647.74 1562.85 1649.4 1564.01 1649.43L1589.07 1650.16C1589.79 1650.18 1590.25 1650.93 1589.94 1651.59L1586.17 1659.51C1585.72 1660.45 1586.82 1661.36 1587.66 1660.75L1594.63 1655.64C1595.21 1655.21 1596.03 1655.52 1596.19 1656.22L1601.84 1680.86C1602.1 1682 1603.76 1681.84 1603.81 1680.68L1604.95 1655.25C1604.99 1654.55 1605.71 1654.1 1606.36 1654.38L1614.49 1657.98C1615.44 1658.4 1616.32 1657.26 1615.68 1656.44L1610.2 1649.5C1609.75 1648.93 1610.04 1648.08 1610.75 1647.91L1635.33 1642.06C1636.46 1641.79 1636.3 1640.13 1635.14 1640.08L1609.81 1639.16C1609.09 1639.13 1608.64 1638.38 1608.95 1637.73L1612.76 1629.86C1613.22 1628.9 1612.07 1627.98 1611.24 1628.65L1604.3 1634.19C1603.74 1634.64 1602.89 1634.36 1602.71 1633.66L1596.38 1608.85C1596.09 1607.72 1594.44 1607.92 1594.41 1609.08Z" fill="url(#paint1_radial_443_1023)"/>

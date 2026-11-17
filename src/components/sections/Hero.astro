@@ -1,29 +1,72 @@
 ---
 import Section from '../layout/Section.astro';
 import Button from '../Button.astro';
+import ShootingStars from '../ShootingStars.astro';
+import { heroLogo, heroLogoSizes } from '../../assets/logos/hero-logo';
+import starsSvg from '../../../public/assets/backgrounds/star_background.svg?raw';
+import nebulaeSvg from '../../../public/assets/decorations/nebulae_hero.svg?raw';
+import nebulaeExtSvg from '../../../public/assets/decorations/nebulae_extension.svg?raw';
+
+// The backdrop SVGs are inlined (~10 KB compressed in total) so they paint with the HTML instead of
+// popping in one download at a time. They're marked data-loaded up front so BaseLayout doesn't hide them.
+// Only escapes what a data URI needs; encodeURIComponent escapes every space and quote, which cost
+// ~8 KB more after compression. Assumes the SVGs have no single quotes (Figma exports don't).
+const svgUri = (svg: string) =>
+	`data:image/svg+xml,${svg.replace(/"/g, "'").replace(/\s+/g, ' ').replace(/[%#<>{}]/g, encodeURIComponent)}`;
 ---
 
 <Section
 	id="hero"
 	spacing="hero"
-	class="max-md:[--hero-pad:32px] bg-surface-primary"
+	class="max-md:[--hero-pad:32px] min-h-[calc(100svh+var(--hero-extra))] bg-surface-primary"
 >
-	<div class="flex min-h-[calc(100svh-2*var(--hero-pad))] flex-col items-center justify-center text-center">
+	<!-- The min-height is the hero's finished height (content box + padding + spacer), set up front. The
+	     inlined decorations come before the content in the HTML, so on a slow connection the browser
+	     paints them while the hero is still empty; without this they'd be placed against a 64px-tall
+	     hero and jump down once the content arrives. -->
+	<div class="hero-content flex min-h-[calc(100svh-2*var(--hero-pad))] flex-col items-center justify-center text-center">
 		<img
-			src="/assets/logos/scd_logo_2.svg"
+			{...heroLogo.attributes}
+			src={heroLogo.src}
+			srcset={heroLogo.srcSet.attribute}
+			sizes={heroLogoSizes}
 			alt="AWS Student Community Day Mindanao 2026"
-			decoding="async"
+			loading="eager"
+			decoding="auto"
+			fetchpriority="high"
 			draggable="false"
 			class="select-none [-webkit-user-drag:none] aspect-[255/173] w-[min(92.6vw,364px)] mix-blend-lighten min-[393px]:w-[calc(43.9vw_+_191.5px)] lg:w-[calc(25.57vw_+_200px)] min-[1728px]:w-[47.5vw] min-[1728px]:max-w-[1500px]"
 		/>
 
 		<Button
-			label="Get Ticket"
+			label="Get Tickets"
 			href="#tickets"
 			variant="cta"
 			class="mt-10 w-fit shrink-0 whitespace-nowrap md:mt-12"
 		/>
 	</div>
+	<script is:inline>
+		{
+			// Logo and button fade in together once the logo and the button's font are in, at most 1s
+			// so a slow connection still sees the content. Waits for load, not just decode, so BaseLayout
+			// has already marked the logo data-loaded and it isn't still hidden.
+			const content = document.currentScript.previousElementSibling;
+			const img = content.querySelector('img');
+			const loaded = img.complete
+				? Promise.resolve()
+				: new Promise((r) => {
+						img.addEventListener('load', r, { once: true });
+						img.addEventListener('error', r, { once: true });
+					});
+			Promise.race([
+				Promise.all([
+					loaded.then(() => img.decode()).catch(() => {}),
+					document.fonts.load('700 1em "Amazon Ember Display"').catch(() => {}),
+				]),
+				new Promise((r) => setTimeout(r, 1000)),
+			]).then(() => content.setAttribute('data-ready', ''));
+		}
+	</script>
 
 	<!-- Reserves extra hero height for the absolutely positioned title -->
 	<div class="hero-spacer" aria-hidden="true"></div>
@@ -32,32 +75,51 @@ import Button from '../Button.astro';
 		<div aria-hidden="true" class="hero-layer hero-bg -z-30"></div>
 
 		<img
-			src="/assets/decorations/nebulae_hero.svg"
+			src={svgUri(nebulaeSvg)}
+			width="2077"
+			height="1307"
 			alt=""
 			aria-hidden="true"
-			decoding="async"
+			data-loaded
+			decoding="sync"
 			class="hero-layer nebulae-hero"
 		/>
 
 		<img
-			src="/assets/decorations/nebulae_extension.svg"
+			src={svgUri(nebulaeExtSvg)}
+			width="1024"
+			height="1471"
 			alt=""
-			decoding="async"
+			data-loaded
+			decoding="sync"
 			class="nebulae-extension"
 		/>
 
-		<div aria-hidden="true" class="star-bg pointer-events-none absolute inset-x-0 top-0 -z-20 w-full"></div>
+		<div
+			aria-hidden="true"
+			class="star-bg pointer-events-none absolute inset-x-0 top-0 -z-20 w-full"
+			style={`background-image: url("${svgUri(starsSvg)}")`}
+		></div>
 
-		<img
-			src="/assets/backgrounds/shooting_star_background.svg"
-			alt=""
-			decoding="async"
-			class="shooting-stars pointer-events-none absolute -z-20 inset-0 h-full w-full object-cover object-[60%_100%]"
-		/>
+		<ShootingStars x={0.6} class="hero-shooting -z-20" />
 	</Fragment>
 </Section>
 
 <style>
+	/* ---------- Logo + button reveal (see the inline script). screen only, and only once JS has
+	   tagged the page, so print and no-JS still show it ---------- */
+	@media screen {
+		:global([data-reveal-ready]) .hero-content:not([data-ready]) {
+			opacity: 0;
+		}
+	}
+
+	@media (prefers-reduced-motion: no-preference) {
+		.hero-content {
+			transition: opacity 400ms ease-out;
+		}
+	}
+
 	/* ---------- Hero extra height (shared by spacer, layers, extension) ---------- */
 	:global(:root) {
 		--hero-extra: 0vw;
@@ -85,16 +147,16 @@ import Button from '../Button.astro';
 
 	/* ---------- Background glow ---------- */
 	.hero-bg {
-		background: radial-gradient(60% 20% at 50% 50%, #320776 0%, #130445 65%, #020110 100%);
+		background: radial-gradient(60% 30% at 50% 50%, #320776 0%, #130445 65%, #020110 100%);
 	}
 
 	@media (min-width: 768px) {
 		.hero-bg {
-			background: radial-gradient(48% 30% at 50% 50%, #320776 0%, #130445 65%, #020110 100%);
+			background: radial-gradient(56% 36% at 50% 50%, #320776 0%, #130445 65%, #020110 100%);
 		}
 	}
 
-	@media (min-width: 1728px) {
+	@media (min-width: 1024px){
 		.hero-bg {
 			background: radial-gradient(48% 40% at 50% 45.92%, #320776 0%, #130445 65%, #020110 100%);
 		}
@@ -136,13 +198,14 @@ import Button from '../Button.astro';
 	.nebulae-extension {
 		--ext-width: 102%;
 		--ext-left: -2%;
-		/* Fluid between the 1024 (54vw) and 1728 (88vw) designs: linear in px, held proportional outside */
-		--ext-overhang: clamp(54vw, 137.45vw - 854.7px, 88vw);
+		/* Top edge measured from the nebulae's center, so the two keep their spacing at any viewport height.
+		   Fluid from -14vw at 768 to -26.2vw at 1024, held proportional above */
+		--ext-offset: clamp(-26.2vw, 374.8px - 62.8vw, -14vw);
 
 		position: absolute;
 		left: var(--ext-left);
-		/* offset by the extra height so it stays where it was */
-		bottom: calc(var(--hero-extra) - var(--ext-overhang));
+		/* same anchor as .nebulae-hero: the center of the original hero area */
+		top: calc(50% - var(--hero-extra) / 2 + var(--ext-offset));
 		width: var(--ext-width);
 		max-width: none;
 		height: auto;
@@ -154,7 +217,7 @@ import Button from '../Button.astro';
 		.nebulae-extension {
 			--ext-width: 122%;
 			--ext-left: -18%;
-			--ext-overhang: 60vw;
+			--ext-offset: -6.9vw;
 
 			rotate: -8deg;
 			transform-origin: 50% 30%;
@@ -166,7 +229,9 @@ import Button from '../Button.astro';
 		--star-bg-y:10vw;            /* how far the stars are lifted */
 		height: calc(100% + var(--star-bg-y)); /* extra height covers the gap left at the bottom */
 		translate: 0 calc(-1 * var(--star-bg-y));
-		background: url('/assets/backgrounds/star_background.svg') center top / cover;
+		/* the image itself is inlined on the element */
+		background-position: center top;
+		background-size: cover;
 	}
 
 	/* Mobile: the hero is tall and narrow, so cover would crop to a sparse sliver. Tile it smaller instead */
@@ -178,19 +243,19 @@ import Button from '../Button.astro';
 	}
 
 	/* ---------- Shooting stars offset ---------- */
-	.shooting-stars {
+	:global(.hero-shooting) {
 		--stars-y: -3vw;             /* desktop: positive moves the stars down */
 		translate: 0 var(--stars-y);
 	}
 
 	@media (min-width: 768px) and (max-width: 1279px) {
-		.shooting-stars {
+		:global(.hero-shooting) {
 			--stars-y: 0vw;
 		}
 	}
 
 	@media (max-width: 767px) {
-		.shooting-stars {
+		:global(.hero-shooting) {
 			--stars-y: 3vw;
 		}
 	}

@@ -24,17 +24,17 @@ export const socials = [
 // falls back to the exported image so a keyless build still renders. mapUrl overrides the default
 // Google Maps link for the venue.
 export const venue = {
-  name: "Bapa Benny Auditorium, Ateneo de Davao University, Davao City, Philippines",
+  name: "Finster Auditorium, Ateneo de Davao University, Davao City, Philippines",
   address: "",
   description:
-    "Lorem ipsum dolor sit amet consectetur. Ut auctor velit elit commodo ac fames. Consectetur vel nunc quisque tincidunt odio malesuada aliquam sagittis dignissim. Nec gravida suspendisse maecenas nibh hendrerit. Tellus est tincidunt aliquam fermentum etiam vitae eget tristique orci. Egestas enim mauris felis blandit mollis molestie. Tristique feugiat tortor pellentesque egestas semper neque hendrerit",
-  mapQuery: "Bapa Benny Auditorium, Ateneo de Davao University, Davao City",
+    "Drop off along Roxas Avenue directly across from Freedom Park and the Roxas Night Market. Enter through Gate 5 (Roxas Gate) to step straight into Finster Hall, then take the stairs or elevator up to the 7th floor for the Finster Auditorium.",
+  mapQuery: "Finster Auditorium, Ateneo de Davao University, Davao City",
   // Emilio Jacinto St. campus. Wikipedia gives 7°4′20″N 125°36′47″E and a coordinate lookup
   // 7.0731, 125.6128, hence the shared values below.
   mapCenter: { lat: 7.0711276, lng: 125.61342 },
   mapZoom: 16,
 		mapId: "DEMO_MAP_ID", // swap for a JavaScript Vector map ID from your project
-  mapFallbackSrc: "/assets/maps/venue-map.png",
+  mapFallbackSrc: "/assets/maps/venue-map.webp",
   mapUrl: "",
   mapLabel: "Open the venue location in Google Maps (opens in a new tab)",
 };
