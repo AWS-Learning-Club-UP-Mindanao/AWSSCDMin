@@ -28,10 +28,6 @@ export interface Speaker {
   image?: {
     src: ImageMetadata;
     alt: string;
-    // Part of the photo kept in the frame, as 'x y' (e.g. 'center 20%' keeps the head of a tall photo). Default 'center'.
-    position?: string;
-    // Zooms in toward `position`; 1 is no zoom, 1.3 is 30% closer. Default 1.
-    zoom?: number;
   };
   socials?: SpeakerSocial[];
 }
@@ -43,7 +39,7 @@ export const speakers: Speaker[] = [
     name: 'Asi Guiang',
     role: 'Keynote Speaker',
     bionote: 'XYZ',
-    image: { src: IB_Guiang, alt: 'Asi Guiang', zoom: 1.1},
+    image: { src: IB_Guiang, alt: 'Asi Guiang'},
     socials: [
       { platform: 'linkedin', url: 'https://www.linkedin.com/' },
       { platform: 'facebook', url: 'https://www.facebook.com/' },
@@ -69,7 +65,7 @@ export const speakers: Speaker[] = [
     name: 'Jodi Gabano',
     role: 'Tech Talk',
     bionote: 'XYZ',
-    image: { src: J_Gabano, alt: 'Jodi Gabano', zoom: 1.2},
+    image: { src: J_Gabano, alt: 'Jodi Gabano'},
     socials: [
       { platform: 'linkedin', url: 'https://www.linkedin.com/' },
       { platform: 'facebook', url: 'https://www.facebook.com/' },

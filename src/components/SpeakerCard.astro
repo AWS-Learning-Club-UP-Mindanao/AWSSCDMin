@@ -21,12 +21,7 @@ const initials = speaker.name
 	.filter((word) => word && !word.endsWith('.'))
 	.slice(0, 2)
 	.map((word) => word[0].toUpperCase())
-	.join('');
-
-const focus = speaker.image?.position ?? 'center';
-const zoom = speaker.image?.zoom ?? 1;
-const imageStyle = `object-position: ${focus}; transform-origin: ${focus}; transform: scale(${zoom});`;
----
+	.join('');---
 
 <article class="flex h-full flex-col" aria-labelledby={nameId}>
 	<div class="aspect-[323/332] w-full overflow-hidden border-2 border-surface-brand-tertiary">
@@ -38,9 +33,7 @@ const imageStyle = `object-position: ${focus}; transform-origin: ${focus}; trans
 					width={323}
 					height={332}
 					densities={[2]}
-					quality={75}
-					style={imageStyle}
-					loading="lazy"
+					quality={75}					loading="lazy"
 					decoding="async"
 					class="size-full object-cover"
 				/>
