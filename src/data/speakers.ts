@@ -1,6 +1,6 @@
 import B_Medina from "../assets/speakers/Medina.jpg"
 import C_Pino from "../assets/speakers/Pino.jpeg"
-import NB_Ibanez from "../assets/speakers/Ibañez.jpg"
+import NB_Ibanez from "../assets/speakers/Ibanez.jpg"
 import BB_DeCastro from "../assets/speakers/De_Castro.jpeg"
 import L_Caminoy from "../assets/speakers/Caminoy.jpg"
 import TN_Organiza from "../assets/speakers/Organiza.jpg"
