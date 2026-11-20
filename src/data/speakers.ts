@@ -1,5 +1,3 @@
-import V_Austria from "../assets/speakers/Austria.jpg"
-import AK_Batacandulo from "../assets/speakers/Batacandulo.jpg"
 import B_Medina from "../assets/speakers/Medina.jpg"
 import C_Pino from "../assets/speakers/Pino.jpeg"
 import NB_Ibanez from "../assets/speakers/Ibañez.jpg"
