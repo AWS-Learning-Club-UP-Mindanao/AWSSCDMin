@@ -1,0 +1,79 @@
+---
+import { Image } from 'astro:assets';
+import type { SocialPlatform, Speaker } from '../data/speakers';
+
+interface Props {
+	speaker: Speaker;
+}
+
+const { speaker } = Astro.props;
+const nameId = `speaker-${speaker.id}-name`;
+
+const platforms: Record<SocialPlatform, { label: string; icon: string }> = {
+	linkedin: { label: 'LinkedIn', icon: '/assets/icons/linkedin.svg' },
+	facebook: { label: 'Facebook', icon: '/assets/icons/facebook.svg' },
+	instagram: { label: 'Instagram', icon: '/assets/icons/instagram.svg'},
+	github: {label: 'Github', icon: '/assets/icons/github.svg'}
+};
+
+const initials = speaker.name
+	.split(/\s+/)
+	.filter((word) => word && !word.endsWith('.'))
+	.slice(0, 2)
+	.map((word) => word[0].toUpperCase())
+	.join('');---
+
+<article class="flex h-full flex-col" aria-labelledby={nameId}>
+	<div class="aspect-[323/332] w-full overflow-hidden border-2 border-surface-brand-tertiary">
+		{
+			speaker.image ? (
+				<Image
+					src={speaker.image.src}
+					alt={speaker.image.alt}
+					width={323}
+					height={332}
+					densities={[2]}
+					quality={75}					loading="lazy"
+					decoding="async"
+					class="size-full object-cover"
+				/>
+			) : (
+				<div class="flex size-full items-center justify-center bg-surface-brand-secondary" aria-hidden="true">
+					<span class="font-body text-h1 font-bold text-content-primary">{initials}</span>
+				</div>
+			)
+		}
+	</div>
+
+	<div class="flex flex-1 flex-col gap-4 bg-surface-brand-tertiary p-4">
+		<div class="flex flex-col">
+			<h3 id={nameId} class="font-display text-[30px] leading-[42px] font-normal text-content-primary">{speaker.name}</h3>
+			<p class="mt-1 text-[20px] leading-[30px] font-bold text-content-primary">{speaker.role}</p>
+			<p class="text-body italic text-content-primary">{speaker.organization}</p>
+		</div>
+		<p class="text-caption whitespace-pre-line text-content-primary">{speaker.bionote}</p>
+
+		{
+			speaker.socials && speaker.socials.length > 0 && (
+				<ul class="mt-auto flex items-center gap-2" aria-label={`${speaker.name} on social media`}>
+					{speaker.socials.map(({ platform, url }) => {
+						const { label, icon } = platforms[platform];
+						return (
+							<li>
+								<a
+									href={url}
+									target="_blank"
+									rel="noopener noreferrer"
+									aria-label={`${speaker.name} on ${label} (opens in a new tab)`}
+									class="relative block rounded-full transition-transform after:absolute after:-inset-1 after:content-[''] hover:scale-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-surface-accent motion-reduce:transition-none"
+								>
+									<img src={icon} alt="" width="24" height="24" class="size-6" />
+								</a>
+							</li>
+						);
+					})}
+				</ul>
+			)
+		}
+	</div>
+</article>
