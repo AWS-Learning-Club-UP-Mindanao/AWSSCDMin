@@ -4,8 +4,9 @@ import Schedule from "../components/sections/Schedule.astro";
 import Hero from "../components/sections/Hero.astro";
 import Header from "../components/Header.astro";
 import Location from "../components/sections/Location.astro";
-import About from "../components/sections/About.astro";
 import TicketTiers from "../components/sections/TicketTiers.astro";
+import Speakers from "../components/sections/Speakers.astro";
+import About from "../components/sections/About.astro";
 import Footer from "../components/Footer.astro";
 import FAQ from "../components/sections/FAQ.astro";
 import { heroLogo, heroLogoSizes } from "../assets/logos/hero-logo";
@@ -25,24 +26,12 @@ import { heroLogo, heroLogoSizes } from "../assets/logos/hero-logo";
     fetchpriority="high"
   />
   <Header slot="header" />
-
-  <!-- Ticket 07 -->
   <Hero />
-
-  <!-- Ticket 08 -->
   <About />
-
   <TicketTiers />
-
-	<!-- Ticket 09 -->
 	<Schedule />
-
-	<!-- Ticket 12 -->
+  <Speakers />
 	<Location />
-
-	<!-- Ticket 13 -->
 	<FAQ />
-
-	<!-- Ticket 06  -->
 	<Footer slot="footer" />
 </BaseLayout>
